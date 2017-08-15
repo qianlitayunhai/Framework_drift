@@ -20,24 +20,7 @@ import numpy as np
 #pasta = 'IDPSO_ELM_B (condicao) - limite/Omega = 10/50'
 pasta = 'ELM_FEDD(Param)/1'
 
-caminho_bases = "E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/" + pasta
-g_linha_media = 6
-
-###############################################################################################################################################
-###############################################################################################################################################
-###############################################################################################################################################
-###############################################################################################################################################
-###############################################################################################################################################
-###############################################################################################################################################
-###############################################################################################################################################
-###############################################################################################################################################
-###############################ESSSE CODIGO PRECISA SER OTIMIZADO, RETIRAR AS REPETICOES######################################################
-###############################################################################################################################################
-###############################################################################################################################################
-###############################################################################################################################################
-###############################################################################################################################################
-###############################################################################################################################################
-###############################################################################################################################################
+caminho_bases = "Tabelas/ZExperimentos/" + pasta
 
 class Tabela_testes():
     def __init__(self):
@@ -45,6 +28,9 @@ class Tabela_testes():
         self.nome = ""
     
     def Gerar_tabela_final(self):
+        '''
+        metodo para agrupar os resultados que estavam em subpastas e salvar em um arquivo final
+        '''
         
         #caminho = "E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/Sensores (nivel) - qtd sensores/"
         #caminho = "E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/IDPSO_ELM_B (condicao) - limite/"
@@ -121,6 +107,9 @@ class Tabela_testes():
                         wb.save(caminho_tabfinal)
     
     def Calcular_estatisticas_bases(self):
+        '''
+        metodo para computar as estatisticas como media de desvio padrao das subpastas
+        '''
         
         qtd_bases = 30
         
@@ -163,295 +152,105 @@ class Tabela_testes():
                     wb.save(nome)
                 
     def ler(self, arq_xls, folha, linha, coluna):
-        book = xlrd.open_workbook(arq_xls)
-        #print("número de abas: ", book.nsheets)
-        #print("Nomes das Planilhas:", book.sheet_names())
-        sh = book.sheet_by_index(folha)
-        #print(sh.name, sh.nrows, sh.ncols)
-        #print("Valor da celula D30 é ", sh.cell_value(rowx=10, colx=4))
-        return sh.cell_value(rowx=linha, colx=coluna)
-    
-    def bases_linear_graduais(self, tipo, numero):
-        base = (caminho_bases + '/Graduais/lin' + str(tipo) + '_grad/' + 'lin_grad_' + str(tipo) + '_variacao_' + str(numero) + '.xls.xls')
-        self.nome = 'lin_grad_' + str(tipo) + '_variacao_' + str(numero)
-        return base
-    
-    def bases_linear_abruptas(self, tipo, numero):
-        base = (caminho_bases + '/Abruptos/lin' + str(tipo) + '_abt/' + 'lin_abt_' + str(tipo) + '_variacao_' + str(numero) + '.xls.xls')
-        self.nome = 'lin_abt_' + str(tipo) + '_variacao_' + str(numero)
-        return base
-
-    def bases_nlinear_graduais(self, tipo, numero):
-        base = (caminho_bases + '/Graduais/n_lin' + str(tipo) + '_grad/' + 'nlin_grad_' + str(tipo) + '_variacao_' + str(numero) + '.xls.xls')
-        self.nome = 'nlin_grad_' + str(tipo) + '_variacao_' + str(numero)
-        return base
-    
-    def bases_nlinear_abruptas(self, tipo, numero):
-        base = (caminho_bases + '/Abruptos/n_lin' + str(tipo) + '_abt/' + 'nlin_abt_' + str(tipo) + '_variacao_' + str(numero) + '.xls.xls')
-        self.nome = 'nlin_abt_' + str(tipo) + '_variacao_' + str(numero)
-        return base
+        '''
+        método para ler um valor de uma celula especifica
+        :param: arq_xls: nome do arquivo
+        :param: folha: folha em que o dado se encontra
+        :param: linha: linha referente
+        :param: coluna: coluna referente
+        :return: celula buscada
+        '''
+        te = Tabela_excel()
+        
+        return te.ler(arq_xls, folha, linha, coluna) 
     
     def bases_linear(self, numero):
+        '''
+        metodo para abrir um arquivo de resultado para as bases lineares
+        :param: numero: numero do arquivo
+        :return: retorna a string do caminho da base
+        '''
+        
         base = (caminho_bases + '/Lineares/lin-' + str(numero) + '.xls.xls')
         self.nome = 'lin-' + str(numero)
         return base
     
     def bases_nlinear(self, numero):
+        '''
+        metodo para abrir um arquivo de resultado para as bases não lineares
+        :param: numero: numero do arquivo
+        :return: retorna a string do caminho da base
+        '''
+        
         base = (caminho_bases + '/LinearesN/lin_n-' + str(numero) + '.xls.xls')
         self.nome = 'lin_n-' + str(numero)
         return base
     
     def bases_sazonal(self, numero):
+        '''
+        metodo para abrir um arquivo de resultado para as bases sazonais
+        :param: numero: numero do arquivo
+        :return: retorna a string do caminho da base
+        '''
+        
         base = (caminho_bases + '/Sazonais/saz-' + str(numero) + '.xls.xls')
         self.nome = 'saz-' + str(numero)
         return base
     
     def bases_hibrida(self, numero):
+        '''
+        metodo para abrir um arquivo de resultado para as bases hibridas
+        :param: numero: numero do arquivo
+        :return: retorna a string do caminho da base
+        '''
+        
         base = (caminho_bases + '/Hibridas/hib-' + str(numero) + '.xls.xls')
         self.nome = 'hib-' + str(numero)
         return base
    
-    def Criar_tabela_falsos_alarmes(self):
+    def Criar_tabelas(self):
         '''
         linha 11 - linha das medias
         coluna 0 - falsos alarmes
         coluna 1 - atrasos
-        coluna 2 - falta deteccao
-        coluna 3 - MAPE
-        coluna 4 - tempo_execucao
+        coluna 2 - MAPE
+        coluna 3 - tempo_execucao
         '''   
-            
+        
+        metricas = [0, 1, 2, 3]
+        g_linha_media = 6
+        variacoes = 31
+        
         tabela = Tabela_excel()
-        nome = 'E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/'+pasta+ '/tabela_falsos_alarmes.xls'
-        folhas = ["sheet1"]
-        #cabecalho = ["Bases", "ELM_DDM", "CompoIDPSO_ELM_BLM_ECDD", "Sensores", "CompoIDPSO_ELM_Bor", "ELM_ECDD Perfeito", "ELM Sem Detecção"]
-        #cabecalho = ["Bases", "ComportIDPSO_ELM_B, "ComportIDPSO_ELM_B"]
-        #cabecalho = ["Bases", "Sensores (ECDD)"]
-        cabecalho = ["Bases", "ELM-ECDD"]
-        largura_col = 5000
-        tabela.Criar_tabela(nome, folhas, cabecalho, largura_col)
         
-        #sheet = [10, 0, 1]
-        sheet = [10, 0]
-        vez = [0, 1, 2, 3]
-        variacao = range(1, 31)
-        #variacao = range(1, 30)
-        
-        
-        col_falsos_alarmes = 0
-        linha_media = g_linha_media
-        
-        
-        for i in sheet:
-            contador = 0
+        for z in metricas:
             
-            if(i == 10):
-                for j in vez:
-                    for l in variacao:
-                            
-                        contador += 1
-                            
-                        parte4 = str(l)
-                            
-                        if(j == 0):
-                            parte2 = "Linear - " + parte4
-                            tabela.Adicionar_dado(0, 0, contador, parte2)
-                                
-                        elif(j == 1):
-                            parte2 = "Nlinear - " + parte4
-                            tabela.Adicionar_dado(0, 0, contador, parte2)
-                                
-                        elif(j == 2):
-                            parte2 = "Sazonal - " + parte4
-                            tabela.Adicionar_dado(0, 0, contador, parte2)
-                                        
-                        elif(j == 3):
-                            parte2 = "Hibrida - " + parte4
-                            tabela.Adicionar_dado(0, 0, contador, parte2)
-            
-                           
-                            
-            
-            else:
+            if(z == 0):
+                nome = 'E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/'+pasta+ '/tabela_falsos_alarmes.xls'
+            elif(z == 1):
+                nome = 'E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/'+pasta+ '/tabela_atrasos.xls'
+            elif(z == 2):
+                nome = 'E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/'+pasta+ '/tabela_mape.xls'
+            elif(z == 3):
+                nome = 'E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/'+pasta+ '/tabela_tempo.xls'
                 
-                for j in vez:
-                    for l in variacao:
-                            
-                        contador += 1
-                            
-                        if(i == 0):
-                            parte1 = "ELM_DDM - "
-                        elif(i == 1):
-                            parte1 = "IDPSO_ELM_B"
-                        elif(i == 2):
-                            parte1 = "ELM_ECDD - "
-                        elif(i == 3):
-                            parte1 = "Sensores - "
-                        elif(i == 4):
-                            parte1 = "ComportIDPSO_ELM_B - "
-                                
-                            
-                        if(j == 0):
-                            parte2 = "linear - "
-                            valor = self.ler(self.bases_linear(l), i, linha_media, col_falsos_alarmes)
-                            tabela.Adicionar_dado(0, i+1, contador, valor)
-                                
-                        elif(j == 1):
-                            parte2 = "nlinear - "
-                            valor = self.ler(self.bases_nlinear(l), i, linha_media, col_falsos_alarmes)
-                            tabela.Adicionar_dado(0, i+1, contador, valor)
-                                        
-                        elif(j == 2):
-                            parte2 = "sazonal - "
-                            valor = self.ler(self.bases_sazonal(l), i, linha_media, col_falsos_alarmes)
-                            tabela.Adicionar_dado(0, i+1, contador, valor)
-                                        
-                        elif(j == 3):
-                            parte2 = "hibrida - "
-                            valor = self.ler(self.bases_hibrida(l), i, linha_media, col_falsos_alarmes)
-                            tabela.Adicionar_dado(0, i+1, contador, valor)
-            
-                        parte4 = str(l)
-                            
-                        print(parte1+parte2+parte4)
-        #tabela.Calcular_Medias2(120)
-        #tabela.Calcular_Medias2(8)
-
-    def Criar_tabela_atrasos(self):
-        '''
-        linha 11 - linha das medias
-        coluna 0 - falsos alarmes
-        coluna 1 - atrasos
-        coluna 2 - falta deteccao
-        coluna 3 - MAPE
-        coluna 4 - tempo_execucao
-        '''   
-            
-        tabela = Tabela_excel()
-        nome = 'E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/'+pasta+ '/tabela_atrasos.xls'
-        folhas = ["sheet1"]
-        #cabecalho = ["Bases", "ELM_DDM", "ComportIDPSO_ELM_B_ECDD", "Sensores", "ComportIDPSO_ELM_B", "ELM_ECDD Perfeito", "ELM Sem Detecção"]
-        #cabecalho = ["Bases", "ComportamIDPSO_ELM_B"ComportamIDPSO_ELM_B
-        #cabecalho = ["Bases", "Sensores (ECDD)"]
-        cabecalho = ["Bases", "ELM-ECDD"]
-        largura_col = 5000
-        tabela.Criar_tabela(nome, folhas, cabecalho, largura_col)
-        
-        #sheet = [10, 0, 1]
-        sheet = [10, 0]
-        vez = [0, 1, 2, 3, 4]
-        variacao = range(1, 31)
-        #variacao = range(1, 30)
-        
-        
-        col_atrasos = 1
-        linha_media = g_linha_media
-        
-        
-        for i in sheet:
-            contador = 0
-            
-            if(i == 10):
-                for j in vez:
-                    for l in variacao:
-                            
-                        contador += 1
-                            
-                        parte4 = str(l)
-                            
-                        if(j == 0):
-                            parte2 = "Linear - " + parte4
-                            tabela.Adicionar_dado(0, 0, contador, parte2)
-                                
-                        elif(j == 1):
-                            parte2 = "Nlinear - " + parte4
-                            tabela.Adicionar_dado(0, 0, contador, parte2)
-                                
-                        elif(j == 2):
-                            parte2 = "Sazonal - " + parte4
-                            tabela.Adicionar_dado(0, 0, contador, parte2)
-                                        
-                        elif(j == 3):
-                            parte2 = "Hibrida - " + parte4
-                            tabela.Adicionar_dado(0, 0, contador, parte2)
-            
-                           
-                            
-            
-            else:
-                
-                for j in vez:
-                    for l in variacao:
-                            
-                        contador += 1
-                            
-                        if(i == 0):
-                            parte1 = "ComportamIDPSO_ELM_B"                     
-                        elif(i == 1):
-                            parte1 = "Sensores - "
-                        elif(i == 2):
-                            parte1 = "ComportamIDPSO_ELM_Bes - "
-                        elif(i == 3):
-                            parte1 = "ELM_ECDD - "
-                        elif(i == 4):
-                            parte1 = "ELM_DDM - "
-                                
-                            
-                        if(j == 0):
-                            parte2 = "linear - "
-                            valor = self.ler(self.bases_linear(l), i, linha_media, col_atrasos)
-                            tabela.Adicionar_dado(0, i+1, contador, valor)
-                                
-                        elif(j == 1):
-                            parte2 = "nlinear - "
-                            valor = self.ler(self.bases_nlinear(l), i, linha_media, col_atrasos)
-                            tabela.Adicionar_dado(0, i+1, contador, valor)
-                                        
-                        elif(j == 2):
-                            parte2 = "sazonal - "
-                            valor = self.ler(self.bases_sazonal(l), i, linha_media, col_atrasos)
-                            tabela.Adicionar_dado(0, i+1, contador, valor)
-                                        
-                        elif(j == 3):
-                            parte2 = "hibrida - "
-                            valor = self.ler(self.bases_hibrida(l), i, linha_media, col_atrasos)
-                            tabela.Adicionar_dado(0, i+1, contador, valor)
-            
-                        parte4 = str(l)
-                            
-                        print(parte1+parte2+parte4)
-        #tabela.Calcular_Medias2(120)
-        #tabela.Calcular_Medias2(8)
-        
-    def Criar_tabela_mape(self):
-            '''
-            linha 11 - linha das medias
-            coluna 0 - falsos alarmes
-            coluna 1 - atrasos
-            coluna 2 - falta deteccao
-            coluna 3 - MAPE
-            coluna 4 - tempo_execucao
-            '''   
-                
-            tabela = Tabela_excel()
-            nome = 'E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/'+pasta+ '/tabela_mape.xls'
             folhas = ["sheet1"]
-            #cabecalho = ["Bases", "ELM_DDM", "ComportamIDPSO_ELM_BCDD", "Sensores", "ComportamIDPSO_ELM_B "ELM_ECDD Perfeito", "ELM Sem Detecção"]
-            #cabecalho = ["Bases", "ComportamenIDPSO_ELM_BomportamenIDPSO_ELM_B            #cabecalho = ["Bases", "Sensores (ECDD)"]
+            #cabecalho = ["Bases", "ELM_DDM", "CompoIDPSO_ELM_BLM_ECDD", "Sensores", "CompoIDPSO_ELM_Bor", "ELM_ECDD Perfeito", "ELM Sem Detecção"]
+            #cabecalho = ["Bases", "ComportIDPSO_ELM_B, "ComportIDPSO_ELM_B"]
+            #cabecalho = ["Bases", "Sensores (ECDD)"]
             cabecalho = ["Bases", "ELM-ECDD"]
             largura_col = 5000
             tabela.Criar_tabela(nome, folhas, cabecalho, largura_col)
             
             #sheet = [10, 0, 1]
             sheet = [10, 0]
-            vez = [0, 1, 2, 3, 4]
-            variacao = range(1, 31)
+            vez = [0, 1, 2, 3]
+            variacao = range(1, variacoes)
             #variacao = range(1, 30)
             
             
-            col_mape = 2
+            col_falsos_alarmes = z
             linha_media = g_linha_media
-            
             
             for i in sheet:
                 contador = 0
@@ -490,651 +289,39 @@ class Tabela_testes():
                                 
                             contador += 1
                                 
-                            if(i == 0):
-                                parte1 = "ComportamenIDPSO_ELM_B" 
-                            elif(i == 1):
-                                parte1 = "Sensores - "
-                            elif(i == 2):
-                                parte1 = "ComportamenIDPSO_ELM_B - "
-                            elif(i == 3):
-                                parte1 = "ELM_ECDD - "
-                            elif(i == 4):
-                                parte1 = "ELM_DDM - "
-                                    
+                            parte1 = cabecalho[i+1] + " - "
                                 
                             if(j == 0):
                                 parte2 = "linear - "
-                                valor = self.ler(self.bases_linear(l), i, linha_media, col_mape)
+                                valor = self.ler(self.bases_linear(l), i, linha_media, col_falsos_alarmes)
                                 tabela.Adicionar_dado(0, i+1, contador, valor)
                                     
                             elif(j == 1):
                                 parte2 = "nlinear - "
-                                valor = self.ler(self.bases_nlinear(l), i, linha_media, col_mape)
+                                valor = self.ler(self.bases_nlinear(l), i, linha_media, col_falsos_alarmes)
                                 tabela.Adicionar_dado(0, i+1, contador, valor)
                                             
                             elif(j == 2):
                                 parte2 = "sazonal - "
-                                valor = self.ler(self.bases_sazonal(l), i, linha_media, col_mape)
+                                valor = self.ler(self.bases_sazonal(l), i, linha_media, col_falsos_alarmes)
                                 tabela.Adicionar_dado(0, i+1, contador, valor)
                                             
                             elif(j == 3):
                                 parte2 = "hibrida - "
-                                valor = self.ler(self.bases_hibrida(l), i, linha_media, col_mape)
+                                valor = self.ler(self.bases_hibrida(l), i, linha_media, col_falsos_alarmes)
                                 tabela.Adicionar_dado(0, i+1, contador, valor)
                 
                             parte4 = str(l)
                                 
                             print(parte1+parte2+parte4)
-        #tabela.Calcular_Medias2(120)
-        #tabela.Calcular_Medias2(8)
-        
-    def Criar_tabela_tempo(self):
-            '''
-            linha 11 - linha das medias
-            coluna 0 - falsos alarmes
-            coluna 1 - atrasos
-            coluna 2 - MAPE
-            coluna 3 - tempo_execucao
-            '''   
-                
-            tabela = Tabela_excel()
-            nome = 'E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/'+pasta+ '/tabela_tempo.xls'
-            folhas = ["sheet1"]
-            #cabecalho = ["Bases", "ELM_DDM", "ComportamenIDPSO_ELM_BD", "Sensores", "ComportamenIDPSO_ELM_BELM_ECDD Perfeito", "ELM Sem Detecção"]
-            #cabecalho = ["Bases", "ComportamentoIDPSO_ELM_BportamentoIDPSO_ELM_B          #cabecalho = ["Bases", "Sensores (ECDD)"]
-            cabecalho = ["Bases", "ELM-ECDD"]
-            largura_col = 5000
-            tabela.Criar_tabela(nome, folhas, cabecalho, largura_col)
             
-            #sheet = [10, 0, 1]
-            sheet = [10, 0]
-            vez = [0, 1, 2, 3]
-            variacao = range(1, 31)
-            #variacao = range(1, 30)
-            
-            
-            col_tempo = 3
-            linha_media = g_linha_media
-            
-            
-            for i in sheet:
-                contador = 0
-                
-                if(i == 10):
-                    for j in vez:
-                        for l in variacao:
-                                
-                            contador += 1
-                                
-                            parte4 = str(l)
-                                
-                            if(j == 0):
-                                parte2 = "Linear - " + parte4
-                                tabela.Adicionar_dado(0, 0, contador, parte2)
-                                    
-                            elif(j == 1):
-                                parte2 = "Nlinear - " + parte4
-                                tabela.Adicionar_dado(0, 0, contador, parte2)
-                                    
-                            elif(j == 2):
-                                parte2 = "Sazonal - " + parte4
-                                tabela.Adicionar_dado(0, 0, contador, parte2)
-                                            
-                            elif(j == 3):
-                                parte2 = "Hibrida - " + parte4
-                                tabela.Adicionar_dado(0, 0, contador, parte2)
-                
-                               
-                                
-                
-                else:
-                    
-                    for j in vez:
-                        for l in variacao:
-                                
-                            contador += 1
-                                
-                            if(i == 0):
-                                parte1 = "ComportamentoIDPSO_ELM_B"
-                            elif(i == 1):
-                                parte1 = "Sensores - "
-                            elif(i == 2):
-                                parte1 = "ComportamentoIDPSO_ELM_B "
-                            elif(i == 3):
-                                parte1 = "ELM_ECDD - "
-                            elif(i == 4):
-                                parte1 = "ELM_DDM - "
-                                    
-                                
-                            if(j == 0):
-                                parte2 = "linear - "
-                                valor = self.ler(self.bases_linear(l), i, linha_media, col_tempo)
-                                tabela.Adicionar_dado(0, i+1, contador, valor)
-                                    
-                            elif(j == 1):
-                                parte2 = "nlinear - "
-                                valor = self.ler(self.bases_nlinear(l), i, linha_media, col_tempo)
-                                tabela.Adicionar_dado(0, i+1, contador, valor)
-                                            
-                            elif(j == 2):
-                                parte2 = "sazonal - "
-                                valor = self.ler(self.bases_sazonal(l), i, linha_media, col_tempo)
-                                tabela.Adicionar_dado(0, i+1, contador, valor)
-                                            
-                            elif(j == 3):
-                                parte2 = "hibrida - "
-                                valor = self.ler(self.bases_hibrida(l), i, linha_media, col_tempo)
-                                tabela.Adicionar_dado(0, i+1, contador, valor)
-                
-                            parte4 = str(l)
-                                
-                            print(parte1+parte2+parte4)
-        #tabela.Calcular_Medias2(120)
-        #tabela.Calcular_Medias2(8)
-    
-    def Criar_tabela_falsos_alarmes_FEDD(self):
-        '''
-        linha 11 - linha das medias
-        coluna 0 - falsos alarmes
-        coluna 1 - atrasos
-        coluna 2 - falta deteccao
-        coluna 3 - MAPE
-        coluna 4 - tempo_execucao
-        '''   
-            
-        tabela = Tabela_excel()
-        nome = 'E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/'+pasta+'/Final' + '/tabela_falsos_alarmes.xls'
-        folhas = ["sheet1"]
-        cabecalho = ["Bases", "ELM_ECDD"]
-        largura_col = 5000
-        tabela.Criar_tabela(nome, folhas, cabecalho, largura_col)
-        
-        sheet = [10, 0]
-        vez = [0, 1, 2, 3]
-        tipo = [1, 2, 3]
-        variacao = range(30, 50)
-        
-        
-        col_falsos_alarmes = 0
-        linha_media = 11
-        
-        
-        for i in sheet:
-            contador = 0
-            
-            if(i == 10):
-                for j in vez:
-                    for k in tipo:
-                        for l in variacao:
-                            
-                            contador += 1
-                            
-                            parte3 = str(k) + " - "
-                            parte4 = str(l)
-                            
-                            if(j == 0):
-                                parte2 = "linear_gradual - " + parte3 + parte4
-                                tabela.Adicionar_dado(0, 0, contador, parte2)
-                                
-                            elif(j == 1):
-                                parte2 = "nlinear_gradual - " + parte3 + parte4
-                                tabela.Adicionar_dado(0, 0, contador, parte2)
-                                
-                            elif(j == 2):
-                                parte2 = "linear_abrupta - " + parte3 + parte4
-                                tabela.Adicionar_dado(0, 0, contador, parte2)
-                                        
-                            elif(j == 3):
-                                parte2 = "nlinear_abrupta - " + parte3 + parte4
-                                tabela.Adicionar_dado(0, 0, contador, parte2)
-            
-                           
-                            
-            
-            else:
-                
-                for j in vez:
-                    for k in tipo:
-                        for l in variacao:
-                            
-                            contador += 1
-                            
-                            if(i == 0):
-                                parte1 = "ELM_ECDD - "
-                            elif(i == 1):
-                                parte1 = "ELM_DDM - "
-                                
-                            
-                            if(j == 0):
-                                parte2 = "linear_gradual - "
-                                valor = self.ler(self.bases_linear_graduais(k, l), i, linha_media, col_falsos_alarmes)
-                                tabela.Adicionar_dado(0, i+1, contador, valor)
-                                
-                            elif(j == 1):
-                                parte2 = "nlinear_gradual - "
-                                valor = self.ler(self.bases_nlinear_graduais(k, l), i, linha_media, col_falsos_alarmes)
-                                tabela.Adicionar_dado(0, i+1, contador, valor)
-                                        
-                            elif(j == 2):
-                                parte2 = "linear_abrupta - "
-                                valor = self.ler(self.bases_linear_abruptas(k, l), i, linha_media, col_falsos_alarmes)
-                                tabela.Adicionar_dado(0, i+1, contador, valor)
-                                        
-                            elif(j == 3):
-                                parte2 = "nlinear_abrupta - "
-                                valor = self.ler(self.bases_nlinear_abruptas(k, l), i, linha_media, col_falsos_alarmes)
-                                tabela.Adicionar_dado(0, i+1, contador, valor)
-            
-                            parte3 = str(k) + " - "
-                            parte4 = str(l)
-                            
-                            print(parte1+parte2+parte3+parte4)
-        #tabela.Calcular_Medias(241, 1)
-
-    def Criar_tabela_atrasos_FEDD(self):
-        '''
-        linha 11 - linha das medias
-        coluna 0 - falsos alarmes
-        coluna 1 - atrasos
-        coluna 2 - falta deteccao
-        coluna 3 - MAPE
-        coluna 4 - tempo_execucao
-        '''   
-            
-        tabela = Tabela_excel()
-        nome = 'E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/'+pasta+'/Final' + '/tabela_atrasos.xls'
-        folhas = ["sheet1"]
-        cabecalho = ["Bases", "ELM_ECDD"]
-        largura_col = 5000
-        tabela.Criar_tabela(nome, folhas, cabecalho, largura_col)
-        
-        sheet = [10, 0]
-        vez = [0, 1, 2, 3]
-        tipo = [1, 2, 3]
-        variacao = range(30, 50)
-        
-        
-        col_atrasos = 1
-        linha_media = 11
-        
-        
-        for i in sheet:
-            contador = 0
-            
-            if(i == 10):
-                for j in vez:
-                    for k in tipo:
-                        for l in variacao:
-                            
-                            contador += 1
-                            
-                            parte3 = str(k) + " - "
-                            parte4 = str(l)
-                            
-                            if(j == 0):
-                                parte2 = "linear_gradual - " + parte3 + parte4
-                                tabela.Adicionar_dado(0, 0, contador, parte2)
-                                
-                            elif(j == 1):
-                                parte2 = "nlinear_gradual - " + parte3 + parte4
-                                tabela.Adicionar_dado(0, 0, contador, parte2)
-                                
-                            elif(j == 2):
-                                parte2 = "linear_abrupta - " + parte3 + parte4
-                                tabela.Adicionar_dado(0, 0, contador, parte2)
-                                        
-                            elif(j == 3):
-                                parte2 = "nlinear_abrupta - " + parte3 + parte4
-                                tabela.Adicionar_dado(0, 0, contador, parte2)
-            
-                           
-                            
-            
-            else:
-                
-                for j in vez:
-                    for k in tipo:
-                        for l in variacao:
-                            
-                            contador += 1
-                            
-                            if(i == 0):
-                                parte1 = "ELM_ECDD "
-                            elif(i == 1):
-                                parte1 = "ELM_DDM "
-                                
-                            
-                            if(j == 0):
-                                parte2 = "linear_gradual - "
-                                valor = self.ler(self.bases_linear_graduais(k, l), i, linha_media, col_atrasos)
-                                tabela.Adicionar_dado(0, i+1, contador, valor)
-                                
-                            elif(j == 1):
-                                parte2 = "nlinear_gradual - "
-                                valor = self.ler(self.bases_nlinear_graduais(k, l), i, linha_media, col_atrasos)
-                                tabela.Adicionar_dado(0, i+1, contador, valor)
-                                        
-                            elif(j == 2):
-                                parte2 = "linear_abrupta - "
-                                valor = self.ler(self.bases_linear_abruptas(k, l), i, linha_media, col_atrasos)
-                                tabela.Adicionar_dado(0, i+1, contador, valor)
-                                        
-                            elif(j == 3):
-                                parte2 = "nlinear_abrupta - "
-                                valor = self.ler(self.bases_nlinear_abruptas(k, l), i, linha_media, col_atrasos)
-                                tabela.Adicionar_dado(0, i+1, contador, valor)
-            
-                            parte3 = str(k) + " - "
-                            parte4 = str(l)
-                            
-                            print(parte1+parte2+parte3+parte4)
-        #tabela.Calcular_Medias(241)
-        
-    def Criar_tabela_falta_deteccao_FEDD(self):
-        '''
-        linha 11 - linha das medias
-        coluna 0 - falsos alarmes
-        coluna 1 - atrasos
-        coluna 2 - falta deteccao
-        coluna 3 - MAPE
-        coluna 4 - tempo_execucao
-        '''   
-            
-        tabela = Tabela_excel()
-        nome = 'E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/'+pasta+'/Final' + '/tabela_falta_deteccao.xls'
-        folhas = ["sheet1"]
-        cabecalho = ["Bases", "ELM_ECDD"]
-        largura_col = 5000
-        tabela.Criar_tabela(nome, folhas, cabecalho, largura_col)
-        
-        sheet = [10, 0]
-        vez = [0, 1, 2, 3]
-        tipo = [1, 2, 3]
-        variacao = range(30, 50)
-        
-        
-        col_falta_deteccao = 2
-        linha_media = 11
-        
-        
-        for i in sheet:
-            contador = 0
-            
-            if(i == 10):
-                for j in vez:
-                    for k in tipo:
-                        for l in variacao:
-                            
-                            contador += 1
-                            
-                            parte3 = str(k) + " - "
-                            parte4 = str(l)
-                            
-                            if(j == 0):
-                                parte2 = "linear_gradual - " + parte3 + parte4
-                                tabela.Adicionar_dado(0, 0, contador, parte2)
-                                
-                            elif(j == 1):
-                                parte2 = "nlinear_gradual - " + parte3 + parte4
-                                tabela.Adicionar_dado(0, 0, contador, parte2)
-                                
-                            elif(j == 2):
-                                parte2 = "linear_abrupta - " + parte3 + parte4
-                                tabela.Adicionar_dado(0, 0, contador, parte2)
-                                        
-                            elif(j == 3):
-                                parte2 = "nlinear_abrupta - " + parte3 + parte4
-                                tabela.Adicionar_dado(0, 0, contador, parte2)
-            
-                           
-                            
-            
-            else:
-                
-                for j in vez:
-                    for k in tipo:
-                        for l in variacao:
-                            
-                            contador += 1
-                            
-                            if(i == 0):
-                                parte1 = "ELM_ECDD - "
-                            elif(i == 1):
-                                parte1 = "ELM_DDM - "
-                                
-                            
-                            if(j == 0):
-                                parte2 = "linear_gradual - "
-                                valor = self.ler(self.bases_linear_graduais(k, l), i, linha_media, col_falta_deteccao)
-                                tabela.Adicionar_dado(0, i+1, contador, valor)
-                                
-                            elif(j == 1):
-                                parte2 = "nlinear_gradual - "
-                                valor = self.ler(self.bases_nlinear_graduais(k, l), i, linha_media, col_falta_deteccao)
-                                tabela.Adicionar_dado(0, i+1, contador, valor)
-                                        
-                            elif(j == 2):
-                                parte2 = "linear_abrupta - "
-                                valor = self.ler(self.bases_linear_abruptas(k, l), i, linha_media, col_falta_deteccao)
-                                tabela.Adicionar_dado(0, i+1, contador, valor)
-                                        
-                            elif(j == 3):
-                                parte2 = "nlinear_abrupta - "
-                                valor = self.ler(self.bases_nlinear_abruptas(k, l), i, linha_media, col_falta_deteccao)
-                                tabela.Adicionar_dado(0, i+1, contador, valor)
-            
-                            parte3 = str(k) + " - "
-                            parte4 = str(l)
-                            
-                            print(parte1+parte2+parte3+parte4)
-        #tabela.Calcular_Medias(241)
-                        
-    def Criar_tabela_mape_FEDD(self):
-            '''
-            linha 11 - linha das medias
-            coluna 0 - falsos alarmes
-            coluna 1 - atrasos
-            coluna 2 - falta deteccao
-            coluna 3 - MAPE
-            coluna 4 - tempo_execucao
-            '''   
-                
-            tabela = Tabela_excel()
-            nome = 'E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/'+pasta+'/Final' + '/tabela_mape.xls'
-            folhas = ["sheet1"]
-            cabecalho = ["Bases", "ELM_ECDD"]
-            largura_col = 5000
-            tabela.Criar_tabela(nome, folhas, cabecalho, largura_col)
-            
-            sheet = [10, 0]
-            vez = [0, 1, 2, 3]
-            tipo = [1, 2, 3]
-            variacao = range(30, 50)
-            
-            
-            col_mape = 3
-            linha_media = 11
-            
-            
-            for i in sheet:
-                contador = 0
-                
-                if(i == 10):
-                    for j in vez:
-                        for k in tipo:
-                            for l in variacao:
-                                
-                                contador += 1
-                                
-                                parte3 = str(k) + " - "
-                                parte4 = str(l)
-                                
-                                if(j == 0):
-                                    parte2 = "linear_gradual - " + parte3 + parte4
-                                    tabela.Adicionar_dado(0, 0, contador, parte2)
-                                    
-                                elif(j == 1):
-                                    parte2 = "nlinear_gradual - " + parte3 + parte4
-                                    tabela.Adicionar_dado(0, 0, contador, parte2)
-                                    
-                                elif(j == 2):
-                                    parte2 = "linear_abrupta - " + parte3 + parte4
-                                    tabela.Adicionar_dado(0, 0, contador, parte2)
-                                            
-                                elif(j == 3):
-                                    parte2 = "nlinear_abrupta - " + parte3 + parte4
-                                    tabela.Adicionar_dado(0, 0, contador, parte2)
-                
-                               
-                                
-                
-                else:
-                    
-                    for j in vez:
-                        for k in tipo:
-                            for l in variacao:
-                                
-                                contador += 1
-                                
-                                if(i == 0):
-                                    parte1 = "ELM_ECDD - "
-                                elif(i == 1):
-                                    parte1 = "ELM_DDM - "
-                                    
-                                
-                                if(j == 0):
-                                    parte2 = "linear_gradual - "
-                                    valor = self.ler(self.bases_linear_graduais(k, l), i, linha_media, col_mape)
-                                    tabela.Adicionar_dado(0, i+1, contador, valor)
-                                    
-                                elif(j == 1):
-                                    parte2 = "nlinear_gradual - "
-                                    valor = self.ler(self.bases_nlinear_graduais(k, l), i, linha_media, col_mape)
-                                    tabela.Adicionar_dado(0, i+1, contador, valor)
-                                            
-                                elif(j == 2):
-                                    parte2 = "linear_abrupta - "
-                                    valor = self.ler(self.bases_linear_abruptas(k, l), i, linha_media, col_mape)
-                                    tabela.Adicionar_dado(0, i+1, contador, valor)
-                                            
-                                elif(j == 3):
-                                    parte2 = "nlinear_abrupta - "
-                                    valor = self.ler(self.bases_nlinear_abruptas(k, l), i, linha_media, col_mape)
-                                    tabela.Adicionar_dado(0, i+1, contador, valor)
-                
-                                parte3 = str(k) + " - "
-                                parte4 = str(l)
-                                
-                                print(parte1+parte2+parte3+parte4)
-        #tabela.Calcular_Medias(241)
-        
-    def Criar_tabela_tempo_FEDD(self):
-            '''
-            linha 11 - linha das medias
-            coluna 0 - falsos alarmes
-            coluna 1 - atrasos
-            coluna 2 - falta deteccao
-            coluna 3 - MAPE
-            coluna 4 - tempo_execucao
-            '''   
-                
-            tabela = Tabela_excel()
-            nome = 'E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/'+pasta+'/Final' + '/tabela_tempo.xls'
-            folhas = ["sheet1"]
-            cabecalho = ["Bases", "ELM_ECDD"]
-            largura_col = 5000
-            tabela.Criar_tabela(nome, folhas, cabecalho, largura_col)
-            
-            sheet = [10, 0]
-            vez = [0, 1, 2, 3]
-            tipo = [1, 2, 3]
-            variacao = range(30, 50)
-            
-            
-            col_tempo = 4
-            linha_media = 11
-            
-            
-            for i in sheet:
-                contador = 0
-                
-                if(i == 10):
-                    for j in vez:
-                        for k in tipo:
-                            for l in variacao:
-                                
-                                contador += 1
-                                
-                                parte3 = str(k) + " - "
-                                parte4 = str(l)
-                                
-                                if(j == 0):
-                                    parte2 = "linear_gradual - " + parte3 + parte4
-                                    tabela.Adicionar_dado(0, 0, contador, parte2)
-                                    
-                                elif(j == 1):
-                                    parte2 = "nlinear_gradual - " + parte3 + parte4
-                                    tabela.Adicionar_dado(0, 0, contador, parte2)
-                                    
-                                elif(j == 2):
-                                    parte2 = "linear_abrupta - " + parte3 + parte4
-                                    tabela.Adicionar_dado(0, 0, contador, parte2)
-                                            
-                                elif(j == 3):
-                                    parte2 = "nlinear_abrupta - " + parte3 + parte4
-                                    tabela.Adicionar_dado(0, 0, contador, parte2)
-                
-                               
-                                
-                
-                else:
-                    
-                    for j in vez:
-                        for k in tipo:
-                            for l in variacao:
-                                
-                                contador += 1
-                                
-                                if(i == 0):
-                                    parte1 = "ELM_ECDD - "
-                                elif(i == 1):
-                                    parte1 = "ELM_DDM - "
-                                    
-                                
-                                if(j == 0):
-                                    parte2 = "linear_gradual - "
-                                    valor = self.ler(self.bases_linear_graduais(k, l), i, linha_media, col_tempo)
-                                    tabela.Adicionar_dado(0, i+1, contador, valor)
-                                    
-                                elif(j == 1):
-                                    parte2 = "nlinear_gradual - "
-                                    valor = self.ler(self.bases_nlinear_graduais(k, l), i, linha_media, col_tempo)
-                                    tabela.Adicionar_dado(0, i+1, contador, valor)
-                                            
-                                elif(j == 2):
-                                    parte2 = "linear_abrupta - "
-                                    valor = self.ler(self.bases_linear_abruptas(k, l), i, linha_media, col_tempo)
-                                    tabela.Adicionar_dado(0, i+1, contador, valor)
-                                            
-                                elif(j == 3):
-                                    parte2 = "nlinear_abrupta - "
-                                    valor = self.ler(self.bases_nlinear_abruptas(k, l), i, linha_media, col_tempo)
-                                    tabela.Adicionar_dado(0, i+1, contador, valor)
-                
-                                parte3 = str(k) + " - "
-                                parte4 = str(l)
-                                
-                                print(parte1+parte2+parte3+parte4)
-        #tabela.Calcular_Medias(241)
-                 
+            tabela.Calcular_Medias2(variacao*4)
+   
 def main():
     tbt = Tabela_testes()
-    #tbt.Criar_tabela_falsos_alarmes()
-    #tbt.Criar_tabela_atrasos()
-    #tbt.Criar_tabela_mape()
-    #tbt.Criar_tabela_tempo()
-    #tbt.Calcular_estatisticas_bases()     
-    tbt.Gerar_tabela_final()
+    #tbt.Criar_tabelas()
+    #tbt.Calcular_estatisticas_bases()
+    #tbt.Gerar_tabela_final()
     
           
 if __name__ == "__main__":

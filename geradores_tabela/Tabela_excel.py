@@ -93,7 +93,7 @@ class Tabela_excel():
         :param: folha: folha em que o dado se encontra
         :param: linha: linha referente
         :param: coluna: coluna referente
-        :return: 
+        :return: celula buscada
         '''
         
         book = xlrd.open_workbook(arq_xls)

@@ -24,7 +24,7 @@ c2 = 2
 crit_parada = 2
 
 
-class Algoritmo_sensores():
+class IDPSO_ELM_S():
     def __init__(self, dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, c):
         '''
         construtor do algoritmo que detecta a mudanca de ambiente por meio de sensores
@@ -234,7 +234,7 @@ def main():
     numero_particulas = 30
     qtd_sensores = 30
     c = 1
-    alg = Algoritmo_sensores(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, c)
+    alg = AlgoriIDPSO_ELM_Set, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, c)
     
     #colhendo os resultados
     alg.Executar(grafico=True)

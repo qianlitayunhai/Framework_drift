@@ -24,7 +24,7 @@ c2 = 2
 crit_parada = 2
 
 
-class Algoritmo_comportamento_ecdd():
+class IDPSO_ELM_B():
     def __init__(self, dataset, n, lags, qtd_neuronios, numero_particulas, limite, w):
         '''
         construtor do algoritmo que detecta a mudanca de ambiente por meio do comportamento das particulas
@@ -216,7 +216,7 @@ def main():
     numero_particulas = 30
     limite = 10
     w = 1
-    alg = Algoritmo_comportamento_ecdd(dataset, n, lags, qtd_neuronios, numero_particulas, limite, w)
+    alg = IDPSO_ELM_B(dataset, n, lags, qtd_neuronios, numero_particulas, limite, w)
     
     #colhendo os resultados
     alg.Executar(grafico=True)
