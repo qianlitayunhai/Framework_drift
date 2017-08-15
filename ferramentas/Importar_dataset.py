@@ -90,7 +90,7 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
-        base = (caminho_bases + '/Series Geradas/hibridas/hib-' + str(numero) + '.csv')
+        base = (caminho_bases + '/Series Geradas Permanentes Permanentes/hibridas/hib-' + str(numero) + '.csv')
          
         return base
     
@@ -101,7 +101,7 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
-        base = (caminho_bases + '/Series Geradas/lineares/lin-' + str(numero) + '.csv')
+        base = (caminho_bases + '/Series Geradas Permanentes/lineares/lin-' + str(numero) + '.csv')
          
         return base
     
@@ -112,7 +112,7 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
-        base = (caminho_bases + '/Series Geradas/nlineares/nlin-' + str(numero) + '.csv')
+        base = (caminho_bases + '/Series Geradas Permanentes/nlineares/nlin-' + str(numero) + '.csv')
          
         return base
     
@@ -123,7 +123,7 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
-        base = (caminho_bases + '/Series Geradas/sazonais/saz-' + str(numero) + '.csv')
+        base = (caminho_bases + '/Series Geradas Permanentes/sazonais/saz-' + str(numero) + '.csv')
          
         return base
     
