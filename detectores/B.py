@@ -11,7 +11,7 @@ from sklearn.metrics.regression import mean_absolute_error
 import numpy as np
 
 class B():
-    def __init__(self, limite, c):
+    def __init__(self, limite, w, c):
         '''
         Método para criar um modelo do ECDD
         :param Lambda: float com o valor de lambda
@@ -20,11 +20,12 @@ class B():
         '''
         
         self.limite = limite
+        self.w = w
         self.c = c
         self.media_zero = 0
         self.desvio_zero = 0
         self.contador = 0
-        self.ecdd = ECDD(0.2, 0, c)
+        self.ecdd = ECDD(0.2, w, c)
     
     def armazenar_conceito(self, dados, lags, enxame):
         

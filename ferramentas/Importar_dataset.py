@@ -39,7 +39,7 @@ class Datasets():
             stream = stream.as_matrix()
             return stream
     
-    def bases_linear_graduais(self, tipo, numero):
+    def bases_linear_graduais(self, numero):
         '''
         Metodo para mostrar o caminho das bases lineares graduais
         :param tipo: tipo das series lineares, podem ser dos tipos: 1, 2 e 3
@@ -47,10 +47,10 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
-        base = (caminho_bases + '/Lineares/Graduais/lin' + str(tipo) + '_grad' + str(numero)+ '.xlsx') 
+        base = (caminho_bases + '/Series Geradas Permanentes/lineares_grad_abt/graduais/lin-grad' + str(numero)+ '.csv') 
         return base
     
-    def bases_linear_abruptas(self, tipo, numero):
+    def bases_linear_abruptas(self, numero):
         '''
         Metodo para mostrar o caminho das bases lineares abruptas
         :param tipo: tipo das series lineares, podem ser dos tipos: 1, 2 e 3
@@ -58,10 +58,10 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
-        base = (caminho_bases + '/Lineares/Abruptas/lin' + str(tipo) + '_abt' + str(numero)+ '.xlsx') 
+        base = (caminho_bases + '/Series Geradas Permanentes/lineares_grad_abt/abruptas/lin-abt' + str(numero)+ '.csv') 
         return base
     
-    def bases_nlinear_graduais(self, tipo, numero):
+    def bases_nlinear_graduais(self, numero):
         '''
         Metodo para mostrar o caminho das bases nao lineares graduais
         :param tipo: tipo das series lineares, podem ser dos tipos: 1, 2 e 3
@@ -69,10 +69,10 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
-        base = (caminho_bases + '/Lineares Não/Graduais/lin' +str(tipo)+ '_n_grad' +str(numero)+ '.xlsx') 
+        base = (caminho_bases + '/Series Geradas Permanentes/nlineares_grad_abt/graduais/nlin-grad' + str(numero)+ '.csv')
         return base
     
-    def bases_nlinear_abruptas(self, tipo, numero):
+    def bases_nlinear_abruptas(self, numero):
         '''
         Metodo para mostrar o caminho das bases nao lineares abruptas
         :param tipo: tipo das series lineares, podem ser dos tipos: 1, 2 e 3
@@ -80,7 +80,7 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
-        base = (caminho_bases + '/Lineares Não/Abruptas/lin' + str(tipo) + '_n_abt' + str(numero)+ '.xlsx') 
+        base = (caminho_bases + '/Series Geradas Permanentes/nlineares_grad_abt/abruptas/nlin-abt' + str(numero)+ '.csv') 
         return base
     
     def bases_hibridas(self, numero):
@@ -90,7 +90,7 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
-        base = (caminho_bases + '/Series Geradas Permanentes Permanentes/hibridas/hib-' + str(numero) + '.csv')
+        base = (caminho_bases + '/Series Geradas Permanentes/hibridas/hib-' + str(numero) + '.csv')
          
         return base
     
@@ -152,16 +152,81 @@ class Datasets():
         plt.show()
 
 def main():
-    
     dtst = Datasets()
-    caminho = dtst.bases_reais(4)
+    
+    '''
+    caminho = dtst.bases_linear_graduais(1)
+    #caminho = dtst.bases_linear_abruptas(1)
+    #caminho = dtst.bases_nlinear_graduais(1)
+    #caminho = dtst.bases_nlinear_abruptas(1)
     dataset = dtst.Leitura_dados(caminho, csv=True)
     plt.plot(dataset)
     plt.show()
+    '''
+    for z in range(30):
+        # codigo para printar varias series em uma imagem
+        deteccoes = [2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000]
+        i = z+1
+        
+        lin_grad = dtst.Leitura_dados(dtst.bases_linear_graduais(i), csv=True)
+        lin_abt = dtst.Leitura_dados(dtst.bases_linear_abruptas(i), csv=True)
+        nlin_grad = dtst.Leitura_dados(dtst.bases_nlinear_graduais(i), csv=True)
+        nlin_abt = dtst.Leitura_dados(dtst.bases_nlinear_abruptas(i), csv=True)
+        sazonais = dtst.Leitura_dados(dtst.bases_sazonais(i), csv=True)
+        hibridas = dtst.Leitura_dados(dtst.bases_hibridas(i), csv=True)
+    
+        tamanho = 10
+        fonte = 11
+        linha = 1
+    
+        figura = plt.figure()
+        g1 = figura.add_subplot(2, 3, 1)
+        g1.plot(lin_grad)
+        for i in range(len(deteccoes)):
+            plt.axvline(deteccoes[i], linewidth=linha, color='r')
+        g1.set_title("Linear gradual time series", fontsize = fonte)
+        plt.tick_params(labelsize= tamanho)
+        
+        g2 = figura.add_subplot(2, 3, 2)
+        g2.plot(lin_abt)
+        for i in range(len(deteccoes)):
+            plt.axvline(deteccoes[i], linewidth=linha, color='r')
+        g2.set_title("Linear abrupt time series", fontsize = fonte)
+        plt.tick_params(labelsize= tamanho)
+        
+        g3 = figura.add_subplot(2, 3, 3)
+        g3.plot(nlin_grad)
+        for i in range(len(deteccoes)):
+            plt.axvline(deteccoes[i], linewidth=linha, color='r')
+        g3.set_title("Non-linear gradual time series", fontsize = fonte)
+        plt.tick_params(labelsize= tamanho)
+        
+        g4 = figura.add_subplot(2, 3, 4)
+        g4.plot(nlin_abt)
+        for i in range(len(deteccoes)):
+            plt.axvline(deteccoes[i], linewidth=linha, color='r')
+        g4.set_title("Non-linear abrupt time series", fontsize = fonte)
+        
+        g5 = figura.add_subplot(2, 3, 5)
+        g5.plot(sazonais)
+        for i in range(len(deteccoes)):
+            plt.axvline(deteccoes[i], linewidth=linha, color='r')
+        g5.set_title("Linear seasonal time series", fontsize = fonte)
+        plt.tick_params(labelsize= tamanho)
+        
+        g6 = figura.add_subplot(2, 3, 6)
+        g6.plot(hibridas)
+        for i in range(len(deteccoes)):
+            plt.axvline(deteccoes[i], linewidth=linha, color='r')
+        g6.set_title("Hybrid time series", fontsize = fonte)
+        
+        plt.tick_params(labelsize= tamanho)
+        plt.show()
     
     '''
+    # codigo para printar varias series em uma imagem
     deteccoes = [2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000]
-    i = 6
+    i = 1
     
     lineares = dtst.Leitura_dados(dtst.bases_lineares(i), csv=True)
     #gerador.Plotar(dataset, deteccoes)
@@ -209,12 +274,7 @@ def main():
     
     plt.tick_params(labelsize= tamanho)
     plt.show()
-    '''
-        
-    '''
-    dataset = dtst.Leitura_dados(dtst.bases_linear_graduais(3, 40), excel=True)
-    dtst.Plotar_serie(dataset)
-    '''    
+    '''  
     
 if __name__ == "__main__":
     main()

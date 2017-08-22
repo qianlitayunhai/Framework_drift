@@ -8,7 +8,7 @@ from ferramentas.Janela_deslizante import Janela
 from ferramentas.Importar_dataset import Datasets
 from ferramentas.Particionar_series import Particionar_series
 from metricas.Metricas_deteccao import Metricas_deteccao
-from otimizador.IDPSO import IDPSO_ELM
+from regressores.IDPSO_ELM import IDPSO_ELM
 from detectores.B import B
 from graficos.Graficos_execucao import Grafico
 from sklearn.metrics.regression import mean_absolute_error
@@ -22,10 +22,10 @@ inercia_final = 0.4
 c1 = 2
 c2 = 2
 crit_parada = 2
-
+divisao_dataset = [0.8, 0.2, 0]
 
 class IDPSO_ELM_B():
-    def __init__(self, dataset, n, lags, qtd_neuronios, numero_particulas, limite, w):
+    def __init__(self, dataset, n, lags, qtd_neuronios, numero_particulas, limite, w, c):
         '''
         construtor do algoritmo que detecta a mudanca de ambiente por meio do comportamento das particulas
         :param dataset: serie temporal que o algoritmo vai executar
@@ -47,6 +47,7 @@ class IDPSO_ELM_B():
         
         self.limite = limite
         self.w = w
+        self.c = c
     
     def Executar(self, grafico = None):
         '''
@@ -54,6 +55,8 @@ class IDPSO_ELM_B():
         :param grafico: variavel booleana para ativar ou desativar o grafico
         :return: retorna 5 variaveis: [falsos_alarmes, atrasos, falta_deteccao, MAPE, tempo_execucao]
         '''
+        
+        
         
         ################################################################################################################################################
         ################################# CONFIGURACAO DO DATASET ######################################################################################
@@ -68,7 +71,7 @@ class IDPSO_ELM_B():
         ################################################################################################################################################
         
         #criando e treinando um enxame_vigente para realizar as previsões
-        enxame = IDPSO_ELM(treinamento_inicial, [1, 0, 0], self.lags, self.qtd_neuronios)
+        enxame = IDPSO_ELM(treinamento_inicial, divisao_dataset, self.lags, self.qtd_neuronios)
         enxame.Parametros_IDPSO(it, self.numero_particulas, inercia_inicial, inercia_final, c1, c2, crit_parada)
         enxame.Treinar()  
        
@@ -82,7 +85,7 @@ class IDPSO_ELM_B():
         janela_caracteristicas.Ajustar(treinamento_inicial)
         
         #ativando o sensor de comportamento de acordo com a primeira janela de caracteristicas para media e desvio padrão
-        b = B(self.limite, self.w)
+        b = B(self.limite, self.w, self.c)
         b.armazenar_conceito(janela_caracteristicas.dados, self.lags, enxame)
 
         ################################################################################################################################################
@@ -114,7 +117,7 @@ class IDPSO_ELM_B():
             erro_stream += loss
                 
             #adicionando o novo dado a janela de predicao
-            janela_predicao.Fila_Add(stream[i])
+            janela_predicao.Add_janela(stream[i])
                 
             #realizando a nova predicao com a nova janela de predicao
             predicao = enxame.Predizer(janela_predicao.dados)
@@ -151,7 +154,7 @@ class IDPSO_ELM_B():
                 else:
                     
                     #atualizando o enxame_vigente preditivo
-                    enxame = IDPSO_ELM(janela_caracteristicas.dados, [1, 0, 0], self.lags, self.qtd_neuronios)
+                    enxame = IDPSO_ELM(janela_caracteristicas.dados, divisao_dataset, self.lags, self.qtd_neuronios)
                     enxame.Parametros_IDPSO(it, self.numero_particulas, inercia_inicial, inercia_final, c1, c2, crit_parada)
                     enxame.Treinar() 
                     
@@ -161,7 +164,7 @@ class IDPSO_ELM_B():
                     predicao = enxame.Predizer(janela_predicao.dados)
                     
                     # atualizando o conceito para a caracteristica de comportamento
-                    b = B(self.limite, self.w)
+                    b = B(self.limite, self.w, self.c)
                     b.armazenar_conceito(janela_caracteristicas.dados, self.lags, enxame)
                     
                     #variavel para voltar para o loop principal
@@ -215,8 +218,9 @@ def main():
     qtd_neuronios = 10 
     numero_particulas = 30
     limite = 10
-    w = 1
-    alg = IDPSO_ELM_B(dataset, n, lags, qtd_neuronios, numero_particulas, limite, w)
+    w = 0.75
+    c = 1
+    alg = IDPSO_ELM_B(dataset, n, lags, qtd_neuronios, numero_particulas, limite, w, c)
     
     #colhendo os resultados
     alg.Executar(grafico=True)

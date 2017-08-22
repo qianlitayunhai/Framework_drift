@@ -16,7 +16,7 @@ from sklearn.metrics.regression import mean_absolute_error
 import time
 import numpy as np
 
-
+divisao_dataset = [0.8, 0.2, 0]
 
 class ELM_DDM():
     def __init__(self, dataset, n, lags, qtd_neuronios, w, c):
@@ -48,7 +48,7 @@ class ELM_DDM():
         :return: retorna a media ou o comportamento do enxame em relacao ao vetor de caracteristicas
         '''
         #particionando o vetor de caracteristicas para usar para treinar 
-        particao = Particionar_series(vetor_caracteristicas, [1, 0, 0], lags)
+        particao = Particionar_series(vetor_caracteristicas, divisao_dataset, lags)
         [caracteristicas_entrada, caracteristicas_saida] = particao.Part_train()
         
         #realizando as previsoes e armazenando as acuracias 
@@ -83,7 +83,7 @@ class ELM_DDM():
         
         #criando e treinando um enxame_vigente para realizar as previsoes
         ELM = ELMRegressor(self.qtd_neuronios)
-        ELM.Tratamento_dados(treinamento_inicial, [1, 0, 0], self.lags)
+        ELM.Tratamento_dados(treinamento_inicial, divisao_dataset, self.lags)
         ELM.Treinar(ELM.train_entradas, ELM.train_saidas)
         
         #ajustando com os dados finais do treinamento a janela de predicao
@@ -129,7 +129,7 @@ class ELM_DDM():
             erro_stream += loss
     
             #adicionando o novo dado a janela de predicao
-            janela_predicao.Fila_Add(stream[i])
+            janela_predicao.Add_janela(stream[i])
                 
             #realizando a nova predicao com a nova janela de predicao
             predicao = ELM.Predizer(janela_predicao.dados)
@@ -173,7 +173,7 @@ class ELM_DDM():
                     
                     #atualizando o enxame_vigente preditivo
                     ELM = ELMRegressor(self.qtd_neuronios)
-                    ELM.Tratamento_dados(janela_caracteristicas.dados, [1, 0, 0], self.lags)
+                    ELM.Tratamento_dados(janela_caracteristicas.dados, divisao_dataset, self.lags)
                     ELM.Treinar(ELM.train_entradas, ELM.train_saidas)
                     
                     #ajustando a janela de previsao

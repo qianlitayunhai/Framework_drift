@@ -16,6 +16,7 @@ from sklearn.metrics.regression import mean_absolute_error
 import time
 import numpy as np
 
+divisao_dataset = [0.8, 0.2, 0]
 
 class ELM_ECDD():
     def __init__(self, dataset, n, lags, qtd_neuronios, Lambda, w, c):
@@ -48,7 +49,7 @@ class ELM_ECDD():
         :return: retorna a media ou o comportamento do enxame em relacao ao vetor de caracteristicas
         '''
         #particionando o vetor de caracteristicas para usar para treinar 
-        particao = Particionar_series(vetor_caracteristicas, [1, 0, 0], lags)
+        particao = Particionar_series(vetor_caracteristicas, divisao_dataset, lags)
         [caracteristicas_entrada, caracteristicas_saida] = particao.Part_train()
         
         #realizando as previsoes e armazenando as acuracias 
@@ -82,7 +83,7 @@ class ELM_ECDD():
         
         #criando e treinando um enxame_vigente para realizar as previsoes
         ELM = ELMRegressor(self.qtd_neuronios)
-        ELM.Tratamento_dados(treinamento_inicial, [1, 0, 0], self.lags)
+        ELM.Tratamento_dados(treinamento_inicial, divisao_dataset, self.lags)
         ELM.Treinar(ELM.train_entradas, ELM.train_saidas)
         
         #ajustando com os dados finais do treinamento a janela de predicao
@@ -128,7 +129,7 @@ class ELM_ECDD():
             erro_stream += loss
     
             #adicionando o novo dado a janela de predicao
-            janela_predicao.Fila_Add(stream[i])
+            janela_predicao.Add_janela(stream[i])
                 
             #realizando a nova predicao com a nova janela de predicao
             predicao = ELM.Predizer(janela_predicao.dados)
@@ -151,7 +152,7 @@ class ELM_ECDD():
                 if(string_ecdd == ecdd.alerta):
                     if(grafico == True):
                         print("[%d] Alarme" % (i))
-                    alarmes.append(i)
+                        alarmes.append(i)
                 
                 if(string_ecdd == ecdd.mudanca):
                     if(grafico == True):
@@ -174,7 +175,7 @@ class ELM_ECDD():
                     
                     #atualizando o enxame_vigente preditivo
                     ELM = ELMRegressor(self.qtd_neuronios)
-                    ELM.Tratamento_dados(janela_caracteristicas.dados, [1, 0, 0], self.lags)
+                    ELM.Tratamento_dados(janela_caracteristicas.dados, divisao_dataset, self.lags)
                     ELM.Treinar(ELM.train_entradas, ELM.train_saidas)
                     
                     #ajustando a janela de previsao
@@ -230,7 +231,7 @@ def main():
     #instanciando o dataset
     dtst = Datasets()
     #dataset = dtst.Leitura_dados(dtst.reais(1), csv=True)
-    dataset = dtst.Leitura_dados(dtst.bases_reais(1), csv=True)
+    dataset = dtst.Leitura_dados(dtst.bases_linear_graduais(10), csv=True)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)
                 
@@ -238,8 +239,8 @@ def main():
     n = 300
     lags = 5
     qtd_neuronios = 10 
-    w = 0.25
-    c = 0.75
+    w = 0.75
+    c = 1
     alg = ELM_ECDD(dataset, n, lags, qtd_neuronios, 0.2, w, c)
     
     #colhendo os resultados

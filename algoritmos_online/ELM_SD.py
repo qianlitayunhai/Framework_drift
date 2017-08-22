@@ -14,6 +14,7 @@ from graficos.Graficos_execucao import Grafico
 from sklearn.metrics.regression import mean_absolute_error
 import time
 
+divisao_dataset = [0.8, 0.2, 0]
 
 class ELM_SD():
     def __init__(self, dataset, n, lags, qtd_neuronios):
@@ -55,7 +56,7 @@ class ELM_SD():
         
         #criando e treinando um enxame_vigente para realizar as previsoes
         ELM = ELMRegressor(self.qtd_neuronios)
-        ELM.Tratamento_dados(treinamento_inicial, [1, 0, 0], self.lags)
+        ELM.Tratamento_dados(treinamento_inicial, divisao_dataset, self.lags)
         ELM.Treinar(ELM.train_entradas, ELM.train_saidas)
         
         #ajustando com os dados finais do treinamento a janela de predicao
@@ -93,7 +94,7 @@ class ELM_SD():
             erro_stream += loss
     
             #adicionando o novo dado a janela de predicao
-            janela_predicao.Fila_Add(stream[i])
+            janela_predicao.Add_janela(stream[i])
                 
             #realizando a nova predicao com a nova janela de predicao
             predicao = ELM.Predizer(janela_predicao.dados)

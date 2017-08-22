@@ -11,7 +11,7 @@ from detectores.ECDD import ECDD
 import numpy as np
 
 class S():
-    def __init__(self, qtd_sensores, c):
+    def __init__(self, qtd_sensores, w, c):
         '''
         Método para criar um modelo do ECDD
         :param Lambda: float com o valor de lambda
@@ -19,12 +19,10 @@ class S():
         :param l: float com o nivel de deteccao
         '''
         
+        self.w = w
         self.c = c
         self.ativadores = [False] * qtd_sensores
         self.qtd_sensores = qtd_sensores
-        self.nada = "Nada"
-        self.alerta = "Alerta"
-        self.mudanca = "Mudanca"
     
     def armazenar_conceito(self, dados, lags, enxame):
         '''
@@ -37,7 +35,7 @@ class S():
         self.sensores_ecdds = []
         for i in range(len(enxame.sensores)):
             [media, desvio] = self.Computar_Media(dados, lags, enxame.sensores[i])
-            ecdd = ECDD(0.2, 0, self.c)
+            ecdd = ECDD(0.2, self.w, self.c)
             ecdd.armazenar_conceito(media, desvio)
             self.sensores_ecdds.append(ecdd)
             
@@ -46,6 +44,7 @@ class S():
         Este metodo tem por objetivo monitorar um erro para saber se ele mudou de distribuicao
         :param erro: double com o erro para ser verificado
         :param t: instante de tempo
+        :return: retorna verdadeiro caso haja uma mudança de conceito
         '''
         
         self.ativadores = [False] * self.qtd_sensores 
@@ -58,10 +57,23 @@ class S():
             else:
                 self.ativadores[j] = False
                     
-        if(voto == True):
+        if(voto):
             return self.condicao_voto(self.ativadores)
         else:
             return self.condicao_padrão(self.ativadores)
+        
+    def monitorar_gbest(self):
+        '''
+        Este metodo tem por objetivo monitorar somente a melhor particula do enxame
+        :param erro: double com o erro para ser verificado
+        :param t: instante de tempo
+        '''
+        # monitorar somente a melhor particula do enxame
+        string_ecdd = self.sensores_ecdds[0].monitorar()
+                
+        # verificando se esta em estado de alerta
+        if(string_ecdd == self.sensores_ecdds[0].alerta):
+            return True
         
     def condicao_padrão(self, vetor):
         '''

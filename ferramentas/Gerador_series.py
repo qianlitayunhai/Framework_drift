@@ -51,7 +51,7 @@ class Gerador_conceitos():
         
         return vetor
         
-    def Fila_Add(self, valor):
+    def FAdd_janelaself, valor):
         '''
         Metodo para inserir um valor em uma janela deslizante, o valor mais antigo sera excluido 
         :param valor: valor de entrada
@@ -71,7 +71,7 @@ class Gerador_conceitos():
         
         if(self.inicio == False):
             if(equacao4 == True):
-                if(observacoes_iniciais != None):
+                if(observacoes_iniciais.any()):
                     self.inicio = True
                     p = 2
                     if(len(observacoes_iniciais) != p):
@@ -82,7 +82,7 @@ class Gerador_conceitos():
                     print("Insira os valores das observações iniciais!")
                 
             else:
-                if(observacoes_iniciais != None):
+                if(observacoes_iniciais.any()):
                     self.inicio = True
                     p = len(parametros)
                     if(len(observacoes_iniciais) != p):
@@ -157,9 +157,6 @@ class Gerador_conceitos():
         for i in range(len(parametros)):
             x += parametros[i] * self.observacoes[i]
         
-        if(self.observacoes[i] == 0):
-            self.observacoes[i] = 0
-        
         parte1 = -10*self.observacoes[0]
         parte2 = np.exp(parte1)
         formula = (1 - parte2)
@@ -169,10 +166,10 @@ class Gerador_conceitos():
         
         x = (x * formula) + w
         
-        if(x >= valor):
+        if(x-self.observacoes[-1] >= valor):
             x = valor + w
         
-        if(x <= -valor):
+        if(x-self.observacoes[-1] <= -valor):
             x = -valor - w
             
         return x
@@ -225,9 +222,7 @@ class Gerador_conceitos():
         for i in range(tamanho_do_conceito):
             x = self.Equacao_1(parametros, variancia)
             serie = self.Increment_Add(serie, x)
-            self.Fila_Add(x)
-
-        self.serie_dividida.append(serie)
+            self.Fila_Add(x)Add_janela   self.serie_dividida.append(serie)
         
     def modelo_sazonal(self, tendencia, beta_vetor, variancia, tamanho_do_conceito, observacoes_iniciais = None):
         '''
@@ -246,9 +241,7 @@ class Gerador_conceitos():
         for i in range(tamanho_do_conceito):
             x = self.Equacao_2(tendencia, beta_vetor, variancia)
             serie = self.Increment_Add(serie, x)
-            self.Fila_Add(x)
-
-        self.serie_dividida.append(serie)
+            self.Fila_Add(x)Add_janela   self.serie_dividida.append(serie)
         
     def modelo_nlinear1(self, parametros, variancia, tamanho_do_conceito, observacoes_iniciais = None):
         '''
@@ -267,7 +260,7 @@ class Gerador_conceitos():
             x = self.Equacao_3(parametros, variancia)
             serie = self.Increment_Add(serie, x)
             self.Fila_Add(x)
-            #print(self.observacoes)
+Add_janela    #print(self.observacoes)
 
         self.serie_dividida.append(serie)
         
@@ -288,8 +281,7 @@ class Gerador_conceitos():
             x = self.Equacao_4(parametros, variancia)
             serie = self.Increment_Add(serie, x)
             self.Fila_Add(x)
-
-        self.serie_dividida.append(serie)
+Add_janela self.serie_dividida.append(serie)
         
     def Obter_Serie(self):
         '''
@@ -415,7 +407,7 @@ class Gerador_conceitos():
         
         del df
 
-    def series_lineares(self, tamanho_conceitos, qtd_series, grafico):
+    def series_lineares_ictai(self, tamanho_conceitos, qtd_series, grafico):
         '''
         método para criar as series lineares feitas no artigo ICTAI
         :param: tamanho_conceitos: tamanho das observacoes que cada conceito vai ter
@@ -447,7 +439,7 @@ class Gerador_conceitos():
             
         return [pasta, nome, serie]
 
-    def series_nlineares(self, tamanho_conceitos, qtd_series, grafico):
+    def series_nlineares_ictai(self, tamanho_conceitos, qtd_series, grafico):
         '''
         método para criar as series não lineares feitas no artigo ICTAI
         :param: tamanho_conceitos: tamanho das observacoes que cada conceito vai ter
@@ -480,7 +472,7 @@ class Gerador_conceitos():
             
         return [pasta, nome, serie]
     
-    def series_sazonais(self, tamanho_conceitos, qtd_series, grafico):
+    def series_sazonais_ictai(self, tamanho_conceitos, qtd_series, grafico):
         '''
         método para criar as series sazonais feitas no artigo ICTAI
         :param: tamanho_conceitos: tamanho das observacoes que cada conceito vai ter
@@ -511,7 +503,7 @@ class Gerador_conceitos():
         
         return [pasta, nome, serie]    
             
-    def series_hibridas(self, tamanho_conceitos, qtd_series, grafico): 
+    def series_hibridas_ictai(self, tamanho_conceitos, qtd_series, grafico): 
         '''
         método para criar as series hibridas feitas no artigo ICTAI
         :param: tamanho_conceitos: tamanho das observacoes que cada conceito vai ter
@@ -543,6 +535,131 @@ class Gerador_conceitos():
         
         return [pasta, nome, serie]
     
+    def series_lineares_graduais_revista(self, tamanho_conceitos, qtd_series, grafico):
+        '''
+        método para criar as series lineares feitas no artigo ICTAI
+        :param: tamanho_conceitos: tamanho das observacoes que cada conceito vai ter
+        :param: qtd_series: quantidade de series que serão criadas
+        :param: grafico: variavel booleana para plotar apos a criacao da serie 
+        '''
+
+        observacoes_iniciais = array([uniform(-2, 2) for i in range(4)])
+        variancia = 0.05
+        
+        self.modelo_AR(parametros=[-0.3710314745022516, 0.5466747348503446, -0.008147066607327386, 0.8321865744724548], variancia=variancia, tamanho_do_conceito=tamanho_conceitos, observacoes_iniciais=observacoes_iniciais)
+        self.modelo_AR(parametros=[-0.4429405258368569, 0.4466229373805038, 1.351792157828681, -0.3561327432116702], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_AR(parametros=[0.00301790735789223, -0.3277435418893056, 0.14635639512590287, 1.171740105825536], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_AR(parametros=[0.33266433992324546, -0.11265182345778371, 0.05425610414373307, 0.7151247572018152], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_AR(parametros=[-0.6335599337412476, 0.334852076313965, 1.3595185287185048, -0.07363691675509275], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_AR(parametros=[-0.44071503228306824, 0.07407529241129636, 1.2573688275751191, 0.1076310711909298], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_AR(parametros=[-0.6335599337412476, 0.334852076313965, 1.3595185287185048, -0.07363691675509275], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_AR(parametros=[0.33266433992324546, -0.11265182345778371, 0.05425610414373307, 0.7151247572018152], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_AR(parametros=[0.00301790735789223, -0.3277435418893056, 0.14635639512590287, 1.171740105825536], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_AR(parametros=[-0.4429405258368569, 0.4466229373805038, 1.351792157828681, -0.3561327432116702], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        
+        serie = self.Obter_Serie()
+        nome = "lin-grad" 
+        pasta = "lineares/graduais/"
+        
+        if(grafico == True):
+            self.Plotar()
+            
+        return [pasta, nome, serie]
+    
+    def series_nlineares_graduais_revista(self, tamanho_conceitos, qtd_series, grafico):
+        '''
+        método para criar as series lineares feitas no artigo ICTAI
+        :param: tamanho_conceitos: tamanho das observacoes que cada conceito vai ter
+        :param: qtd_series: quantidade de series que serão criadas
+        :param: grafico: variavel booleana para plotar apos a criacao da serie 
+        '''
+
+        observacoes_iniciais = array([uniform(-2, 2) for i in range(4)])
+        variancia = 0.05
+        
+        self.modelo_nlinear1(parametros=[0.1779748207049134, -0.09139762327444532, 0.3628849251594744, 0.5451838112044337], variancia=variancia, tamanho_do_conceito=tamanho_conceitos, observacoes_iniciais=observacoes_iniciais)
+        self.modelo_nlinear1(parametros=[0.21432208811179806, 0.1747177586312132, 0.25627781880181116, 0.34924372007037097], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_nlinear1(parametros=[0.6747722679575656, 0.0400499490190765, 0.12859434021708172, 0.1411115580708043], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_nlinear1(parametros=[0.2592127990366997, 0.18679044833178132, 0.2510160243812225, 0.29144511960870556], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_nlinear1(parametros=[0.6315225247175326, 0.01092984965533058, 0.18711505803186923, 0.06282351635320797], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_nlinear1(parametros=[-0.004313408508468998, -0.02088643143069195, 0.9047813933983757, 0.11841444656489665], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_nlinear1(parametros=[0.6315225247175326, 0.01092984965533058, 0.18711505803186923, 0.06282351635320797], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_nlinear1(parametros=[0.2592127990366997, 0.18679044833178132, 0.2510160243812225, 0.29144511960870556], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_nlinear1(parametros=[0.6747722679575656, 0.0400499490190765, 0.12859434021708172, 0.1411115580708043], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_nlinear1(parametros=[0.21432208811179806, 0.1747177586312132, 0.25627781880181116, 0.34924372007037097], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        
+        
+        serie = self.Obter_Serie()
+        nome = "nlin-grad" 
+        pasta = "nlineares/graduais/"
+        
+        if(grafico == True):
+            self.Plotar()
+            
+        return [pasta, nome, serie]
+    
+    def series_lineares_abruptas_revista(self, tamanho_conceitos, qtd_series, grafico):
+        '''
+        método para criar as series lineares feitas no artigo ICTAI
+        :param: tamanho_conceitos: tamanho das observacoes que cada conceito vai ter
+        :param: qtd_series: quantidade de series que serão criadas
+        :param: grafico: variavel booleana para plotar apos a criacao da serie 
+        '''
+
+        observacoes_iniciais = array([uniform(-2, 2) for i in range(4)])
+        variancia = 0.05
+        
+        self.modelo_AR(parametros=[0.14876092573738822, 0.05087244788237593, 0.4330193805067835, 0.3667339588762431], variancia=variancia, tamanho_do_conceito=tamanho_conceitos, observacoes_iniciais=observacoes_iniciais)
+        self.modelo_AR(parametros=[-0.318229212036593, 0.4133521130815502, 1.14841972367221, -0.24486472090297637], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_AR(parametros=[0.00301790735789223, -0.3277435418893056, 0.14635639512590287, 1.171740105825536], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_AR(parametros=[0.3503094286252302, 0.09440434014205823, 0.4724629728146491, -0.18495798435502314], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_AR(parametros=[-0.026851477518947557, 0.22016898814054223, -0.03814933593273199, 0.8447046999175475], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_AR(parametros=[-0.4785914515620302, 0.8558602481837317, 0.024539136949191378, 0.5980008075169353], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_AR(parametros=[-0.026851477518947557, 0.22016898814054223, -0.03814933593273199, 0.8447046999175475], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_AR(parametros=[0.3503094286252302, 0.09440434014205823, 0.4724629728146491, -0.18495798435502314], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_AR(parametros=[0.00301790735789223, -0.3277435418893056, 0.14635639512590287, 1.171740105825536], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_AR(parametros=[-0.318229212036593, 0.4133521130815502, 1.14841972367221, -0.24486472090297637], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        
+        serie = self.Obter_Serie()
+        nome = "lin-abt" 
+        pasta = "lineares/abruptas/"
+        
+        if(grafico == True):
+            self.Plotar()
+            
+        return [pasta, nome, serie]
+    
+    def series_nlineares_abruptas_revista(self, tamanho_conceitos, qtd_series, grafico):
+        '''
+        método para criar as series lineares feitas no artigo ICTAI
+        :param: tamanho_conceitos: tamanho das observacoes que cada conceito vai ter
+        :param: qtd_series: quantidade de series que serão criadas
+        :param: grafico: variavel booleana para plotar apos a criacao da serie 
+        '''
+
+        observacoes_iniciais = array([uniform(-2, 2) for i in range(4)])
+        variancia = 0.05
+        
+        self.modelo_nlinear1(parametros=[-0.06658679980732536, 0.23421353635081468, 0.15495114023325046, 0.6768101219541569], variancia=variancia, tamanho_do_conceito=tamanho_conceitos, observacoes_iniciais=observacoes_iniciais)
+        self.modelo_nlinear1(parametros=[-0.506870130353138, 0.2589111765633722, 1.3970013340136547, -0.14964763809967313], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_nlinear1(parametros=[-0.4387715888915295, 0.3747437070432394, 1.3330941335780706, -0.26908562619916504], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_nlinear1(parametros=[0.06975366774909564, -0.05196107339800573, 0.6352865482608727, 0.3344985733604905], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_nlinear1(parametros=[0.6314669623898583, 0.01285813865715761, 0.18579001999678055, 0.062254577023611826], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_nlinear1(parametros=[-0.2763541765783329, 0.3343598857377247, 0.4102952504128611, 0.5315753100371876], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_nlinear1(parametros=[0.6314669623898583, 0.01285813865715761, 0.18579001999678055, 0.062254577023611826], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_nlinear1(parametros=[0.06975366774909564, -0.05196107339800573, 0.6352865482608727, 0.3344985733604905], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_nlinear1(parametros=[-0.506870130353138, 0.2589111765633722, 1.3970013340136547, -0.14964763809967313], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        self.modelo_nlinear1(parametros=[-0.06658679980732536, 0.23421353635081468, 0.15495114023325046, 0.6768101219541569], variancia=variancia, tamanho_do_conceito=tamanho_conceitos)
+        
+        serie = self.Obter_Serie()
+        nome = "nlin-abt" 
+        pasta = "nlineares/abruptas/"
+        
+        if(grafico == True):
+            self.Plotar()
+            
+        return [pasta, nome, serie]
+    
 def Gerar_series(tipo, tamanho, qtd_series, grafico):
     '''
     método para gerar um conjunto dde series
@@ -559,14 +676,21 @@ def Gerar_series(tipo, tamanho, qtd_series, grafico):
         print(str(i+1))
         
         if(tipo == 0):
-            [pasta, nome, serie] = gerador.series_lineares(tamanho, qtd_series, grafico)
+            [pasta, nome, serie] = gerador.series_lineares_ictai(tamanho, qtd_series, grafico)
         elif(tipo == 1):
-            [pasta, nome, serie] = gerador.series_nlineares(tamanho, qtd_series, grafico)
+            [pasta, nome, serie] = gerador.series_nlineares_ictai(tamanho, qtd_series, grafico)
         elif(tipo == 2):
-            [pasta, nome, serie] = gerador.series_sazonais(tamanho, qtd_series, grafico)
+            [pasta, nome, serie] = gerador.series_sazonais_ictai(tamanho, qtd_series, grafico)
         elif(tipo == 3):
-            [pasta, nome, serie] = gerador.series_hibridas(tamanho, qtd_series, grafico)
-        
+            [pasta, nome, serie] = gerador.series_hibridas_ictai(tamanho, qtd_series, grafico)
+        elif(tipo == 4):
+            [pasta, nome, serie] = gerador.series_lineares_graduais_revista(tamanho, qtd_series, grafico)
+        elif(tipo == 5):
+            [pasta, nome, serie] = gerador.series_lineares_abruptas_revista(tamanho, qtd_series, grafico)
+        elif(tipo == 6):
+            [pasta, nome, serie] = gerador.series_nlineares_graduais_revista(tamanho, qtd_series, grafico)
+        elif(tipo == 7):
+            [pasta, nome, serie] = gerador.series_nlineares_abruptas_revista(tamanho, qtd_series, grafico)
         #print(nome+str(i+1))
         
         gerador.Escrever_serie_csv(pasta, nome+str(i+1), serie)  
@@ -574,15 +698,12 @@ def Gerar_series(tipo, tamanho, qtd_series, grafico):
 def main():
     ######################## Exemplo de como gerar e plotar o grafico #########################################################################################
     
-    #tamanho_conceitos = 2000
-    #qtd_series = 30
-    #grafico = True
+    tamanho_conceitos = 2000
+    qtd_series = 30
+    grafico = False
     
-    #Gerar_series(0, tamanho_conceitos, qtd_series, grafico)
-    #Gerar_series(1, tamanho_conceitos, qtd_series, grafico)
-    #Gerar_series(2, tamanho_conceitos, qtd_series, grafico)
-    #Gerar_series(3, tamanho_conceitos, qtd_series, grafico)
-
+    for i in range(4, 6):
+        Gerar_series(i, tamanho_conceitos, qtd_series, grafico)
     
     '''
     dtst = Datasets()

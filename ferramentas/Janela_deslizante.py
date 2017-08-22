@@ -13,6 +13,7 @@ class Janela():
         Classe para instanciar a janela deslizante 
         '''
         self.dados = []
+        self.dados_mais = []
         
         
     def Ajustar(self, valores):
@@ -22,31 +23,48 @@ class Janela():
         '''
         
         self.dados = valores
+        self.dados_mais = np.append([0], valores)
     
-    def Fila_Add(self, valor):
+    def Add_janela(self, valor):
         '''
         Metodo para inserir na janela deslizante, o valor mais antigo sera excluido 
         :param valor: valor de entrada
         '''
-        if(len(self.dados) == 1):
-            aux2 = len(self.dados[0])
+        self.dados = self.Fila(self.dados, valor)
+        self.dados_mais = self.Fila(self.dados_mais, valor)
+        
+        
+    def Fila(self, lista, valor):
+        '''
+        metodo para adicionar um novo valor a um ndarray
+        :param: lista: lista que será acrescida
+        :param: valor: valor a ser adicionado
+        :return: retorna a lista com o valor acrescido
+        '''
+        
+        if(len(lista) == 1):
+            aux2 = len(lista[0])
             aux = [0] * aux2
-            aux[len(self.dados[0])-1] = valor
-            aux[:len(aux)-1] = self.dados[0][1:]
-            self.dados[0] = aux
-            self.dados[0] = np.asarray(self.dados[0])
-            self.dados[0] = np.column_stack(self.dados[0])
+            aux[len(lista[0])-1] = valor
+            aux[:len(aux)-1] = lista[0][1:]
+            lista[0] = aux
+            lista[0] = np.asarray(lista[0])
+            lista[0] = np.column_stack(lista[0])
+            
+            return lista
             
         else:
-            aux2 = len(self.dados)
+            aux2 = len(lista)
             aux = [0] * aux2
-            aux[len(self.dados)-1] = valor
-            aux[:len(aux)-1] = self.dados[1:]
-            self.dados = aux
-            self.dados = np.asarray(self.dados)
-            self.dados = np.column_stack(self.dados)
+            aux[len(lista)-1] = valor
+            aux[:len(aux)-1] = lista[1:]
+            lista = aux
+            lista = np.asarray(lista)
+            lista = np.column_stack(lista)
+            
+            return lista
         
-        
+    
     def Increment_Add(self, valor):
         '''
         Metodo para inserir mais dados na janela deslizante 
@@ -73,7 +91,7 @@ def main():
     janela = Janela()
     janela.Ajustar(dataset[1:4])
     for i in range(5):
-        janela.Fila_Add(10)
+        janela.Add_janela(10)
         print(type(janela.dados))
         print(janela.dados)
     
@@ -82,7 +100,7 @@ def main():
     janela2 = Janela()
     janela2.Ajustar(dataset[1:4])
     for i in range(5):
-        janela2.Fila_Add(10)
+        janela2.Add_janela(10)
         print(type(janela2.dados))
         print(janela2.dados)
     
@@ -92,7 +110,7 @@ def main():
     janela.Ajustar(dataset)
     start_time = time.time()
     for i in range(50):
-        janela.Fila_Add(10)
+        janela.Add_janela(10)
     print((time.time()-start_time))
     
     janela2 = Janela()
@@ -125,7 +143,7 @@ def main():
     janela = Janela()
     janela.Ajustar(dataset[1:5])
     print(janela.dados)
-    janela.Fila_Add(10)
+    janela.Add_janela(10)
     print(janela.dados)
     janela.Increment_Add(10)
     print(janela.dados)

@@ -30,14 +30,13 @@ class ELMRegressor():
 
     #treinamento do ELM
 
-    def Treinar(self, Entradas, Saidas, pesos_iniciais = None):
+    def Treinar(self, Entradas, Saidas, pesos = None):
         '''
         Metodo para treinar a ELM por meio da pseudo-inversa
         :param Entradas: entradas para o treinamento da rede, esses dados sao uma matriz com uma quantidade de lags definida
         :param Saidas: saidas para o treinamento da rede, esses dados sao um vetor com as saidas correspodentes as entradas
         :return: retorna os pesos de saida da rede treinada
         '''
-        
         
         #Entradas é uma lista de arrays com os padroes de entrada, matriz com os lags definidos 
         #Saidas é a saida, que possui a mesma quantidade de linhas que a matriz Entradas 
@@ -53,20 +52,20 @@ class ELMRegressor():
         #cria uma matriz com numeros aleatorios de tamanho linha x coluna
         #pesos iniciais correspondentes a entrada
         
-        if(np.any(pesos_iniciais) == None):
-            self.pesos_iniciais = np.random.randn(Entradas.shape[1], self.neuronios_escondidos)
+        if(np.any(pesos) == None):
+            self.pesos = np.random.randn(Entradas.shape[1], self.neuronios_escondidos)
         else:
-            self.pesos_iniciais = pesos_iniciais
+            self.pesos = pesos
         
         #np.dot - multiplicação de matrizes
         #np.tan - tangente hiperbolica
         #np.linalg.pinv - pseudo inversa 
         
         
-        G = np.tanh(Entradas.dot(self.pesos_iniciais))
+        G = np.tanh(Entradas.dot(self.pesos))
         
-        #cria-se os pesos da camada de saida
-        self.pesos_saida = np.linalg.pinv(G).dot(Saidas)
+        # computase a previsao para os dados de entrada
+        self.previsao = np.linalg.pinv(G).dot(Saidas)
 
     def Predizer(self, Entradas):
         '''
@@ -79,10 +78,10 @@ class ELMRegressor():
         #empilhando dois arrays em colunas, o primeiro é dado pelo array Entradas e a segunda coluna é feita de numeros 1
         Entradas = np.column_stack([Entradas,np.ones([Entradas.shape[0],1])])
         
-        G = np.tanh(Entradas.dot(self.pesos_iniciais))
+        G = np.tanh(Entradas.dot(self.pesos))
             
         #previsao
-        return G.dot(self.pesos_saida)
+        return G.dot(self.previsao)
     
     def Otimizar_rede(self, neuronios_max, lista):
         '''

@@ -8,7 +8,7 @@ from ferramentas.Janela_deslizante import Janela
 from ferramentas.Importar_dataset import Datasets
 from ferramentas.Particionar_series import Particionar_series
 from metricas.Metricas_deteccao import Metricas_deteccao
-from otimizador.IDPSO import IDPSO_ELM
+from regressores.IDPSO_ELM import IDPSO_ELM
 from detectores.B import B
 from detectores.S import S
 from graficos.Graficos_execucao import Grafico
@@ -22,10 +22,10 @@ inercia_final = 0.4
 c1 = 2
 c2 = 2
 crit_parada = 2
+divisao_dataset = [0.8, 0.2, 0]
 
-
-class IDPSO_ELM_S():
-    def __init__(self, dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, c):
+class IDPSO_ELM_BS():
+    def __init__(self, dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, w, c):
         '''
         construtor do algoritmo que detecta a mudanca de ambiente por meio de sensores
         :param dataset: serie temporal que o algoritmo vai executar
@@ -45,7 +45,9 @@ class IDPSO_ELM_S():
         self.numero_particulas = numero_particulas
         self.qtd_sensores = qtd_sensores
         
+        self.w = w
         self.c = c
+        
     
     def Executar(self, grafico = None):
         '''
@@ -67,7 +69,7 @@ class IDPSO_ELM_S():
         ################################################################################################################################################
         
         #criando e treinando um modelo_vigente para realizar as previsões
-        enxame = IDPSO_ELM(treinamento_inicial, [1, 0, 0], self.lags, self.qtd_neuronios)
+        enxame = IDPSO_ELM(treinamento_inicial, divisao_dataset, self.lags, self.qtd_neuronios)
         enxame.Parametros_IDPSO(it, self.numero_particulas, inercia_inicial, inercia_final, c1, c2, crit_parada)
         enxame.Treinar()  
        
@@ -81,11 +83,11 @@ class IDPSO_ELM_S():
         janela_caracteristicas.Ajustar(treinamento_inicial)
     
         #ativando o sensor de comportamento de acordo com a primeira janela de caracteristicas para media e desvio padrão
-        b = B(1, self.c)
+        b = B(1, self.w, self.c)
         b.armazenar_conceito(janela_caracteristicas.dados, self.lags, enxame)
         
         #ativando os sensores de acordo com a primeira janela de caracteristicas
-        s = S(self.qtd_sensores, self.c)
+        s = S(self.qtd_sensores, self.w, self.c)
         s.armazenar_conceito(janela_caracteristicas.dados, self.lags, enxame)
             
         ################################################################################################################################################
@@ -117,7 +119,7 @@ class IDPSO_ELM_S():
             erro_stream += loss
     
             #adicionando o novo dado a janela de predicao
-            janela_predicao.Fila_Add(stream[i])
+            janela_predicao.Add_janela(stream[i])
                 
             #realizando a nova predicao com a nova janela de predicao
             predicao = enxame.Predizer(janela_predicao.dados)
@@ -159,7 +161,7 @@ class IDPSO_ELM_S():
                 else:
                 
                     #atualizando o modelo_vigente preditivo
-                    enxame = IDPSO_ELM(janela_caracteristicas.dados, [1, 0, 0], self.lags, self.qtd_neuronios)
+                    enxame = IDPSO_ELM(janela_caracteristicas.dados, divisao_dataset, self.lags, self.qtd_neuronios)
                     enxame.Parametros_IDPSO(it, self.numero_particulas, inercia_inicial, inercia_final, c1, c2, crit_parada)
                     enxame.Treinar() 
                     
@@ -172,11 +174,11 @@ class IDPSO_ELM_S():
                     ativadores = [False] * (self.qtd_sensores + 1)
                     
                     # atualizando o conceito para a caracteristica de comportamento
-                    b = B(1, self.c)
+                    b = B(1, self.w, self.c)
                     b.armazenar_conceito(janela_caracteristicas.dados, self.lags, enxame)
                     
                     #ativando os sensores de acordo com a primeira janela de caracteristicas
-                    s = S(self.qtd_sensores, self.c)
+                    s = S(self.qtd_sensores, self.w, self.c)
                     s.armazenar_conceito(janela_caracteristicas.dados, self.lags, enxame)
                     
                     #variavel para voltar para o loop principal
@@ -233,8 +235,9 @@ def main():
     qtd_neuronios = 10
     numero_particulas = 30
     qtd_sensores = 30
+    w = 0.75
     c = 1
-    alg = AlgoriIDPSO_ELM_Set, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, c)
+    alg = IDPSO_ELM_BS(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, w, c)
     
     #colhendo os resultados
     alg.Executar(grafico=True)
