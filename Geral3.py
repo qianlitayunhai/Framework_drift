@@ -5,7 +5,6 @@ Created on 13 de fev de 2017
 @author: gusta
 '''
 
-from geradores_tabela.Tabela_testes import Tabela_testes
 from geradores_tabela.Tabela_excel import Tabela_excel
 from ferramentas.Importar_dataset import Datasets
 from ferramentas.Particionar_series import Particionar_series
@@ -179,7 +178,7 @@ def main():
                 
                 ##################################################################################################################################################
                                     
-            #tabela.Calcular_Medias(qtd_execucoes)
+            tabela.Calcular_Medias(qtd_execucoes)
             ##################################################################################################################################################
  
 if __name__ == "__main__":

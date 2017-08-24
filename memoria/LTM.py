@@ -123,11 +123,14 @@ class LTM():
             if(acuracias[j] < erro_atual):
                 #print("Melhor solução encontrada na memória [", j, "]: ", acuracias[j])
                 enxame_atual.particulas = self.vetor_ambientes[j].particulas.copy()
-                enxame_atual.best_elm = self.vetor_ambientes[j].gbest
+                enxame_atual.Atualizar_bestmodel(self.vetor_ambientes[j].gbest) 
                 #print("Comparacao modelos: ", enxame_atual.best_elm == self.vetor_ambientes[j].gbest)
                 return enxame_atual
             
             else:
+                
+                return enxame_atual
+                '''
                 # criando uma instancia do modelo atual
                 novo = copy.deepcopy(enxame_atual)
                 novo.tx_espalhar = self.tx_espalhar
@@ -145,11 +148,11 @@ class LTM():
                 
                 # se a solucao treinada for melhor que a solucao atual entao ela é atualizada
                 if(erro_novo < erro_atual):
-                    enxame_atual = copy.deepcopy(novo)
+                    enxame_atual = novo
                 
                 # retorna a melhor solucao
                 return enxame_atual
-            
+                '''
     
     def Relembrar_acurado(self, enxame_atual, dados, lags):
         '''

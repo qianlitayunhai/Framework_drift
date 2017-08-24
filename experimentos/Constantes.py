@@ -16,4 +16,4 @@ class Constantes():
             self.caminho_bases = "../Tabelas/Experimentos/"
         elif(alocacao == 'fora'):
             self.caminho_bases = "Tabelas/Experimentos/"
-        self.folhas = ["ELM", "ELM_DDM", "ELM_ECDD", "ELM-FEDD", "IDPSO-ELM-B", "IDPSO-ELM-S", "P-IDPSO-ELM", "M-IDPSO-ELM"] 
+        self.folhas = ["ELM", "ELM-DDM", "ELM-ECDD", "ELM-FEDD", "IDPSO-ELM-B", "IDPSO-ELM-S", "P-IDPSO-ELM", "M-IDPSO-ELM"] 

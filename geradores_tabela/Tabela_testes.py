@@ -13,7 +13,7 @@ import numpy as np
 from experimentos.Constantes import Constantes
 from teste_estatistico.Nemenyi import NemenyiTestPostHoc
 
-c = Constantes()
+c = Constantes('dentro')
 pasta = c.pasta
 caminho_bases = c.caminho_bases + pasta
 
@@ -97,7 +97,7 @@ class Tabela_testes():
         
         qtd_bases = c.variacao-1
         
-        tabelas = ["/tabela_atrasos.xls.xls", "/tabela_falsos_alarmes.xls.xls", "/tabela_mape.xls.xls", "/tabela_tempo.xls.xls"]
+        tabelas = ["/tabela_atrasos.xls", "/tabela_falsos_alarmes.xls", "/tabela_mape.xls", "/tabela_tempo.xls"]
         
         for z in range(len(tabelas)):
             
@@ -400,7 +400,7 @@ class Tabela_testes():
 def main():
     tbt = Tabela_testes()
     #tbt.Criar_tabelas()
-    #tbt.Calcular_estatisticas_bases()
+    tbt.Calcular_estatisticas_bases()
     #tbt.Gerar_tabela_final()
     #tbt.Img_teste()  
     
