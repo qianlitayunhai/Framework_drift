@@ -399,10 +399,10 @@ class Tabela_testes():
         
 def main():
     tbt = Tabela_testes()
-    #tbt.Criar_tabelas()
+    tbt.Criar_tabelas()
     tbt.Calcular_estatisticas_bases()
     #tbt.Gerar_tabela_final()
-    #tbt.Img_teste()  
+    tbt.Img_teste()  
     
           
 if __name__ == "__main__":

@@ -74,7 +74,7 @@ class M_IDPSO_ELM():
         enxame.Treinar()  
         
         # adicionando o primeiro conceito
-        memoria = LTM(10, 3, 0.1)
+        memoria = LTM(10, 2, 0.1)
         ambiente = Ambiente(enxame.particulas, enxame.best_elm)
         memoria.Adicionar_ambiente(ambiente)
        

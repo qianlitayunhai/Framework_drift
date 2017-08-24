@@ -18,6 +18,13 @@ from algoritmos_online.P_IDPSO_ELM import P_IDPSO_ELM
 from algoritmos_online.M_IDPSO_ELM import M_IDPSO_ELM
 from experimentos.Constantes import Constantes
 
+def printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao):
+    print("Falsos alarmes:", falsos_alarmes)
+    print("Atrasos:", atrasos)
+    print("MAPE:", MAPE)
+    print("Tempo:", tempo_execucao)
+    print()
+    
 def main():
     '''
         metodo para rodar o experimento
@@ -105,7 +112,7 @@ def main():
                         
             for execucao in range(qtd_execucoes):
                 print(nome_arquivo + " -  Execucao [%s]"  %(execucao))
-                '''
+
                 ########################################### instanciando os algoritmo e escrevendo as execucoes ####################################################
                 #"ELM"
                 print(folhas[0])
@@ -157,7 +164,7 @@ def main():
                 alg = IDPSO_ELM_S(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, w, c)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
                 tabela.Adicionar_Sheet_Linha(5, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
-                '''
+                
                 #"P-IDPSO-ELM"
                 print(folhas[6])
                 qtd_sensores = 30

@@ -140,7 +140,7 @@ class P_IDPSO_ELM():
                 if(mudou):
                     if(grafico == True):    
                         print("[%d] Detectou uma mudança" % (i))
-                        deteccoes.append(i)
+                    deteccoes.append(i)
                     
                     #zerando a janela de treinamento
                     janela_caracteristicas.Zerar_Janela()
@@ -164,7 +164,7 @@ class P_IDPSO_ELM():
                     if(alerta):
                         if(grafico):    
                             print("[%d] Alarme" % (i))
-                            alarmes.append(i)
+                        alarmes.append(i)
                     
                         # ativando o botao de alerta para comecar a armazenar dados
                         alerta_ocorreu = True

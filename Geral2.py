@@ -18,6 +18,13 @@ from algoritmos_online.P_IDPSO_ELM import P_IDPSO_ELM
 from algoritmos_online.M_IDPSO_ELM import M_IDPSO_ELM
 from experimentos.Constantes import Constantes
 
+def printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao):
+    print("Falsos alarmes:", falsos_alarmes)
+    print("Atrasos:", atrasos)
+    print("MAPE:", MAPE)
+    print("Tempo:", tempo_execucao)
+    print()
+    
 def main():
     '''
         metodo para rodar o experimento
@@ -114,6 +121,7 @@ def main():
                 c = 0
                 alg = ELM_SD(dataset, n, lags, qtd_neuronios)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
+                printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
                 tabela.Adicionar_Sheet_Linha(0, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
                 
                 #"ELM_DDM"
@@ -122,6 +130,7 @@ def main():
                 c = 5
                 alg = ELM_DDM(dataset, n, lags, qtd_neuronios, w, c)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
+                printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
                 tabela.Adicionar_Sheet_Linha(1, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
                 
                 #"ELM_ECDD"
@@ -130,6 +139,7 @@ def main():
                 c = 0.5
                 alg = ELM_ECDD(dataset, n, lags, qtd_neuronios, 0.2, w, c)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
+                printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
                 tabela.Adicionar_Sheet_Linha(2, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
                 
                 #"ELM-FEDD"
@@ -138,6 +148,7 @@ def main():
                 c = 0.75
                 alg = ELM_FEDD(dataset, n, lags, qtd_neuronios, 0.2, w, c)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
+                printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
                 tabela.Adicionar_Sheet_Linha(3, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
                 
                 #"IDPSO-ELM-B"
@@ -147,6 +158,7 @@ def main():
                 c = 0.25
                 alg = IDPSO_ELM_B(dataset, n, lags, qtd_neuronios, numero_particulas, limite, w, c)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
+                printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
                 tabela.Adicionar_Sheet_Linha(4, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
                 
                 #"IDPSO-ELM-S (30)"
@@ -156,6 +168,7 @@ def main():
                 c = 0.25
                 alg = IDPSO_ELM_S(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, w, c)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
+                printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
                 tabela.Adicionar_Sheet_Linha(5, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
                 
                 #"P-IDPSO-ELM"
@@ -165,6 +178,7 @@ def main():
                 c = 0.25
                 alg = P_IDPSO_ELM(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, w, c)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
+                printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
                 tabela.Adicionar_Sheet_Linha(6, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
                 
                 #"M-IDPSO-ELM"
@@ -174,6 +188,7 @@ def main():
                 c = 0.25
                 alg = M_IDPSO_ELM(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, w, c)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
+                printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
                 tabela.Adicionar_Sheet_Linha(7, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
                 
                 ##################################################################################################################################################
@@ -181,7 +196,6 @@ def main():
             tabela.Calcular_Medias(qtd_execucoes)
             ##################################################################################################################################################
  
-    
 if __name__ == "__main__":
     main()
 
