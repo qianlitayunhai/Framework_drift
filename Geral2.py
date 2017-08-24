@@ -24,18 +24,19 @@ def main():
         metodo para rodar o experimento
         
     '''
+    alocacao = 'fora'
     
-    e = Constantes()
+    e = Constantes(alocacao)
     
     pasta = e.pasta
         
     ###########################################definindo os indices das series que serão experimentadas#################################################################################
                 
-    vez = [0, 1]
+    vez = [2, 3]
     variacao = range(1, e.variacao)
                 
     ####################################################################################################################################################################################
-    dtst = Datasets()
+    dtst = Datasets(alocacao)
                 
     for i in vez:
         for k in variacao:
@@ -181,6 +182,7 @@ def main():
             #tabela.Calcular_Medias(qtd_execucoes)
             ##################################################################################################################################################
  
+    
 if __name__ == "__main__":
     main()
 

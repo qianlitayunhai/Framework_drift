@@ -9,13 +9,18 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 #caminho onde se encontram as bases xlsx
-caminho_bases = '../series'
 
 class Datasets():
+    def __init__(self, alocacao):
+        if(alocacao == 'fora'):
+            self.caminho_bases = 'series'
+        elif(alocacao == 'dentro'):
+            self.caminho_bases = '../series'
+        
     '''
     classe que armazena as series com drifts
     '''
-    pass
+    
 
     def Leitura_dados(self, caminho, excel = None, csv = None):
         '''
@@ -47,7 +52,7 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
-        base = (caminho_bases + '/Series Geradas Permanentes/lineares_grad_abt/graduais/lin-grad' + str(numero)+ '.csv') 
+        base = (self.caminho_bases + '/Series Geradas Permanentes/lineares_grad_abt/graduais/lin-grad' + str(numero)+ '.csv') 
         return base
     
     def bases_linear_abruptas(self, numero):
@@ -58,7 +63,7 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
-        base = (caminho_bases + '/Series Geradas Permanentes/lineares_grad_abt/abruptas/lin-abt' + str(numero)+ '.csv') 
+        base = (self.caminho_bases + '/Series Geradas Permanentes/lineares_grad_abt/abruptas/lin-abt' + str(numero)+ '.csv') 
         return base
     
     def bases_nlinear_graduais(self, numero):
@@ -69,7 +74,7 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
-        base = (caminho_bases + '/Series Geradas Permanentes/nlineares_grad_abt/graduais/nlin-grad' + str(numero)+ '.csv')
+        base = (self.caminho_bases + '/Series Geradas Permanentes/nlineares_grad_abt/graduais/nlin-grad' + str(numero)+ '.csv')
         return base
     
     def bases_nlinear_abruptas(self, numero):
@@ -80,7 +85,7 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
-        base = (caminho_bases + '/Series Geradas Permanentes/nlineares_grad_abt/abruptas/nlin-abt' + str(numero)+ '.csv') 
+        base = (self.caminho_bases + '/Series Geradas Permanentes/nlineares_grad_abt/abruptas/nlin-abt' + str(numero)+ '.csv') 
         return base
     
     def bases_hibridas(self, numero):
@@ -90,7 +95,7 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
-        base = (caminho_bases + '/Series Geradas Permanentes/hibridas/hib-' + str(numero) + '.csv')
+        base = (self.caminho_bases + '/Series Geradas Permanentes/hibridas/hib-' + str(numero) + '.csv')
          
         return base
     
@@ -101,7 +106,7 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
-        base = (caminho_bases + '/Series Geradas Permanentes/lineares/lin-' + str(numero) + '.csv')
+        base = (self.caminho_bases + '/Series Geradas Permanentes/lineares/lin-' + str(numero) + '.csv')
          
         return base
     
@@ -112,7 +117,7 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
-        base = (caminho_bases + '/Series Geradas Permanentes/nlineares/nlin-' + str(numero) + '.csv')
+        base = (self.caminho_bases + '/Series Geradas Permanentes/nlineares/nlin-' + str(numero) + '.csv')
          
         return base
     
@@ -123,7 +128,7 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
-        base = (caminho_bases + '/Series Geradas Permanentes/sazonais/saz-' + str(numero) + '.csv')
+        base = (self.caminho_bases + '/Series Geradas Permanentes/sazonais/saz-' + str(numero) + '.csv')
          
         return base
     
@@ -138,13 +143,13 @@ class Datasets():
         '''
         
         if(tipo == 1):
-            base = (caminho_bases + '/Series Reais/Dow.csv')
+            base = (self.caminho_bases + '/Series Reais/Dow.csv')
         if(tipo == 2):
-            base = (caminho_bases + '/Series Reais/Nasdaq.csv')
+            base = (self.caminho_bases + '/Series Reais/Nasdaq.csv')
         if(tipo == 3):
-            base = (caminho_bases + '/Series Reais/S&P500.csv')
+            base = (self.caminho_bases + '/Series Reais/S&P500.csv')
         if(tipo == 4):
-            base = (caminho_bases + '/Series Reais/Dow-drift.csv')    
+            base = (self.caminho_bases + '/Series Reais/Dow-drift.csv')    
         return base
     
     def Plotar_serie(self, serie):
@@ -152,7 +157,7 @@ class Datasets():
         plt.show()
 
 def main():
-    dtst = Datasets()
+    dtst = Datasets('dentro')
     
     '''
     caminho = dtst.bases_linear_graduais(1)
