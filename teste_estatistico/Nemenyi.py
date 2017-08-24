@@ -12,10 +12,10 @@ import matplotlib.pyplot as plt
 
 
 class NemenyiTestPostHoc():
-
-    def __init__(self, data):
+    def __init__(self, labels, data):
         self._noOfGroups = data.shape[0]
         self._noOfSamples = data.shape[1]
+        self.labels = labels
         self._data = data
 
     def do(self):
@@ -278,6 +278,35 @@ class NemenyiTestPostHoc():
 
 # consistent with https://cran.r-project.org/web/packages/PMCMR/vignettes/PMCMR.pdf p. 17
 
+    def gerar_plot(self, nome, caminho):
+        
+        #emparelhando as acuracias de cada modelo
+        #print(friedmanchisquare(self._data[0], self._data[1], self._data[2], self._data[3], self._data[4], self._data[5]))
+        
+        #obtendo os rankins dos modelos e os pvalues
+        meanRanks, pValues = self.do()
+        #print("Média dos rankings: ")
+        #print(meanRanks)
+        
+        #print("Pvalues: ")
+        #print(pValues)
+        
+        #computando as estatisticas a partir do rank dos modelos
+        cd = ora.compute_CD(meanRanks, len(self._data[0]), alpha="0.05", test="nemenyi")
+        
+        # setando o tamanho da figura
+        #plt.figure(figsize =(20,15))
+        
+        # criando o plot com os rankings, labels e distancia critica
+        ora.graph_ranks(meanRanks, self.labels, cd=cd, width=10, textspace=2)
+
+        # salvando a figura        
+        plt.savefig(caminho+nome)
+        
+        print("Teste gerado!")
+        plt.show()
+    
+        
 def main():
     
     #acuracias dos modelos, cada coluna é um modelo
@@ -296,25 +325,10 @@ def main():
                  "alg5", 
                  "alg6"]
     
-    #emparelhando as acuracias de cada modelo
-    print(friedmanchisquare(data[0], data[1], data[2], data[3], data[4], data[5]))
-    
     #computando o nemenyi posthuc
-    nemenyi = NemenyiTestPostHoc(data)
+    nemenyi = NemenyiTestPostHoc(names_alg, data)
+    nemenyi.gerar_plot("teste", "../Tabelas/Experimentos/Preliminares/")
     
-    #obtendo os rankins dos modelos e os pvalues
-    meanRanks, pValues = nemenyi.do()
-    print("Média dos rankings: ")
-    print(meanRanks)
-    
-    print("Pvalues: ")
-    print(pValues)
-    
-    
-    #criando o grafico a partir do rank dos modelos 
-    cd = ora.compute_CD(meanRanks, len(data[0]), alpha="0.05", test="nemenyi")
-    ora.graph_ranks(meanRanks, names_alg, cd=cd)
-    plt.show()
 
 if __name__ == '__main__':
     main()

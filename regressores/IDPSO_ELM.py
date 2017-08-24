@@ -493,15 +493,15 @@ class IDPSO_ELM():
         '''
         método para atualizar o melhor regressor do enxame
         '''
-        print("modelo novo: ", novo)
-        print("modelo antigo: ", self.best_elm)
-        print("comparacao antes da copia: ", (self.best_elm == novo))
+        #print("modelo novo: ", novo)
+        #print("modelo antigo: ", self.best_elm)
+        #print("comparacao antes da copia: ", (self.best_elm == novo))
         self.best_elm = novo
-        print("comparacao depois da copia: ", (self.best_elm == novo))
-        print("modelo atualizado: ", self.best_elm)
+        #print("comparacao depois da copia: ", (self.best_elm == novo))
+        #print("modelo atualizado: ", self.best_elm)
         
         
-        print("esperar")
+        #print("esperar")
         
 def main():
     #load da serie

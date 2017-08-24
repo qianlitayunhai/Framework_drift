@@ -10,17 +10,12 @@ import xlrd
 from xlutils.copy import copy
 from geradores_tabela.Tabela_excel import Tabela_excel
 import numpy as np
+from experimentos.Constantes import Constantes
+from teste_estatistico.Nemenyi import NemenyiTestPostHoc
 
-#pastas = ['4']
-#pastas = ['1', '2', '3', '4', '5']
-#pastas = ['0', '0.25', '0.5', '0.75', '1']
-#pastas = ['0.5', '0.75', '1', '1.5', '2', '3']
-#pasta = pastas[4]
-#pasta = 'IDPSO_ELM_B (condicao) - limite/Omega = 3/50'
-#pasta = 'IDPSO_ELM_B (condicao) - limite/Omega = 10/50'
-pasta = 'ELM_FEDD(Param)/1'
-
-caminho_bases = "Tabelas/ZExperimentos/" + pasta
+c = Constantes()
+pasta = c.pasta
+caminho_bases = c.caminho_bases + pasta
 
 class Tabela_testes():
     def __init__(self):
@@ -32,21 +27,10 @@ class Tabela_testes():
         metodo para agrupar os resultados que estavam em subpastas e salvar em um arquivo final
         '''
         
-        #caminho = "E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/Sensores (nivel) - qtd sensores/"
-        #caminho = "E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/IDPSO_ELM_B (condicao) - limite/"
-        caminho = "E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/ELM_FEDD(Param)/"
-        #pasta = "Nivel = 0.75/"
-        #pasta = "Omega = 10/"
-        #tabela_final = "Resultados - Sensores - qtd sensores.xls"
-        #tabela_final = "Resultados - IDPSO_ELM_B (Condição) - Limite.xls"
-        tabela_final = "Resultados - ELM-FEDD - nivel.xls"
-        #caminho_tabfinal = caminho + pasta + tabela_final
+        caminho = c.caminho_bases + c.pasta
+        tabela_final = "Resultados.xls"
         caminho_tabfinal = caminho + tabela_final
-        
-        #caminho_pastas = caminho + pasta
         caminho_pastas = caminho
-        #subpasta = ["1", "5", "10", "20", "30"]
-        #subpasta = ["1", "5", "10", "25", "50"]
         subpasta = ["0", "0.25", "0.5", "0.75", "1"]
         tabelas = ["/tabela_atrasos.xls.xls", "/tabela_falsos_alarmes.xls.xls", "/tabela_mape.xls.xls", "/tabela_tempo.xls.xls"]
         
@@ -111,7 +95,7 @@ class Tabela_testes():
         metodo para computar as estatisticas como media de desvio padrao das subpastas
         '''
         
-        qtd_bases = 30
+        qtd_bases = c.variacao-1
         
         tabelas = ["/tabela_atrasos.xls.xls", "/tabela_falsos_alarmes.xls.xls", "/tabela_mape.xls.xls", "/tabela_tempo.xls.xls"]
         
@@ -131,23 +115,30 @@ class Tabela_testes():
                 sep = n_linhas + 2 
                 
                 shw = wb.get_sheet(i)
-                shw.write(sep, 0,  'Lineares')
-                shw.write(sep+1, 0,  'Não lineares')
-                shw.write(sep+2, 0,  'Sazonais')
-                shw.write(sep+3, 0,  'Hibridas')
-                shw.write(sep+4, 0,  'Geral')
+                shw.write(sep+1, 0,  'Lineares Graduais')
+                shw.write(sep+2, 0,  'Lineares Abruptas')
+                shw.write(sep+3, 0,  'Não Lineares Graduais')
+                shw.write(sep+4, 0,  'Não lineares Abruptas')
+                shw.write(sep+5, 0,  'Sazonais')
+                shw.write(sep+6, 0,  'Hibridas')
+                shw.write(sep+7, 0,  'Geral')
                 
                 for j in range(1, n_cols):
                     valores = []
-                    for k in range(1, n_linhas):
+                    for k in range(1, n_linhas-1):
                         valor = sh.cell_value(rowx=k, colx=j)
                         valores.append(valor)
                     
-                    shw.write(sep, j,  np.mean(valores[0:qtd_bases]))
-                    shw.write(sep+1, j,  np.mean(valores[qtd_bases+1:2*qtd_bases]))
-                    shw.write(sep+2, j,  np.mean(valores[2*qtd_bases+1:3*qtd_bases]))
-                    shw.write(sep+3, j,  np.mean(valores[3*qtd_bases+1:]))
-                    shw.write(sep+4, j,  np.mean(valores))
+                    #correto
+                    shw.write(sep+1, j,  np.mean(valores[0:qtd_bases]))
+                    
+                    
+                    shw.write(sep+2, j,  np.mean(valores[qtd_bases:2*qtd_bases]))
+                    shw.write(sep+3, j,  np.mean(valores[2*qtd_bases:3*qtd_bases]))
+                    shw.write(sep+4, j,  np.mean(valores[3*qtd_bases:4*qtd_bases]))
+                    shw.write(sep+5, j,  np.mean(valores[4*qtd_bases:5*qtd_bases]))
+                    shw.write(sep+6, j,  np.mean(valores[5*qtd_bases:]))
+                    shw.write(sep+7, j,  np.mean(valores))
                     
                     wb.save(nome)
                 
@@ -164,26 +155,44 @@ class Tabela_testes():
         
         return te.ler(arq_xls, folha, linha, coluna) 
     
-    def bases_linear(self, numero):
+    def bases_linear_graduais(self, numero):
         '''
         metodo para abrir um arquivo de resultado para as bases lineares
         :param: numero: numero do arquivo
         :return: retorna a string do caminho da base
         '''
         
-        base = (caminho_bases + '/Lineares/lin-' + str(numero) + '.xls.xls')
-        self.nome = 'lin-' + str(numero)
+        base = (caminho_bases + '/Lineares-Graduais/lin-grad-' + str(numero) + '.xls')
         return base
     
-    def bases_nlinear(self, numero):
+    def bases_linear_abruptas(self, numero):
+        '''
+        metodo para abrir um arquivo de resultado para as bases lineares
+        :param: numero: numero do arquivo
+        :return: retorna a string do caminho da base
+        '''
+        
+        base = (caminho_bases + '/Lineares-Abruptas/lin-abt-' + str(numero) + '.xls')
+        return base
+    
+    def bases_nlinear_graduais(self, numero):
         '''
         metodo para abrir um arquivo de resultado para as bases não lineares
         :param: numero: numero do arquivo
         :return: retorna a string do caminho da base
         '''
         
-        base = (caminho_bases + '/LinearesN/lin_n-' + str(numero) + '.xls.xls')
-        self.nome = 'lin_n-' + str(numero)
+        base = (caminho_bases + '/LinearesN-Graduais/lin_n-grad-' + str(numero) + '.xls')
+        return base
+    
+    def bases_nlinear_abruptas(self, numero):
+        '''
+        metodo para abrir um arquivo de resultado para as bases não lineares
+        :param: numero: numero do arquivo
+        :return: retorna a string do caminho da base
+        '''
+        
+        base = (caminho_bases + '/LinearesN-Abruptas/lin_n-abt-' + str(numero) + '.xls')
         return base
     
     def bases_sazonal(self, numero):
@@ -193,8 +202,7 @@ class Tabela_testes():
         :return: retorna a string do caminho da base
         '''
         
-        base = (caminho_bases + '/Sazonais/saz-' + str(numero) + '.xls.xls')
-        self.nome = 'saz-' + str(numero)
+        base = (caminho_bases + '/Sazonais/saz-' + str(numero) + '.xls')
         return base
     
     def bases_hibrida(self, numero):
@@ -204,8 +212,7 @@ class Tabela_testes():
         :return: retorna a string do caminho da base
         '''
         
-        base = (caminho_bases + '/Hibridas/hib-' + str(numero) + '.xls.xls')
-        self.nome = 'hib-' + str(numero)
+        base = (caminho_bases + '/Hibridas/hib-' + str(numero) + '.xls')
         return base
    
     def Criar_tabelas(self):
@@ -218,39 +225,31 @@ class Tabela_testes():
         '''   
         
         metricas = [0, 1, 2, 3]
-        g_linha_media = 6
-        variacoes = 31
-        
-        tabela = Tabela_excel()
+        linha_media = c.qtd_execucoes
+        variacoes = c.variacao
         
         for z in metricas:
             
             if(z == 0):
-                nome = 'E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/'+pasta+ '/tabela_falsos_alarmes.xls'
+                nome = caminho_bases+ '/tabela_falsos_alarmes'
             elif(z == 1):
-                nome = 'E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/'+pasta+ '/tabela_atrasos.xls'
+                nome = caminho_bases+ '/tabela_atrasos'
             elif(z == 2):
-                nome = 'E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/'+pasta+ '/tabela_mape.xls'
+                nome = caminho_bases+ '/tabela_mape'
             elif(z == 3):
-                nome = 'E:/Workspace2/IDPSO_ELM/Tabelas/ZExperimentos/'+pasta+ '/tabela_tempo.xls'
-                
+                nome = caminho_bases+ '/tabela_tempo'
+            
+            tabela = Tabela_excel()
             folhas = ["sheet1"]
-            #cabecalho = ["Bases", "ELM_DDM", "CompoIDPSO_ELM_BLM_ECDD", "Sensores", "CompoIDPSO_ELM_Bor", "ELM_ECDD Perfeito", "ELM Sem Detecção"]
-            #cabecalho = ["Bases", "ComportIDPSO_ELM_B, "ComportIDPSO_ELM_B"]
-            #cabecalho = ["Bases", "Sensores (ECDD)"]
-            cabecalho = ["Bases", "ELM-ECDD"]
+            cabecalho = ["Bases"] + c.folhas
             largura_col = 5000
             tabela.Criar_tabela(nome, folhas, cabecalho, largura_col)
             
-            #sheet = [10, 0, 1]
-            sheet = [10, 0]
-            vez = [0, 1, 2, 3]
+            sheet = [10] + list(range(0, len(c.folhas)))
+            vez = [0, 1, 2, 3, 4, 5]
             variacao = range(1, variacoes)
-            #variacao = range(1, 30)
             
-            
-            col_falsos_alarmes = z
-            linha_media = g_linha_media
+            col_metrica = z
             
             for i in sheet:
                 contador = 0
@@ -261,22 +260,28 @@ class Tabela_testes():
                                 
                             contador += 1
                                 
-                            parte4 = str(l)
-                                
                             if(j == 0):
-                                parte2 = "Linear - " + parte4
+                                parte2 = "Linear-Gradual- " + str(l)
                                 tabela.Adicionar_dado(0, 0, contador, parte2)
                                     
                             elif(j == 1):
-                                parte2 = "Nlinear - " + parte4
+                                parte2 = "Linear-Abrupta- " + str(l)
+                                tabela.Adicionar_dado(0, 0, contador, parte2)
+                                
+                            elif(j == 2):
+                                parte2 = "NLinear-Gradual- " + str(l)
                                 tabela.Adicionar_dado(0, 0, contador, parte2)
                                     
-                            elif(j == 2):
-                                parte2 = "Sazonal - " + parte4
+                            elif(j == 3):
+                                parte2 = "NLinear-Abrupta- " + str(l)
+                                tabela.Adicionar_dado(0, 0, contador, parte2)
+                                    
+                            elif(j == 4):
+                                parte2 = "Sazonal - " + str(l)
                                 tabela.Adicionar_dado(0, 0, contador, parte2)
                                             
-                            elif(j == 3):
-                                parte2 = "Hibrida - " + parte4
+                            elif(j == 5):
+                                parte2 = "Hibrida - " + str(l)
                                 tabela.Adicionar_dado(0, 0, contador, parte2)
                 
                                
@@ -290,38 +295,114 @@ class Tabela_testes():
                             contador += 1
                                 
                             parte1 = cabecalho[i+1] + " - "
-                                
+                            
                             if(j == 0):
-                                parte2 = "linear - "
-                                valor = self.ler(self.bases_linear(l), i, linha_media, col_falsos_alarmes)
+                                parte2 = "linear-grad - "
+                                valor = self.ler(self.bases_linear_graduais(l), i, linha_media, col_metrica)
                                 tabela.Adicionar_dado(0, i+1, contador, valor)
                                     
                             elif(j == 1):
-                                parte2 = "nlinear - "
-                                valor = self.ler(self.bases_nlinear(l), i, linha_media, col_falsos_alarmes)
+                                parte2 = "linear-abt - "
+                                valor = self.ler(self.bases_linear_abruptas(l), i, linha_media, col_metrica)
                                 tabela.Adicionar_dado(0, i+1, contador, valor)
-                                            
+                                
                             elif(j == 2):
-                                parte2 = "sazonal - "
-                                valor = self.ler(self.bases_sazonal(l), i, linha_media, col_falsos_alarmes)
+                                parte2 = "nlinear-grad - "
+                                valor = self.ler(self.bases_nlinear_graduais(l), i, linha_media, col_metrica)
+                                tabela.Adicionar_dado(0, i+1, contador, valor)
+                                    
+                            elif(j == 3):
+                                parte2 = "nlinear-abt - "
+                                valor = self.ler(self.bases_nlinear_abruptas(l), i, linha_media, col_metrica)
                                 tabela.Adicionar_dado(0, i+1, contador, valor)
                                             
-                            elif(j == 3):
+                            elif(j == 4):
+                                parte2 = "sazonal - "
+                                valor = self.ler(self.bases_sazonal(l), i, linha_media, col_metrica)
+                                tabela.Adicionar_dado(0, i+1, contador, valor)
+                                            
+                            elif(j == 5):
                                 parte2 = "hibrida - "
-                                valor = self.ler(self.bases_hibrida(l), i, linha_media, col_falsos_alarmes)
+                                valor = self.ler(self.bases_hibrida(l), i, linha_media, col_metrica)
                                 tabela.Adicionar_dado(0, i+1, contador, valor)
                 
                             parte4 = str(l)
                                 
                             print(parte1+parte2+parte4)
             
-            tabela.Calcular_Medias2(variacao*4)
+            tabela.Calcular_Medias2(variacao[-1]*len(vez))
    
+    def Img_teste(self):
+        '''
+        método para gerar plots do teste estatístico
+        '''
+        
+        # tabela para calcular o teste estatistico
+        tabelas = ["/tabela_mape.xls"]
+        
+        for z in range(len(tabelas)):
+            
+            # caminho referente a tabela
+            nome = caminho_bases + tabelas[z]
+            
+            # abrindo um workbook e copiando ele em uma variavel auxiliar
+            book = xlrd.open_workbook(nome)
+            
+            # obtendo a quantidade de folhas 
+            i = len(book.sheet_names())
+            
+            # abrindo a folha existente
+            sh = book.sheet_by_index(i-1)
+            
+            # obtendo a quantidade linhas dentro da folha
+            n_linhas = (c.variacao-1) * 6
+            
+            # obtendo a quantidade colunas dentro da folha
+            n_cols = sh.ncols
+            
+            # variavel para salvar a primeira coluna das tabelas
+            labels = []
+            acuracias = []
+            
+            # for para a quantidade de colunas
+            for j in range(1, n_cols):
+                
+                # variavel para salvar os valores de cada coluna
+                valores = []
+                
+                # for para percorrer as linhas de cada coluna
+                for k in range(0, n_linhas+1):
+                    
+                    # copiando o valor referente a linah e coluna passada
+                    valor = sh.cell_value(rowx=k, colx=j)
+                    
+                    # se for a primeira coluna salva em labels
+                    if(k == 0):
+                        labels.append(valor)
+                        
+                    # caso nao salva as acuracias em valores
+                    else:                                                           
+                        valores.append(valor)
+                
+                # salvando o conjunto de acuracias    
+                acuracias.append(np.asarray(valores))
+                
+            # convertendo a lista final em um array
+            acuracias = np.asarray(acuracias)
+            
+            #computando o nemenyi posthuc
+            nemenyi = NemenyiTestPostHoc(labels, acuracias)
+            nome = "/friedman_mape"
+            caminho = c.caminho_bases+c.pasta
+            nemenyi.gerar_plot(nome, caminho)
+        
+        
 def main():
     tbt = Tabela_testes()
     #tbt.Criar_tabelas()
     #tbt.Calcular_estatisticas_bases()
     #tbt.Gerar_tabela_final()
+    #tbt.Img_teste()  
     
           
 if __name__ == "__main__":

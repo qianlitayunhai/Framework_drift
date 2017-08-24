@@ -74,7 +74,7 @@ class M_IDPSO_ELM():
         enxame.Treinar()  
         
         # adicionando o primeiro conceito
-        memoria = LTM(5, 2.7, 0.1)
+        memoria = LTM(10, 3, 0.1)
         ambiente = Ambiente(enxame.particulas, enxame.best_elm)
         memoria.Adicionar_ambiente(ambiente)
        
@@ -89,6 +89,7 @@ class M_IDPSO_ELM():
         
         # instanciando a janela de alerta para quando acontecer 
         janela_alerta = Janela()
+        janela_alerta.Ajustar(janela_predicao.dados_mais)
         
         #ativando os sensores de acordo com a primeira janela de caracteristicas
         s = S(self.qtd_sensores, self.w, self.c)
@@ -135,7 +136,7 @@ class M_IDPSO_ELM():
                 #salvando a predicao
                 predicoes_vetor[i] = predicao
             
-            print("[", i, "]")
+            #print("[", i, "]")
             
             if(mudanca_ocorreu == False):
 

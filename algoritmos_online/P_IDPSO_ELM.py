@@ -83,6 +83,7 @@ class P_IDPSO_ELM():
     
         # instanciando a janela de alerta para quando acontecer 
         janela_alerta = Janela()
+        janela_alerta.Ajustar(janela_predicao.dados_mais)
         
         #ativando os sensores de acordo com a primeira janela de caracteristicas
         s = S(self.qtd_sensores, self.w, self.c)
@@ -129,7 +130,7 @@ class P_IDPSO_ELM():
                 #salvando a predicao
                 predicoes_vetor[i] = predicao
             
-            print("[", i, "]")
+            #print("[", i, "]")
             
             # se mudança ocorreu entra aqui
             if(mudanca_ocorreu == False):
@@ -235,7 +236,7 @@ def main():
     
     #instanciando o dataset
     dtst = Datasets()
-    dataset = dtst.Leitura_dados(dtst.bases_linear_graduais(10), csv=True)
+    dataset = dtst.Leitura_dados(dtst.bases_nlinear_graduais(10), csv=True)
     #dataset = dtst.Leitura_dados(dtst.bases_reais(4), csv=True)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)

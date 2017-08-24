@@ -9,14 +9,13 @@ from ferramentas.Janela_deslizante import Janela
 from ferramentas.Importar_dataset import Datasets
 from ferramentas.Particionar_series import Particionar_series
 from metricas.Metricas_deteccao import Metricas_deteccao
-from detectores.FEDD import FEDD
 from regressores.ELM import ELMRegressor
 from graficos.Graficos_execucao import Grafico
-from sklearn.metrics.regression import mean_absolute_error
+from detectores.FEDD import FEDD
 import time
 import numpy as np
+from sklearn.metrics.regression import mean_absolute_error
 
-divisao_dataset = [0.8, 0.2, 0]
 
 class ELM_FEDD():
     def __init__(self, dataset, n, lags, qtd_neuronios, Lambda, w, c):
@@ -61,7 +60,7 @@ class ELM_FEDD():
         
         #criando e treinando um enxame_vigente para realizar as previsoes
         ELM = ELMRegressor(self.qtd_neuronios)
-        ELM.Tratamento_dados(treinamento_inicial, divisao_dataset, self.lags)
+        ELM.Tratamento_dados(treinamento_inicial, [1, 0, 0], self.lags)
         ELM.Treinar(ELM.train_entradas, ELM.train_saidas)
         
         #ajustando com os dados finais do treinamento a janela de predicao
@@ -132,7 +131,7 @@ class ELM_FEDD():
             if(mudanca_ocorreu == False):
                 
                 #atualizar a janela de caracteristicas do FEDD
-                janela_predicao.Add_janela(stream[i])
+                janela_caracteristicas.Add_janela(stream[i])
                     
                 #realizando a diferenciacao no vetor de caracteristicas atuais
                 vetor_caracteristicas_atual = fedd.FE(janela_caracteristicas.dados[0])    
@@ -166,13 +165,13 @@ class ELM_FEDD():
                 if(i < deteccoes[len(deteccoes)-1] + self.n):
                     
                     #adicionando a nova instancia na janela de caracteristicas
-                    janela_caracteristicas.FilaAdd_janelaeam[i])
+                    janela_caracteristicas.Add_janela(stream[i])
                     
                 else:
                     
                     #atualizando o enxame_vigente preditivo
                     ELM = ELMRegressor(self.qtd_neuronios)
-                    ELM.Tratamento_dados(janela_caracteristicas.dados[0], divisao_dataset, self.lags)
+                    ELM.Tratamento_dados(janela_caracteristicas.dados[0], [1, 0, 0], self.lags)
                     ELM.Treinar(ELM.train_entradas, ELM.train_saidas)
                     
                     #ajustando a janela de previsao
@@ -234,9 +233,7 @@ def main():
     
     #instanciando o dataset
     dtst = Datasets()
-    dataset = dtst.Leitura_dados(dtst.bases_sazonais(10), csv=True)
-    #dataset = dtst.Leitura_dados(dtst.bases_linear_graduais(2, 42), excel=True)
-    #dataset = dtst.Leitura_dados(dtst.bases_reais(3), csv=True)
+    dataset = dtst.Leitura_dados(dtst.bases_linear_graduais(10), csv=True)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)
                 
@@ -253,4 +250,6 @@ def main():
     
     
 if __name__ == "__main__":
-    main()      
+    main()  
+    
+        

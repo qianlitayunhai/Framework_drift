@@ -12,7 +12,7 @@ from regressores.IDPSO_ELM import IDPSO_ELM
 from sklearn.metrics.regression import mean_absolute_error
 import copy
 import matplotlib.pyplot as plt
-plt.style.use('ggplot')
+#plt.style.use('ggplot')
 
 
 class Ambiente():
@@ -63,7 +63,7 @@ class LTM():
         
         if(self.qtd_memoria < self.tamanho_max_memoria):
             #adicionar ambiente na memoria
-            print("Ambiente adicionado!")
+            #print("Ambiente adicionado!")
             self.vetor_ambientes.append(ambiente)
             self.qtd_memoria +=1
             
@@ -74,11 +74,11 @@ class LTM():
                 distancia = self.Distancia_vetores(ambiente.gbest.pesos, i.gbest.pesos)
                 vetor_distancias.append(distancia)
 
-            print("vetor de distancias: ", vetor_distancias)
+            #print("vetor de distancias: ", vetor_distancias)
             
             #indice do ambiente mais similar
             j = np.argmin(vetor_distancias)
-            print("Menor valor: ", vetor_distancias[j])
+            #print("Menor valor: ", vetor_distancias[j])
             
             
             # com a memória cheia, se o ambiente novo for muito diferente
@@ -89,7 +89,7 @@ class LTM():
                 del self.vetor_ambientes[j]
                 
                 # e adicionasse o novo
-                print("Ambiente antigo substituido!")
+                #print("Ambiente antigo substituido!")
                 self.vetor_ambientes.append(ambiente)
 
     def Relembrar_ambiente(self, enxame_atual, dados, lags):
@@ -104,27 +104,27 @@ class LTM():
         particao = Particionar_series(dados, [1, 0, 0], lags)
         [dados_x, dados_y] = particao.Part_train()
         
-        print("Quantidade de dados para treinamento: ", len(dados_y))
+        #print("Quantidade de dados para treinamento: ", len(dados_y))
         
         acuracias = []
         if(self.qtd_memoria != 0):
             for i in self.vetor_ambientes:
                 previsao = i.gbest.Predizer(dados_x)
                 acuracias.append(mean_absolute_error(dados_y, previsao))
-            print("Acuracias: ", acuracias)
+            #print("Acuracias: ", acuracias)
             
             previsao = enxame_atual.Predizer(dados_x)
             erro_atual = mean_absolute_error(dados_y, previsao)
-            print("Acuracia do modelo atual: ", erro_atual)
+            #print("Acuracia do modelo atual: ", erro_atual)
             
             j = np.argmin(acuracias)
-            print("Acuracia do melhor modelo da memória: ", erro_atual)
+            #print("Acuracia do melhor modelo da memória: ", erro_atual)
             
             if(acuracias[j] < erro_atual):
-                print("Melhor solução encontrada na memória [", j, "]: ", acuracias[j])
+                #print("Melhor solução encontrada na memória [", j, "]: ", acuracias[j])
                 enxame_atual.particulas = self.vetor_ambientes[j].particulas.copy()
                 enxame_atual.best_elm = self.vetor_ambientes[j].gbest
-                print("Comparacao modelos: ", enxame_atual.best_elm == self.vetor_ambientes[j].gbest)
+                #print("Comparacao modelos: ", enxame_atual.best_elm == self.vetor_ambientes[j].gbest)
                 return enxame_atual
             
             else:
@@ -136,12 +136,12 @@ class LTM():
                 # espalhando as soluções e fazendo uma nova busca
                 previsao = enxame_atual.Predizer(dados_x)
                 erro_atual = mean_absolute_error(dados_y, previsao)
-                print("Acuracia do modelo atual: ", erro_atual)
+                #print("Acuracia do modelo atual: ", erro_atual)
                 
                 # realizando a previsao para o conjunto de dados atual
                 previsao = novo.Predizer(dados_x)
                 erro_novo = mean_absolute_error(dados_y, previsao)
-                print("Acuracia do modelo atualizado:", erro_novo)
+                #print("Acuracia do modelo atualizado:", erro_novo)
                 
                 # se a solucao treinada for melhor que a solucao atual entao ela é atualizada
                 if(erro_novo < erro_atual):
@@ -150,8 +150,6 @@ class LTM():
                 # retorna a melhor solucao
                 return enxame_atual
             
-        else:
-            print("memoria zerada.")
     
     def Relembrar_acurado(self, enxame_atual, dados, lags):
         '''
@@ -212,7 +210,7 @@ class LTM():
         particao = Particionar_series(dados, [1, 0, 0], lags)
         [dados_x, dados_y] = particao.Part_train()
         
-        print("Quantidade de dados para treinamento: ", len(dados_y))
+        #print("Quantidade de dados para treinamento: ", len(dados_y))
         
         acuracias = []
         for i in range(len(enxame_atual.sensores)):
@@ -223,7 +221,7 @@ class LTM():
             
             
         j = np.argmin(acuracias)
-        print("Melhor particula: [",j,"]: ", acuracias[j])
+        #print("Melhor particula: [",j,"]: ", acuracias[j])
 
         '''
         sequencia = range(0, len(acuracias))
