@@ -122,7 +122,7 @@ class LTM():
             
             if(acuracias[j] < erro_atual):
                 #print("Melhor solução encontrada na memória [", j, "]: ", acuracias[j])
-                enxame_atual.particulas = self.vetor_ambientes[j].particulas.copy()
+                enxame_atual.particulas = copy.deepcopy(self.vetor_ambientes[j].particulas)
                 enxame_atual.Atualizar_bestmodel(self.vetor_ambientes[j].gbest) 
                 #print("Comparacao modelos: ", enxame_atual.best_elm == self.vetor_ambientes[j].gbest)
                 return enxame_atual
