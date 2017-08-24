@@ -8,7 +8,6 @@ from ferramentas.Particionar_series import Particionar_series
 from regressores.ELM import ELMRegressor
 from sklearn.metrics.regression import mean_absolute_error
 from ferramentas.Importar_dataset import Datasets
-from Crypto.Random.random import randint
 
 #limites
 Xmax = 0.3
@@ -456,7 +455,7 @@ class IDPSO_ELM():
         Método para gerar um numero aleatorio de forma que os valores não se repitam
         '''
         
-        j = randint(0, qtd)
+        j = np.random.randint(0, qtd)
         
         if(j in escolhidos):
             
