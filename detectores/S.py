@@ -75,7 +75,7 @@ class S():
         if(string_ecdd == self.sensores_ecdds[0].alerta):
             return True
         
-    def condicao_padrão(self, vetor):
+    def condicao_padrao(self, vetor):
         '''
         condicao padrão do método IDPSO-ELM-S, se todos concordarem retorna verdadeiro, caso não, falso
         :return: variavel booelana
