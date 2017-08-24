@@ -60,7 +60,7 @@ class S():
         if(voto):
             return self.condicao_voto(self.ativadores)
         else:
-            return self.condicao_padrão(self.ativadores)
+            return self.condicao_padrao(self.ativadores)
         
     def monitorar_gbest(self):
         '''
