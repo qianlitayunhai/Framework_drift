@@ -101,6 +101,7 @@ class P_IDPSO_ELM():
         alarmes = []
         #variavel para armazenar o tempo inicial
         start_time = time.time()
+        
         #vetor para armazenar a predicoes_vetor
         if(grafico):
             predicoes_vetor = [None] * len(stream)
@@ -146,7 +147,7 @@ class P_IDPSO_ELM():
                     janela_caracteristicas.Zerar_Janela()
                 
                     #atualizando o melhor modelo pela melhor particula do enxame
-                    memoria = LTM(0, 0, 0)
+                    memoria = LTM(0, 0)
                     best_model = memoria.Avaliar_particulas(enxame, janela_alerta.dados, self.lags)
                     enxame.Atualizar_bestmodel(best_model)
                     
@@ -158,6 +159,7 @@ class P_IDPSO_ELM():
                 if(alerta_ocorreu):
                     # adicionando os dados a janela
                     janela_alerta.Increment_Add(stream[i])
+                    
                 else:
                     # verificando se está em estado de alerta
                     alerta = s.monitorar_gbest()

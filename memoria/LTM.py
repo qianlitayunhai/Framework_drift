@@ -27,7 +27,7 @@ class Ambiente():
         self.gbest = gbest
 
 class LTM():
-    def __init__(self, qtd_memoria, limiar_exclusao, tx_espalhar):
+    def __init__(self, qtd_memoria, limiar_exclusao):
         '''
         Classe para lidar com a Long Term Memory, memória de longo prazo
         :param qtd_memoria: tamanho que a memória vai possuir
@@ -37,9 +37,7 @@ class LTM():
         '''
         
         self.tamanho_max_memoria = qtd_memoria
-        
         self.limiar_exclusao = limiar_exclusao
-        self.tx_espalhar = tx_espalhar
         
         self.qtd_memoria = 0
         self.vetor_ambientes = []
@@ -101,6 +99,8 @@ class LTM():
         :return: retorna o melhor enxame para os dados passados
         '''
         
+        #return enxame_atual.best_elm
+        
         particao = Particionar_series(dados, [1, 0, 0], lags)
         [dados_x, dados_y] = particao.Part_train()
         
@@ -118,41 +118,18 @@ class LTM():
             #print("Acuracia do modelo atual: ", erro_atual)
             
             j = np.argmin(acuracias)
-            #print("Acuracia do melhor modelo da memória: ", erro_atual)
+            #print("Acuracia do melhor modelo da memória: ", acuracias[j])
             
             if(acuracias[j] < erro_atual):
-                #print("Melhor solução encontrada na memória [", j, "]: ", acuracias[j])
-                enxame_atual.particulas = copy.deepcopy(self.vetor_ambientes[j].particulas)
-                enxame_atual.Atualizar_bestmodel(self.vetor_ambientes[j].gbest) 
+                #print("Trocou de solução [", j, "]: ", acuracias[j])
+                #enxame_atual.particulas = copy.deepcopy(self.vetor_ambientes[j].particulas)
+                #enxame_atual.Atualizar_bestmodel(self.vetor_ambientes[j].gbest) 
                 #print("Comparacao modelos: ", enxame_atual.best_elm == self.vetor_ambientes[j].gbest)
-                return enxame_atual
+                return self.vetor_ambientes[j].gbest
             
             else:
                 
-                return enxame_atual
-                '''
-                # criando uma instancia do modelo atual
-                novo = copy.deepcopy(enxame_atual)
-                novo.tx_espalhar = self.tx_espalhar
-                novo.Retreinar()
-                
-                # espalhando as soluções e fazendo uma nova busca
-                previsao = enxame_atual.Predizer(dados_x)
-                erro_atual = mean_absolute_error(dados_y, previsao)
-                #print("Acuracia do modelo atual: ", erro_atual)
-                
-                # realizando a previsao para o conjunto de dados atual
-                previsao = novo.Predizer(dados_x)
-                erro_novo = mean_absolute_error(dados_y, previsao)
-                #print("Acuracia do modelo atualizado:", erro_novo)
-                
-                # se a solucao treinada for melhor que a solucao atual entao ela é atualizada
-                if(erro_novo < erro_atual):
-                    enxame_atual = novo
-                
-                # retorna a melhor solucao
-                return enxame_atual
-                '''
+                return enxame_atual.best_elm
     
     def Relembrar_acurado(self, enxame_atual, dados, lags):
         '''
@@ -166,40 +143,33 @@ class LTM():
         particao = Particionar_series(dados, [1, 0, 0], lags)
         [dados_x, dados_y] = particao.Part_train()
         
-        print("Quantidade de dados para treinamento: ", len(dados_y))
+        #print("Quantidade de dados para treinamento: ", len(dados_y))
         
         acuracias = []
         if(self.qtd_memoria != 0):
             for i in self.vetor_ambientes:
-                previsao = i.gbest.Predizer(dados_x)
+                passado = self.Avaliar_particulas(i, dados, lags)
+                previsao = passado.Predizer(dados_x)
                 acuracias.append(mean_absolute_error(dados_y, previsao))
-            print("Acuracias: ", acuracias)
+            #print("Acuracias: ", acuracias)
             
             previsao = enxame_atual.Predizer(dados_x)
             erro_atual = mean_absolute_error(dados_y, previsao)
-            print("Acuracia do modelo atual: ", erro_atual)
+            #print("Acuracia do modelo atual: ", erro_atual)
             
             j = np.argmin(acuracias)
-            print("Acuracia do melhor modelo da memória: ", erro_atual)
+            #print("Acuracia do melhor modelo da memória: ", acuracias[j])
             
             if(acuracias[j] < erro_atual):
-                print("Melhor solução encontrada na memória [", j, "]: ", acuracias[j])
-                enxame_atual.particulas = self.vetor_ambientes[j].particulas.copy()
-                enxame_atual.best_elm = self.vetor_ambientes[j].gbest
-                print("Comparacao modelos: ", enxame_atual.best_elm == self.vetor_ambientes[j].gbest)
-                return enxame_atual
+                #print("Trocou de solução [", j, "]: ", acuracias[j])
+                #enxame_atual.particulas = copy.deepcopy(self.vetor_ambientes[j].particulas)
+                #enxame_atual.Atualizar_bestmodel(self.vetor_ambientes[j].gbest) 
+                #print("Comparacao modelos: ", enxame_atual.best_elm == self.vetor_ambientes[j].gbest)
+                return self.Avaliar_particulas(self.vetor_ambientes[j], dados, lags)
             
             else:
                 
-                # caso não tenha um melhor verificar as partículas
-                best_model = self.Avaliar_particulas(enxame_atual, dados, lags)
-                enxame_atual.Atualizar_bestmodel(best_model)
-                
-                # retorna a melhor solucao
-                return enxame_atual
-            
-        else:
-            print("memoria zerada.")
+                return enxame_atual.best_elm
     
     def Avaliar_particulas(self, enxame_atual, dados, lags):
         '''
@@ -243,20 +213,42 @@ class LTM():
 def main():
     
     #importando o dataset
-    dtst = Datasets()
+    dtst = Datasets('dentro')
     serie = dtst.Leitura_dados(dtst.bases_linear_graduais(3), csv=True)
     particao = Particionar_series(serie, [0.0, 0.0, 0.0], 0)
     serie = particao.Normalizar(serie)
 
     # instanciando a memoria
-    memoria = LTM(2, 0.5, 0.1)
+    memoria = LTM(1, 0.5)
 
     # criando o primeiro modelo
     serie1 = serie[:500]
     enxame1 = IDPSO_ELM(serie1, [0.8, 0.2, 0], 5, 10)
     enxame1.Treinar() 
-    memoria.Avaliar_particulas(enxame1, serie1, 5)
+    # criando o primeiro ambiente
+    ambiente1 = Ambiente(enxame1.particulas, enxame1.best_elm)
+    memoria.Adicionar_ambiente(ambiente1)
     
+    # criando o primeiro modelo
+    serie1 = serie[:500]
+    enxame1 = IDPSO_ELM(serie1, [0.8, 0.2, 0], 5, 10)
+    enxame1.Treinar() 
+    # criando o primeiro ambiente
+    ambiente1 = Ambiente(enxame1.particulas, enxame1.best_elm)
+    memoria.Adicionar_ambiente(ambiente1)
+    
+    # criando o primeiro modelo
+    serie1 = serie[:500]
+    enxame1 = IDPSO_ELM(serie1, [0.8, 0.2, 0], 5, 10)
+    enxame1.Treinar() 
+    # criando o primeiro ambiente
+    ambiente1 = Ambiente(enxame1.particulas, enxame1.best_elm)
+    memoria.Adicionar_ambiente(ambiente1)
+    
+    # criando o primeiro modelo
+    serie1 = serie[:500]
+    enxame1 = IDPSO_ELM(serie1, [0.8, 0.2, 0], 5, 10)
+    enxame1.Treinar() 
     # criando o primeiro ambiente
     ambiente1 = Ambiente(enxame1.particulas, enxame1.best_elm)
     memoria.Adicionar_ambiente(ambiente1)
@@ -271,7 +263,7 @@ def main():
     memoria.Adicionar_ambiente(ambiente2)
     
     # criando o segundo modelo
-    serie3 = serie[1000:1500]
+    serie3 = serie[0:500]
     enxame3 = IDPSO_ELM(serie3, [0.8, 0.2, 0], 5, 10)
     enxame3.Treinar() 
     

@@ -26,7 +26,7 @@ crit_parada = 2
 divisao_dataset = [0.8, 0.2, 0]
 
 class M_IDPSO_ELM():
-    def __init__(self, dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, w, c):
+    def __init__(self, dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, qtd_memoria, limiar, w, c):
         '''
         construtor do algoritmo que detecta a mudanca de ambiente por meio de sensores
         :param dataset: serie temporal que o algoritmo vai executar
@@ -46,8 +46,12 @@ class M_IDPSO_ELM():
         self.numero_particulas = numero_particulas
         self.qtd_sensores = qtd_sensores
         
+        self.qtd_memoria = qtd_memoria
+        self.limiar = limiar
+        
         self.w = w
         self.c = c
+        
         
     def Executar(self, grafico = None):
         '''
@@ -74,8 +78,8 @@ class M_IDPSO_ELM():
         enxame.Treinar()  
         
         # adicionando o primeiro conceito
-        memoria = LTM(10, 2, 0.1)
-        ambiente = Ambiente(enxame.particulas, enxame.best_elm)
+        memoria = LTM(self.qtd_memoria, self.limiar)
+        ambiente = Ambiente(enxame.sensores, enxame.best_elm)
         memoria.Adicionar_ambiente(ambiente)
        
         #ajustando com os dados finais do treinamento a janela de predicao
@@ -151,8 +155,9 @@ class M_IDPSO_ELM():
                     janela_caracteristicas.Zerar_Janela()
                 
                     #relembrando um enxame da memoria para se adaptar a mudanca
-                    enxame = memoria.Relembrar_ambiente(enxame, janela_alerta.dados, self.lags)
-                    
+                    best_model = memoria.Relembrar_ambiente(enxame, janela_alerta.dados, self.lags)
+                    enxame.Atualizar_bestmodel(best_model)
+                        
                     #variavel para alterar o fluxo, ir para o periodo de retreinamento
                     mudanca_ocorreu = True
                     alerta_ocorreu = False
@@ -190,7 +195,7 @@ class M_IDPSO_ELM():
                     enxame.Treinar() 
                     
                     #adicionando o ambiente novo na memoria
-                    ambiente = Ambiente(enxame.particulas, enxame.best_elm)
+                    ambiente = Ambiente(enxame.sensores, enxame.best_elm)
                     memoria.Adicionar_ambiente(ambiente)
                     
                     #ajustando com os dados finais do treinamento a janela de predicao
@@ -230,6 +235,8 @@ class M_IDPSO_ELM():
             print("Atrasos: ", atrasos)
             print("MAE: ", MAE)
             print("Tempo de execucao: ", tempo_execucao)
+            
+            print("Quantidade de soluções armazenadas", len(memoria.vetor_ambientes))
         
         #plotando o grafico de erro
         if(grafico == True):
@@ -244,8 +251,7 @@ def main():
     
     #instanciando o dataset
     dtst = Datasets('dentro')
-    dataset = dtst.Leitura_dados(dtst.bases_linear_graduais(10), csv=True)
-    #dataset = dtst.Leitura_dados(dtst.bases_reais(4), csv=True)
+    dataset = dtst.Leitura_dados(dtst.bases_linear_graduais(1), csv=True)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)
         
@@ -256,9 +262,11 @@ def main():
     qtd_neuronios = 10
     numero_particulas = 30
     qtd_sensores = 30
+    limiar = 3
+    qtd_memoria = 10
     w = 0.7
     c = 1
-    alg = M_IDPSO_ELM(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, w, c)
+    alg = M_IDPSO_ELM(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, qtd_memoria, limiar, w, c)
     
     #colhendo os resultados
     alg.Executar(grafico=True)

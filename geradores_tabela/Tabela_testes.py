@@ -95,6 +95,8 @@ class Tabela_testes():
         metodo para computar as estatisticas como media de desvio padrao das subpastas
         '''
         
+        print("Computando estatisticas...")
+        
         qtd_bases = c.variacao-1
         
         tabelas = ["/tabela_atrasos.xls", "/tabela_falsos_alarmes.xls", "/tabela_mape.xls", "/tabela_tempo.xls"]
@@ -121,7 +123,7 @@ class Tabela_testes():
                 shw.write(sep+4, 0,  'Não lineares Abruptas')
                 shw.write(sep+5, 0,  'Sazonais')
                 shw.write(sep+6, 0,  'Hibridas')
-                shw.write(sep+7, 0,  'Geral')
+                shw.write(sep+7, 0,  'GeGeral1
                 
                 for j in range(1, n_cols):
                     valores = []

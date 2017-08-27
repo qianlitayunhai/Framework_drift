@@ -25,65 +25,80 @@ def printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao):
     print("Tempo:", tempo_execucao)
     print()
     
+def caminho_datasets(alocacao, i, k):
+    
+    ###########################################instanciando o dataset#################################################################################
+    dtst = Datasets(alocacao)
+    
+    if(i == 0):
+        dataset = dtst.Leitura_dados(dtst.bases_linear_graduais(k), csv=True)
+        nome_arquivo = '/Lineares-Graduais/lin-grad-' + str(k)
+        return dataset, nome_arquivo
+                                
+    elif(i == 1):
+        dataset = dtst.Leitura_dados(dtst.bases_linear_abruptas(k), csv=True)
+        nome_arquivo = '/Lineares-Abruptas/lin-abt-' + str(k)
+        return dataset, nome_arquivo
+            
+    elif(i == 2):
+        dataset = dtst.Leitura_dados(dtst.bases_nlinear_graduais(k), csv=True)
+        nome_arquivo = '/LinearesN-Graduais/lin_n-grad-' + str(k)
+        return dataset, nome_arquivo
+                              
+    elif(i == 3):
+        dataset = dtst.Leitura_dados(dtst.bases_nlinear_abruptas(k), csv=True)
+        nome_arquivo = '/LinearesN-Abruptas/lin_n-abt-' + str(k)
+        return dataset, nome_arquivo
+                              
+    elif(i == 4):
+        dataset = dtst.Leitura_dados(dtst.bases_sazonais(k), csv=True)
+        nome_arquivo = '/Sazonais/saz-' + str(k)
+        return dataset, nome_arquivo
+                                
+    elif(i == 5):
+        dataset = dtst.Leitura_dados(dtst.bases_hibridas(k), csv=True)
+        nome_arquivo = '/Hibridas/hib-' + str(k)
+        return dataset, nome_arquivo
+            
+    elif(i == 6):
+        dataset = dtst.Leitura_dados(dtst.bases_reais(k), csv=True)
+        if(k == 1):
+            nome_arquivo = '/Reais/dow'
+            return dataset, nome_arquivo
+        elif(k == 2):
+            nome_arquivo = '/Reais/nasdaq'
+            return dataset, nome_arquivo
+        elif(k == 3):
+            nome_arquivo = '/Reais/SP500'
+            return dataset, nome_arquivo         
+    ##################################################################################################################################################
+    
 def main():
     '''
         metodo para rodar o experimento
-        
     '''
+    
+    ###########################################definindo informaceos referentes a pastas #################################################################################
+    
     alocacao = 'fora'
-    
     e = Constantes(alocacao)
-    
     pasta = e.pasta
         
     ###########################################definindo os indices das series que serão experimentadas#################################################################################
                 
     vez = [0, 1]
-    variacao = range(10, e.variacao)
+    variacao = range(e.variacao_inicio, e.variacao_final)
                 
     ####################################################################################################################################################################################
-    dtst = Datasets(alocacao)
                 
     for i in vez:
         for k in variacao:
                            
             ###########################################instanciando o dataset#################################################################################
-            if(i == 0):
-                dataset = dtst.Leitura_dados(dtst.bases_linear_graduais(k), csv=True)
-                nome_arquivo = '/Lineares-Graduais/lin-grad-' + str(k)
-                                
-            elif(i == 1):
-                dataset = dtst.Leitura_dados(dtst.bases_linear_abruptas(k), csv=True)
-                nome_arquivo = '/Lineares-Abruptas/lin-abt-' + str(k)
-            
-            elif(i == 2):
-                dataset = dtst.Leitura_dados(dtst.bases_nlinear_graduais(k), csv=True)
-                nome_arquivo = '/LinearesN-Graduais/lin_n-grad-' + str(k)
-                                
-            elif(i == 3):
-                dataset = dtst.Leitura_dados(dtst.bases_nlinear_abruptas(k), csv=True)
-                nome_arquivo = '/LinearesN-Abruptas/lin_n-abt-' + str(k)
-                                
-            elif(i == 4):
-                dataset = dtst.Leitura_dados(dtst.bases_sazonais(k), csv=True)
-                nome_arquivo = '/Sazonais/saz-' + str(k)
-                                
-            elif(i == 5):
-                dataset = dtst.Leitura_dados(dtst.bases_hibridas(k), csv=True)
-                nome_arquivo = '/Hibridas/hib-' + str(k)
-            
-            elif(i == 6):
-                dataset = dtst.Leitura_dados(dtst.bases_reais(k), csv=True)
-                if(k == 1):
-                    nome_arquivo = '/Reais/dow'
-                if(k == 2):
-                    nome_arquivo = '/Reais/nasdaq'
-                if(k == 3):
-                    nome_arquivo = '/Reais/SP500'         
+            dataset, nome_arquivo = caminho_datasets(alocacao, i, k)
             ##################################################################################################################################################
                             
             ######################################## criando a tabela onde as informacoes serao armazenadas ##################################################
-                            
             #normalizando a serie
             particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
             dataset = particao.Normalizar(dataset)
@@ -97,28 +112,24 @@ def main():
             ##################################################################################################################################################
                             
             #####################instanciando as variaveis para o construtor das classes#######################################################################
-            
             grafico = False
             n = 300
             lags = 5
             qtd_neuronios = 10
             numero_particulas = 30
-            
             ##################################################################################################################################################
                             
             ##############################################definindo quantas vezes cada algoritmo sera executado##############################################
-            
+            # quantidade de execucoes
             qtd_execucoes = e.qtd_execucoes
                         
+            # for de execucoes
             for execucao in range(qtd_execucoes):
                 print(nome_arquivo + " -  Execucao [%s]"  %(execucao))
 
                 ########################################### instanciando os algoritmo e escrevendo as execucoes ####################################################
                 #"ELM"
                 print(folhas[0])
-                limite = 1
-                w = 0
-                c = 0
                 alg = ELM_SD(dataset, n, lags, qtd_neuronios)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
                 printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
@@ -126,8 +137,8 @@ def main():
                 
                 #"ELM_DDM"
                 print(folhas[1])
-                w = 3
-                c = 5
+                w = 5
+                c = 6
                 alg = ELM_DDM(dataset, n, lags, qtd_neuronios, w, c)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
                 printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
@@ -135,8 +146,8 @@ def main():
                 
                 #"ELM_ECDD"
                 print(folhas[2])
-                w = 0.25
-                c = 0.5
+                w = 0.55
+                c = 0.75
                 alg = ELM_ECDD(dataset, n, lags, qtd_neuronios, 0.2, w, c)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
                 printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
@@ -144,8 +155,8 @@ def main():
                 
                 #"ELM-FEDD"
                 print(folhas[3])
-                w = 0.5
-                c = 0.75
+                w = 0.1
+                c = 0.25
                 alg = ELM_FEDD(dataset, n, lags, qtd_neuronios, 0.2, w, c)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
                 printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
@@ -154,8 +165,8 @@ def main():
                 #"IDPSO-ELM-B"
                 print(folhas[4])
                 limite = 1
-                w = 0.1
-                c = 0.25
+                w = 0.75
+                c = 1
                 alg = IDPSO_ELM_B(dataset, n, lags, qtd_neuronios, numero_particulas, limite, w, c)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
                 printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
@@ -164,8 +175,8 @@ def main():
                 #"IDPSO-ELM-S (30)"
                 print(folhas[5])
                 qtd_sensores = 30
-                w = 0.1
-                c = 0.25
+                w = 0.5
+                c = 0.75
                 alg = IDPSO_ELM_S(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, w, c)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
                 printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
@@ -173,9 +184,6 @@ def main():
                 
                 #"P-IDPSO-ELM"
                 print(folhas[6])
-                qtd_sensores = 30
-                w = 0.1
-                c = 0.25
                 alg = P_IDPSO_ELM(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, w, c)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
                 printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
@@ -183,10 +191,8 @@ def main():
                 
                 #"M-IDPSO-ELM"
                 print(folhas[7])
-                qtd_sensores = 30
-                w = 0.1
-                c = 0.25
-                alg = M_IDPSO_ELM(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, w, c)
+                qtd_memoria = 30
+                alg = M_IDPSO_ELM(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, qtd_memoria, 3, w, c)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
                 printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
                 tabela.Adicionar_Sheet_Linha(7, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
