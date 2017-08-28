@@ -132,6 +132,7 @@ class Tabela_testes():
                         valores.append(valor)
                     
                     #correto
+                    shw.write(sep, j,  c.folhas[j])
                     shw.write(sep+1, j,  np.mean(valores[0:qtd_bases]))
                     shw.write(sep+2, j,  np.mean(valores[qtd_bases:2*qtd_bases]))
                     shw.write(sep+3, j,  np.mean(valores[2*qtd_bases:3*qtd_bases]))

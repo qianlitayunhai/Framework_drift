@@ -82,11 +82,10 @@ def main():
     
     alocacao = 'fora'
     e = Constantes(alocacao)
-    pasta = e.pasta
         
     ###########################################definindo os indices das series que serão experimentadas#################################################################################
                 
-    vez = [0, 1]
+    vez = [4, 5]
     variacao = range(e.variacao_inicio, e.variacao_final)
                 
     ####################################################################################################################################################################################
@@ -104,7 +103,7 @@ def main():
             dataset = particao.Normalizar(dataset)
                                 
             tabela = Tabela_excel()
-            nome = e.caminho_bases + pasta + nome_arquivo
+            nome = e.caminho_bases + e.pasta + nome_arquivo
             folhas = e.folhas
             cabecalho = ["falsos alarmes", "atrasos", "MAPE", "tempo execucao"]
             largura_col = 5000
