@@ -97,7 +97,7 @@ class Tabela_testes():
         
         print("Computando estatisticas...")
         
-        qtd_bases = c.variacao-1
+        qtd_bases = c.variacao_final-1
         
         tabelas = ["/tabela_atrasos.xls", "/tabela_falsos_alarmes.xls", "/tabela_mape.xls", "/tabela_tempo.xls"]
         
@@ -123,7 +123,7 @@ class Tabela_testes():
                 shw.write(sep+4, 0,  'Não lineares Abruptas')
                 shw.write(sep+5, 0,  'Sazonais')
                 shw.write(sep+6, 0,  'Hibridas')
-                shw.write(sep+7, 0,  'GeGeral1
+                shw.write(sep+7, 0,  'Geral')
                 
                 for j in range(1, n_cols):
                     valores = []
@@ -133,8 +133,6 @@ class Tabela_testes():
                     
                     #correto
                     shw.write(sep+1, j,  np.mean(valores[0:qtd_bases]))
-                    
-                    
                     shw.write(sep+2, j,  np.mean(valores[qtd_bases:2*qtd_bases]))
                     shw.write(sep+3, j,  np.mean(valores[2*qtd_bases:3*qtd_bases]))
                     shw.write(sep+4, j,  np.mean(valores[3*qtd_bases:4*qtd_bases]))
@@ -228,7 +226,7 @@ class Tabela_testes():
         
         metricas = [0, 1, 2, 3]
         linha_media = c.qtd_execucoes
-        variacoes = c.variacao
+        variacoes = c.variacao_final
         
         for z in metricas:
             
@@ -357,7 +355,7 @@ class Tabela_testes():
             sh = book.sheet_by_index(i-1)
             
             # obtendo a quantidade linhas dentro da folha
-            n_linhas = (c.variacao-1) * 6
+            n_linhas = (c.variacao_final-1) * 6
             
             # obtendo a quantidade colunas dentro da folha
             n_cols = sh.ncols
@@ -401,10 +399,10 @@ class Tabela_testes():
         
 def main():
     tbt = Tabela_testes()
-    tbt.Criar_tabelas()
-    tbt.Calcular_estatisticas_bases()
+    #tbt.Criar_tabelas()
+    #tbt.Calcular_estatisticas_bases()
     #tbt.Gerar_tabela_final()
-    tbt.Img_teste()  
+    #tbt.Img_teste()  
     
           
 if __name__ == "__main__":
