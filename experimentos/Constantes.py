@@ -12,7 +12,7 @@ class Constantes():
         self.qtd_execucoes = 5
         self.variacao_inicio = 1
         self.variacao_final = 31
-        self.pasta = "Deteccao1"
+        self.pasta = "Deteccao"
         #self.pasta = "preliminares"
         if(alocacao == 'dentro'):
             self.caminho_bases = "../tabelas/Experimentos/"
