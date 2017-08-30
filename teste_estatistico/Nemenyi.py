@@ -304,7 +304,7 @@ class NemenyiTestPostHoc():
         plt.savefig(caminho+nome)
         
         print("Teste gerado!")
-        plt.show()
+        #plt.show()
     
         
 def main():

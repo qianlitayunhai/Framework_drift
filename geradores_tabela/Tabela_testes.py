@@ -22,72 +22,170 @@ class Tabela_testes():
         self.wb = Workbook()
         self.nome = ""
     
+    def Arquivo_tabela_final(self):
+        '''
+        metodo para gerar a tabela que vai conter os resultados finais dos experimentos com parametros
+        '''
+        
+        tabela = Tabela_excel()
+        nome = c.caminho_bases + c.pasta + "/Resultados"
+        folhas = c.folhas
+        largura_col = 5000
+        tabela.Criar_tabela(nome, folhas, largura_col=largura_col)
+            
+        metricas = ['Falsos Alarmes', 'MAE', 'Atrasos', 'Tempo']
+        pastas = ['[1]', '[2]', '[3]', '[4]']
+        cabecalhos = ['Bases', 
+                      'Lineares Graduais', 
+                      'Lineares Abruptas', 
+                      'Não Lineares Graduais', 
+                      'Não Lineares Abruptas', 
+                      'Sazonais', 
+                      'Híbridas', 
+                      'Média Geral']    
+        
+        for i in range(len(c.folhas)):
+
+            # escrevendo o bloco de falsos alarmes
+            tabela.Adicionar_dado(i, 0, 0, metricas[0])
+            linha = 1
+            for j in range(len(cabecalhos)):
+                tabela.Adicionar_dado(i, 0, linha, cabecalhos[j])
+                linha += 1
+            for k in range(len(pastas)):
+                tabela.Adicionar_dado(i, k+1, 1, pastas[k])
+        
+        
+        
+            # escrevendo o bloco de MAE
+            linha += 1
+            bases = linha + 1
+            tabela.Adicionar_dado(i, 0, linha, metricas[1])
+            for j in range(len(cabecalhos)):
+                linha += 1
+                tabela.Adicionar_dado(i, 0, linha, cabecalhos[j])
+            for k in range(len(pastas)):
+                tabela.Adicionar_dado(i, k+1, bases, pastas[k])
+                
+            
+            
+            # escrevendo o bloco de Atrasos
+            linha += 2
+            bases = linha + 1
+            tabela.Adicionar_dado(i, 0, linha, metricas[2])
+            for j in range(len(cabecalhos)):
+                linha += 1
+                tabela.Adicionar_dado(i, 0, linha, cabecalhos[j])
+            for k in range(len(pastas)):
+                tabela.Adicionar_dado(i, k+1, bases, pastas[k])
+            
+            
+            
+            # escrevendo o bloco de Tempo
+            linha += 2
+            bases = linha + 1
+            tabela.Adicionar_dado(i, 0, linha, metricas[3])
+            for j in range(len(cabecalhos)):
+                linha += 1
+                tabela.Adicionar_dado(i, 0, linha, cabecalhos[j])
+            for k in range(len(pastas)):
+                tabela.Adicionar_dado(i, k+1, bases, pastas[k])
+                
     def Gerar_tabela_final(self):
         '''
         metodo para agrupar os resultados que estavam em subpastas e salvar em um arquivo final
         '''
         
-        caminho = c.caminho_bases + c.pasta
+        # gerando a tabela final
+        self.Arquivo_tabela_final()
+        
+        # definindo algumas variaveis padrões
+        caminho = c.caminho_bases + c.pasta + "/"
         tabela_final = "Resultados.xls"
         caminho_tabfinal = caminho + tabela_final
         caminho_pastas = caminho
-        subpasta = ["0", "0.25", "0.5", "0.75", "1"]
-        tabelas = ["/tabela_atrasos.xls.xls", "/tabela_falsos_alarmes.xls.xls", "/tabela_mape.xls.xls", "/tabela_tempo.xls.xls"]
+        subpasta = ["[1]", "[2]", "[3]", "[4]"]
+        arquivos = ["/tabela_atrasos.xls", "/tabela_falsos_alarmes.xls", "/tabela_mape.xls", "/tabela_tempo.xls"]
         
+        # criando as estatisticas das subpastas
+        self.Criar_tabelas_subpastas(subpasta)
+        
+        # abrindo o arquivo onde os dados serão inscritos
         book_final = xlrd.open_workbook(caminho_tabfinal)
         folhas = len(book_final.sheet_names())
         wb = copy(book_final)
                 
+        # for para quantidade de folhas da tabela
         for z in range(folhas):
-        
+            #for para as subpastas [1]...
             for i in range(len(subpasta)):
+                # for para entrar em cada arquivo de dados FA, MAE...
+                for j in range(len(arquivos)):
                 
-                for j in range(len(tabelas)):
-                
-                    book = xlrd.open_workbook(caminho_pastas + subpasta[i] + tabelas[j])
+                    # abrindo um arquivo por vez e salvando em book para poder coletar as informações
+                    book = xlrd.open_workbook(caminho_pastas + subpasta[i] + arquivos[j])
                     
+                    # obtendo a folha principal da tabela
                     sh = book.sheet_by_index(0)
+                    # salvando a quantiade de linhas do arquivo
                     n_linhas = sh.nrows
                     
-                    lineares = sh.cell_value(rowx = n_linhas-5, colx = z+1)
-                    nlineares = sh.cell_value(rowx = n_linhas-4, colx = z+1)
+                    # contando da ultima linha salvando as informacoes de medias do arquivo
+                    lineares_grad = sh.cell_value(rowx = n_linhas-7, colx = z+1)
+                    lineares_abt = sh.cell_value(rowx = n_linhas-6, colx = z+1)
+                    nlineares_grad = sh.cell_value(rowx = n_linhas-5, colx = z+1)
+                    nlineares_abt = sh.cell_value(rowx = n_linhas-4, colx = z+1)
                     sazonais = sh.cell_value(rowx = n_linhas-3, colx = z+1)
                     hibridas = sh.cell_value(rowx = n_linhas-2, colx = z+1)
                     geral = sh.cell_value(rowx = n_linhas-1, colx = z+1)
                     
                     
+                    # obtendo a folha referente do arquivo Resultados
                     shw = wb.get_sheet(z)
                     
+                    # de acordo com a métrica escreve no local especifico
+                    # atrasos
                     if(j == 0):
-                        shw.write(21, i+1, lineares)
-                        shw.write(22, i+1, nlineares)
-                        shw.write(23, i+1, sazonais)
-                        shw.write(24, i+1, hibridas)
-                        shw.write(25, i+1, geral)
+                        shw.write(22, i+1, lineares_grad)
+                        shw.write(23, i+1, lineares_abt)
+                        shw.write(24, i+1, nlineares_grad)
+                        shw.write(25, i+1, nlineares_abt)
+                        shw.write(26, i+1, sazonais)
+                        shw.write(27, i+1, hibridas)
+                        shw.write(28, i+1, geral)
                         wb.save(caminho_tabfinal)
-                        
+                    
+                    # falsos alarmes
                     elif(j == 1):
-                        shw.write(3, i+1, lineares)
-                        shw.write(4, i+1, nlineares)
-                        shw.write(5, i+1, sazonais)
-                        shw.write(6, i+1, hibridas)
-                        shw.write(7, i+1, geral)
+                        shw.write(2, i+1, lineares_grad)
+                        shw.write(3, i+1, lineares_abt)
+                        shw.write(4, i+1, nlineares_grad)
+                        shw.write(5, i+1, nlineares_abt)
+                        shw.write(6, i+1, sazonais)
+                        shw.write(7, i+1, hibridas)
+                        shw.write(8, i+1, geral)
                         wb.save(caminho_tabfinal)
-                        
+                    
+                    # mae
                     elif(j == 2):
-                        shw.write(12, i+1, lineares)
-                        shw.write(13, i+1, nlineares)
-                        shw.write(14, i+1, sazonais)
-                        shw.write(15, i+1, hibridas)
-                        shw.write(16, i+1, geral)
+                        shw.write(12, i+1, lineares_grad)
+                        shw.write(13, i+1, lineares_abt)
+                        shw.write(14, i+1, nlineares_grad)
+                        shw.write(15, i+1, nlineares_abt)
+                        shw.write(16, i+1, sazonais)
+                        shw.write(17, i+1, hibridas)
+                        shw.write(18, i+1, geral)
                         wb.save(caminho_tabfinal)
-                        
+                    
+                    # tempo
                     elif(j == 3):
-                        shw.write(30, i+1, lineares)
-                        shw.write(31, i+1, nlineares)
-                        shw.write(32, i+1, sazonais)
-                        shw.write(33, i+1, hibridas)
-                        shw.write(34, i+1, geral)
+                        shw.write(32, i+1, lineares_grad)
+                        shw.write(33, i+1, lineares_abt)
+                        shw.write(34, i+1, nlineares_grad)
+                        shw.write(35, i+1, nlineares_abt)
+                        shw.write(36, i+1, sazonais)
+                        shw.write(37, i+1, hibridas)
+                        shw.write(38, i+1, geral)
                         wb.save(caminho_tabfinal)
     
     def Calcular_estatisticas_bases(self):
@@ -104,7 +202,6 @@ class Tabela_testes():
         for z in range(len(tabelas)):
             
             nome = caminho_bases + tabelas[z]
-            
             book = xlrd.open_workbook(nome)
             wb = copy(book)
             
@@ -112,6 +209,7 @@ class Tabela_testes():
             
             for i in range(n_sheets):
                 sh = book.sheet_by_index(i)
+                sh.width = 10000
                 n_linhas = sh.nrows
                 n_cols = sh.ncols
                 sep = n_linhas + 2 
@@ -132,7 +230,7 @@ class Tabela_testes():
                         valores.append(valor)
                     
                     #correto
-                    shw.write(sep, j,  c.folhas[j])
+                    shw.write(sep, j,  c.folhas[j-1])
                     shw.write(sep+1, j,  np.mean(valores[0:qtd_bases]))
                     shw.write(sep+2, j,  np.mean(valores[qtd_bases:2*qtd_bases]))
                     shw.write(sep+3, j,  np.mean(valores[2*qtd_bases:3*qtd_bases]))
@@ -331,8 +429,21 @@ class Tabela_testes():
                                 
                             print(parte1+parte2+parte4)
             
-            tabela.Calcular_Medias2(variacao[-1]*len(vez))
+            tabela.Calcular_Medias3(variacao[-1]*len(vez))
+            
+        # computando as estatisticas opor bases
+        self.Calcular_estatisticas_bases()
+        self.Img_teste()
    
+    def Criar_tabelas_subpastas(self, sub_pastas):
+        global caminho_bases
+        copia = caminho_bases
+        
+        for i in sub_pastas:
+            caminho_bases = copia
+            caminho_bases = caminho_bases +"/"+ i
+            self.Criar_tabelas()
+        
     def Img_teste(self):
         '''
         método para gerar plots do teste estatístico
@@ -394,16 +505,21 @@ class Tabela_testes():
             #computando o nemenyi posthuc
             nemenyi = NemenyiTestPostHoc(labels, acuracias)
             nome = "/friedman_mape"
-            caminho = c.caminho_bases+c.pasta
+            global caminho_bases
+            caminho = caminho_bases
             nemenyi.gerar_plot(nome, caminho)
         
-        
 def main():
+    gerar_teste_acuracia = False
+    gerar_planilhas_parametros = True
+    
     tbt = Tabela_testes()
-    #tbt.Criar_tabelas()
-    #tbt.Calcular_estatisticas_bases()
-    #tbt.Gerar_tabela_final()
-    #tbt.Img_teste()  
+    
+    if(gerar_teste_acuracia):
+        tbt.Criar_tabelas()
+        
+    if(gerar_planilhas_parametros):
+        tbt.Gerar_tabela_final()
     
           
 if __name__ == "__main__":

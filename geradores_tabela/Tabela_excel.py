@@ -83,7 +83,13 @@ class Tabela_excel():
                 for x, i in enumerate(cabecalho):
                     folha.write(0,x, i, estilo_cabecalho)
                     folha.col(x).width = largura_col
-                        
+        
+        elif(largura_col != None):
+            for folha in self.sheets:
+                for i in range(10):
+                    folha.col(i).width = largura_col
+            
+            
         self.wb.save(self.nome_tabela)
 
     def ler(self, arq_xls, folha, linha, coluna):
@@ -171,17 +177,19 @@ class Tabela_excel():
         
         print("Salvou a tabela!")
     
-    def Calcular_Medias2(self, qtd_execucoes):
+    def Calcular_Medias3(self, qtd_execucoes):
         '''
         metodo para computar a media das colunas no final do arquivo
         :param qtd_execucoes: linha em que as medias serao escrevidas
         '''
+        book = xlrd.open_workbook(self.nome_tabela)
         
         for e in range(len(self.sheets)):
+            sh = book.sheet_by_index(e)
             for j in range(self.ncols-1):
                 media = []
                 for i in range(qtd_execucoes):
-                    valor = self.ler(self.nome_tabela, e, i+1, j+1)
+                    valor = sh.cell_value(rowx=i+1, colx=j+1)
                     media.append(valor)
                 self.sheets[e].write(qtd_execucoes+1, j+1, np.mean(media), self.estilo_cabecalho)
                 self.wb.save(self.nome_tabela)
