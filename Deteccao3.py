@@ -133,25 +133,30 @@ def main():
     
                     ########################################### instanciando os algoritmo e escrevendo as execucoes ####################################################
                     
+                    falsos_alarmes = 1000 
+                    atrasos = 1000 
+                    MAPE = 1000
+                    tempo_execucao = 1000
+                
                     #"ELM_DDM"
-                    print(folhas[0])
-                    alg = ELM_DDM(dataset, n, lags, qtd_neuronios, param_ddm[z], param_ddm[z])
-                    [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
-                    printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
+                    #print(folhas[0])
+                    #alg = ELM_DDM(dataset, n, lags, qtd_neuronios, param_ddm[z], param_ddm[z])
+                    #[falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
+                    #printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
                     tabela.Adicionar_Sheet_Linha(0, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
                     
                     #"ELM_ECDD"
-                    print(folhas[1])
-                    alg = ELM_ECDD(dataset, n, lags, qtd_neuronios, 0.2, param_ecdd[z], param_ecdd[z])
-                    [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
-                    printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
+                    #print(folhas[1])
+                    #alg = ELM_ECDD(dataset, n, lags, qtd_neuronios, 0.2, param_ecdd[z], param_ecdd[z])
+                    #[falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
+                    #printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
                     tabela.Adicionar_Sheet_Linha(1, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
                     
                     #"ELM-FEDD"
-                    print(folhas[2])
-                    alg = ELM_FEDD(dataset, n, lags, qtd_neuronios, 0.2, param_fedd[z], param_fedd[z])
-                    [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
-                    printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
+                    #print(folhas[2])
+                    #alg = ELM_FEDD(dataset, n, lags, qtd_neuronios, 0.2, param_fedd[z], param_fedd[z])
+                    #[falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
+                    #printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
                     tabela.Adicionar_Sheet_Linha(2, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
                     
                     #"IDPSO-ELM-B"
@@ -163,17 +168,17 @@ def main():
                     tabela.Adicionar_Sheet_Linha(3, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
                     
                     #"IDPSO-ELM-S"
-                    print(folhas[4])
-                    alg = IDPSO_ELM_S(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, param_ecdd[z], param_ecdd[z])
-                    [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
-                    printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
+                    #print(folhas[4])
+                    #alg = IDPSO_ELM_S(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, param_ecdd[z], param_ecdd[z])
+                    #[falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
+                    #printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
                     tabela.Adicionar_Sheet_Linha(4, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
                     
                     #"IDPSO_ELM_SV"
-                    print(folhas[5])
-                    alg = IDPSO_ELM_SV(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, param_ecdd[z], param_ecdd[z])
-                    [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
-                    printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
+                    #print(folhas[5])
+                    #alg = IDPSO_ELM_SV(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, param_ecdd[z], param_ecdd[z])
+                    #[falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
+                    #printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
                     tabela.Adicionar_Sheet_Linha(5, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
                     
                     #"IDPSO_ELM_BS"
@@ -182,6 +187,7 @@ def main():
                     [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
                     printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
                     tabela.Adicionar_Sheet_Linha(6, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
+
                     
                     ##################################################################################################################################################
                                         

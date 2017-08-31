@@ -508,7 +508,7 @@ class Tabela_testes():
             global caminho_bases
             caminho = caminho_bases
             nemenyi.gerar_plot(nome, caminho)
-        
+    
 def main():
     gerar_teste_acuracia = False
     gerar_planilhas_parametros = True

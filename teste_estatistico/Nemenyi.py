@@ -4,12 +4,67 @@ Created on 24 de mai de 2017
 
 @author: gusta
 '''
-from scipy.stats import friedmanchisquare, rankdata, norm
+from scipy.stats import rankdata, norm
 from scipy.special import gammaln
 import numpy as np
 import Orange.evaluation as ora
 import matplotlib.pyplot as plt
 
+class Ler_dados():
+    pass
+
+    def obter_dados_arquivo(self, caminho_tabela, linhas, colunas):
+        '''
+        método para gerar plots do teste estatístico
+        :param: caminho_tabela: string, referente ao caminho que a tabela se encontra
+        :param: linhas: vetor inteiro, contendo o inicio da linha e o final dos dados para serem usados no teste
+        :param: colunas: vetor inteiro, contendo o inicio da coluna e o final dos dados para serem usados no teste
+        '''
+        # importando lib que abre o arquivo
+        import xlrd
+        # abrindo um workbook e copiando ele em uma variavel auxiliar
+        book = xlrd.open_workbook(caminho_tabela)
+        # obtendo a quantidade de folhas 
+        i = len(book.sheet_names())
+        # abrindo a folha existente
+        sh = book.sheet_by_index(i-1)
+            
+        # obtendo a quantidade linhas dentro da folha
+        linha_inicial = linhas[0]
+        linha_final = linhas[1]
+        
+        # obtendo a quantidade colunas dentro da folha
+        coluna_inicial = colunas[0]
+        coluna_final = colunas[1]
+            
+        # variavel para salvar a primeira coluna das caminho_tabela
+        labels = []
+        acuracias = []
+        
+        # for para a quantidade de colunas
+        for j in range(coluna_inicial, coluna_final+1):
+            # for para percorrer as linhas de cada coluna
+            for k in range(0, 1):
+                # copiando o valor referente a linha e coluna passada
+                valor = sh.cell_value(rowx=k, colx=j)
+                labels.append(valor)
+                
+                
+        # for para a quantidade de colunas
+        for j in range(coluna_inicial, coluna_final+1):
+            # variavel para salvar os valores de cada coluna
+            valores = []
+            # for para percorrer as linhas de cada coluna
+            for k in range(linha_inicial, linha_final):
+                # copiando o valor referente a linha e coluna passada
+                valor = sh.cell_value(rowx=k, colx=j)
+                valores.append(valor)
+            # salvando o conjunto de acuracias    
+            acuracias.append(np.asarray(valores))
+        # convertendo a lista final em um array
+        acuracias = np.asarray(acuracias)
+            
+        return labels, acuracias
 
 class NemenyiTestPostHoc():
     def __init__(self, labels, data):
@@ -294,9 +349,6 @@ class NemenyiTestPostHoc():
         #computando as estatisticas a partir do rank dos modelos
         cd = ora.compute_CD(meanRanks, len(self._data[0]), alpha="0.05", test="nemenyi")
         
-        # setando o tamanho da figura
-        #plt.figure(figsize =(20,15))
-        
         # criando o plot com os rankings, labels e distancia critica
         ora.graph_ranks(meanRanks, self.labels, cd=cd, width=10, textspace=2)
 
@@ -306,29 +358,65 @@ class NemenyiTestPostHoc():
         print("Teste gerado!")
         #plt.show()
     
+    def Exemplo_executavel(self):
+        #acuracias dos modelos, cada coluna é um modelo
+        data = np.asarray([(3.88, 5.64, 5.76, 4.25, 5.91, 4.33), 
+                           (30.58, 30.14, 16.92, 23.19, 26.74, 10.91),
+                           (25.24, 33.52, 25.45, 18.85, 20.45, 26.67), 
+                           (4.44, 7.94, 4.04, 4.4, 4.23, 4.36),
+                           (29.41, 30.72, 32.92, 28.23, 23.35, 12), 
+                           (38.87, 33.12, 39.15, 28.06, 38.23, 26.65)])
+        
+        #label dos modelos, cada coluna é um modelo
+        names_alg = ["alg1", 
+                     "alg2", 
+                     "alg3", 
+                     "alg4", 
+                     "alg5", 
+                     "alg6"]
+        
+        #computando o nemenyi posthuc
+        nemenyi = NemenyiTestPostHoc(names_alg, data)
+        nemenyi.gerar_plot("teste", "../Tabelas/Experimentos/Preliminares/")
         
 def main():
     
-    #acuracias dos modelos, cada coluna é um modelo
-    data = np.asarray([(3.88, 5.64, 5.76, 4.25, 5.91, 4.33), 
-                       (30.58, 30.14, 16.92, 23.19, 26.74, 10.91),
-                       (25.24, 33.52, 25.45, 18.85, 20.45, 26.67), 
-                       (4.44, 7.94, 4.04, 4.4, 4.23, 4.36),
-                       (29.41, 30.72, 32.92, 28.23, 23.35, 12), 
-                       (38.87, 33.12, 39.15, 28.06, 38.23, 26.65)])
+    tbt = Ler_dados()
+    caminho_arquivo = 'E:/Workspace2/Framework_drift/tabelas/Experimentos/Preliminares/tabela_mape.xls'
+    caminho_salvar = 'E:/Workspace2/Framework_drift/tabelas/Experimentos/Preliminares'
     
-    #label dos modelos, cada coluna é um modelo
-    names_alg = ["alg1", 
-                 "alg2", 
-                 "alg3", 
-                 "alg4", 
-                 "alg5", 
-                 "alg6"]
+    #lin grad
+    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [1, 31], [1, 8]) 
+    nemenyi = NemenyiTestPostHoc(labels, acuracias)
+    nemenyi.gerar_plot("/friedman_lin_grad", caminho_salvar)
     
-    #computando o nemenyi posthuc
-    nemenyi = NemenyiTestPostHoc(names_alg, data)
-    nemenyi.gerar_plot("teste", "../Tabelas/Experimentos/Preliminares/")
+    #lin abt
+    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [32, 61], [1, 8]) 
+    nemenyi = NemenyiTestPostHoc(labels, acuracias)
+    nemenyi.gerar_plot("/friedman_lin_abt", caminho_salvar)
+    
+    #nlin grad
+    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [62, 91], [1, 8]) 
+    nemenyi = NemenyiTestPostHoc(labels, acuracias)
+    nemenyi.gerar_plot("/friedman_nlin_grad", caminho_salvar)
+    
+    #nlin abt
+    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [92, 121], [1, 8]) 
+    nemenyi = NemenyiTestPostHoc(labels, acuracias)
+    nemenyi.gerar_plot("/friedman_nlin_abt", caminho_salvar)
+    
+    #saz
+    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [122, 151], [1, 8]) 
+    nemenyi = NemenyiTestPostHoc(labels, acuracias)
+    nemenyi.gerar_plot("/friedman_saz", caminho_salvar)
+    
+    #hib
+    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [152, 181], [1, 8]) 
+    nemenyi = NemenyiTestPostHoc(labels, acuracias)
+    nemenyi.gerar_plot("/friedman_hib", caminho_salvar)
+    
     
 
 if __name__ == '__main__':
     main()
+    

@@ -206,9 +206,8 @@ class IDPSO_ELM_B():
 def main():
     
     #instanciando o dataset
-    dtst = Datasets()
-    dataset = dtst.Leitura_dados(dtst.bases_reais(1), csv=True)
-    #dataset = dtst.Leitura_dados(dtst.bases_hibridas(10), csv=True)
+    dtst = Datasets('dentro')
+    dataset = dtst.Leitura_dados(dtst.bases_linear_graduais(1), csv=True)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)
         

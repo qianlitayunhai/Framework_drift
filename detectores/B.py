@@ -35,8 +35,10 @@ class B():
         :param MI0: média dos erros
         :param SIGMA0: desvio dos erros
         '''
+
         self.media_zero = comportamento[0]
         self.desvio_zero = comportamento[1]
+        self.ecdd.armazenar_conceito(self.media_zero, self.desvio_zero)
         
     def atualizar_ewma(self, MI0, i):
         #atualizando o ewma
