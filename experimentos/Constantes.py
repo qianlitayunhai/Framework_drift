@@ -16,7 +16,7 @@ class Constantes():
         #self.pasta = "Deteccao"
         #self.pasta = "Deteccao (B e BS)"
         #self.pasta = "preliminares"
-        self.pasta = "Acuracia_adpt1"
+        self.pasta = "Acuracia_adpt"
         
         if(alocacao == 'dentro'):
             self.caminho_bases = "../tabelas/Experimentos/"
