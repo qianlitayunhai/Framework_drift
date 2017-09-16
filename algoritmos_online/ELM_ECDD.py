@@ -229,9 +229,9 @@ class ELM_ECDD():
 def main():
     
     #instanciando o dataset
-    dtst = Datasets()
+    dtst = Datasets('dentro')
     #dataset = dtst.Leitura_dados(dtst.reais(1), csv=True)
-    dataset = dtst.Leitura_dados(dtst.bases_linear_graduais(10), csv=True)
+    dataset = dtst.Leitura_dados(dtst.bases_sazonais(1), csv=True)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)
                 

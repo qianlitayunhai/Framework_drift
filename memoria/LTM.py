@@ -12,7 +12,7 @@ from regressores.IDPSO_ELM import IDPSO_ELM
 from sklearn.metrics.regression import mean_absolute_error
 import copy
 import matplotlib.pyplot as plt
-#plt.style.use('ggplot')
+plt.style.use('seaborn-whitegrid')
 
 
 class Ambiente():
@@ -125,47 +125,38 @@ class LTM():
                 #enxame_atual.particulas = copy.deepcopy(self.vetor_ambientes[j].particulas)
                 #enxame_atual.Atualizar_bestmodel(self.vetor_ambientes[j].gbest) 
                 #print("Comparacao modelos: ", enxame_atual.best_elm == self.vetor_ambientes[j].gbest)
-                return self.vetor_ambientes[j].gbest
-            
-            else:
                 
-                return enxame_atual.best_elm
-    
-    def Relembrar_acurado(self, enxame_atual, dados, lags):
-        '''
-        metodo para relembrar um ambiente, caso o enxame não seja suficiente retreina a partir da melhor solução
-        :param: enxame_atual: enxame atual que será substituido
-        :param: dados: dados para avaliar a acuracia dos modelos armazenados
-        :param: lags: quantidade de lags para modelar os dados de entrada da rede
-        :return: retorna o melhor enxame para os dados passados
-        '''
-        
-        particao = Particionar_series(dados, [1, 0, 0], lags)
-        [dados_x, dados_y] = particao.Part_train()
-        
-        #print("Quantidade de dados para treinamento: ", len(dados_y))
-        
-        acuracias = []
-        if(self.qtd_memoria != 0):
-            for i in self.vetor_ambientes:
-                passado = self.Avaliar_particulas(i, dados, lags)
-                previsao = passado.Predizer(dados_x)
-                acuracias.append(mean_absolute_error(dados_y, previsao))
-            #print("Acuracias: ", acuracias)
-            
-            previsao = enxame_atual.Predizer(dados_x)
-            erro_atual = mean_absolute_error(dados_y, previsao)
-            #print("Acuracia do modelo atual: ", erro_atual)
-            
-            j = np.argmin(acuracias)
-            #print("Acuracia do melhor modelo da memória: ", acuracias[j])
-            
-            if(acuracias[j] < erro_atual):
-                #print("Trocou de solução [", j, "]: ", acuracias[j])
-                #enxame_atual.particulas = copy.deepcopy(self.vetor_ambientes[j].particulas)
-                #enxame_atual.Atualizar_bestmodel(self.vetor_ambientes[j].gbest) 
-                #print("Comparacao modelos: ", enxame_atual.best_elm == self.vetor_ambientes[j].gbest)
-                return self.Avaliar_particulas(self.vetor_ambientes[j], dados, lags)
+                '''
+                # plotando erro
+                acuracias = [erro_atual] + acuracias
+                colors = ['blue'] * len(acuracias)
+                colors[0] = 'green'
+                colors[j] = 'red'
+                
+                sequencia = range(0, len(acuracias))
+                barras = plt.bar(sequencia, acuracias, 0.6, align='center', color = colors)
+                plt.title('Solutions in memory')
+                plt.ylabel('MAE')
+                plt.xlabel('Solutions')
+                plt.xticks(range(len(acuracias)))
+                limiar = min(acuracias) * 0.6
+                plt.axis([-1, len(acuracias), min(acuracias) - limiar, max(acuracias) + (2*limiar)])
+                
+                rects = barras.patches
+                
+                # Now make some labels
+                height = rects[0].get_height()
+                plt.text(rects[0].get_x() + rects[0].get_width()/2, height+(limiar/2), 'Current', ha='center', va='bottom', rotation='vertical')
+                
+                height = rects[j].get_height()
+                plt.text(rects[j].get_x() + rects[j].get_width()/2, height+(limiar/2), 'Min error', ha='center', va='bottom', rotation='vertical')
+
+                plt.legend()
+                plt.show()
+                '''
+                
+                
+                return self.vetor_ambientes[j].gbest
             
             else:
                 
@@ -198,15 +189,29 @@ class LTM():
 
         '''
         sequencia = range(0, len(acuracias))
-        plt.bar(sequencia, acuracias, 0.6, align='center', color = 'Blue', label = "Partículas - MAE")
+        colors = ['blue'] * len(acuracias)
+        colors[0] = 'green'
+        colors[j] = 'red'
+        
+        barras = plt.bar(sequencia, acuracias, 0.6, align='center', color = colors)
         plt.ylabel('MAE')
-        plt.xlabel('Partículas')
+        plt.xlabel('Particles')
+        plt.title('Swarm')
         plt.xticks(range(len(acuracias)))
-        limiar = min(acuracias) * 0.0005
-        plt.axis([-1, len(acuracias), min(acuracias) - limiar, max(acuracias) + limiar])
+        limiar = min(acuracias) * 0.6
+        plt.axis([-1, len(acuracias), min(acuracias) - limiar, max(acuracias) + (2*limiar)])
+        rects = barras.patches
+
+        # Now make some labels
+        height = rects[0].get_height()
+        plt.text(rects[0].get_x() + rects[0].get_width()/2, height+(limiar/2), 'Current', ha='center', va='bottom', rotation='vertical')
+        
+        height = rects[j].get_height()
+        plt.text(rects[j].get_x() + rects[j].get_width()/2, height+(limiar/2), 'Min error', ha='center', va='bottom', rotation='vertical')
+        
         plt.legend()
         plt.show()
-        '''
+        '''     
         
         return enxame_atual.sensores[j]
             

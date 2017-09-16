@@ -5,6 +5,7 @@ Created on 19 de abr de 2017
 @author: gusta
 '''
 import matplotlib.pyplot as plt
+plt.style.use('seaborn-white')
 
 class Grafico():
     pass    
@@ -355,7 +356,7 @@ class Grafico():
         label_deteccao_verdadeira = 'Real Change'
         label_deteccao_encontrada = 'Change Found'
         label_alarme_falso = 'False Alarms'
-        label_aviso = 'Nível de Aviso'
+        label_aviso = 'Warning Level'
         label_retreinamento = 'Retreining'
         label_online = 'Online'
 
@@ -374,9 +375,9 @@ class Grafico():
         grafico1.plot(predicoes_vetor, label = 'Forecast', color = cor_previsao)
         
         if(MAE == None):
-            grafico1.set_title("Previsão e dados reais")
+            grafico1.set_title("Real dataset and forecast")
         else:
-            grafico1.set_title("Previsão e dados reais - MAE: " + str(MAE))
+            grafico1.set_title("Real dataset and forecast - MAE: " + str(MAE))
             
         #plotando as deteccoes verdadeiras
         for i in range(len(deteccoes_reais)):
@@ -610,18 +611,18 @@ class Grafico():
         grafico1.legend(loc='upper center', bbox_to_anchor=(localizacao_legenda[0], localizacao_legenda[1]), ncol=1, fancybox=True, shadow=True)
         plt.xticks(x_intervalos, rotation = 45)
         
-        texto = (" Alarmes Falsos: %.2f | Atrasos:  %.2f | Tempo de execução: %.2f " %(falsos_alarmes, atrasos, tempo_execucao))
+        texto = (" False Alarms: %.2f | Delay Detection:  %.2f | Time of run: %.2f " %(falsos_alarmes, atrasos, tempo_execucao))
         
         grafico1.annotate(texto,
-                    xy=(0.5, 0.4), xytext=(0, 0),
+                    xy=(0.5, 0.39), xytext=(0, 0),
                     xycoords=('axes fraction', 'figure fraction'),
                     textcoords='offset points',
-                    size=14, ha='center', va='bottom', bbox=dict(boxstyle="round", fc="w", ec="0", alpha=1))
+                    size=10, ha='center', va='bottom', bbox=dict(boxstyle="round", fc="w", ec="0", alpha=1))
         
         #definindo a figura 2 com o erro de previsao
         grafico2 = figura.add_subplot(3, 10, (21, 29))
-        grafico2.plot(erro_stream_vetor, label = 'Erro de Previsão', color = cor_erro)
-        grafico2.set_title("Erro de Previsão")
+        grafico2.plot(erro_stream_vetor, label = 'Forecasting Error', color = cor_erro)
+        grafico2.set_title("Forecasting Error")
         
         #Definindo os labels
         grafico2.axvline(-1000, linewidth=largura_deteccoes, linestyle=estilo, label = label_alarme_falso, color=cor_falsos_alarmes)
@@ -821,7 +822,7 @@ class Grafico():
 
         #colocando legenda e definindo os eixos do grafico
         plt.ylabel('MAE')
-        plt.xlabel('Tempo')
+        plt.xlabel('Time')
         grafico2.legend(loc='upper center', bbox_to_anchor=(localizacao_legenda[0], localizacao_legenda[1]), ncol=1, fancybox=True, shadow=True)
         grafico2.axis([eixox[0], eixox[1], erro_eixoy[0], erro_eixoy[1]])
         plt.xticks(x_intervalos, rotation = 45)

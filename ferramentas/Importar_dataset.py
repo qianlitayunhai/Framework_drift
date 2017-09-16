@@ -158,15 +158,35 @@ class Datasets():
 
 def main():
     dtst = Datasets('dentro')
+    figura = plt.figure()
     
-    '''
-    caminho = dtst.bases_linear_graduais(1)
-    #caminho = dtst.bases_linear_abruptas(1)
-    #caminho = dtst.bases_nlinear_graduais(1)
-    #caminho = dtst.bases_nlinear_abruptas(1)
+    tamanho = 10
+    fonte = 11
+    linha = 1
+    
+    
+    caminho = dtst.bases_reais(1)
     dataset = dtst.Leitura_dados(caminho, csv=True)
-    plt.plot(dataset)
+    g1 = figura.add_subplot(1, 3, 1)
+    g1.plot(dataset)
+    g1.set_title("Dow Jones Industrial Average", fontsize = fonte)
+    plt.tick_params(labelsize= tamanho)
+    
+    caminho = dtst.bases_reais(2)
+    dataset = dtst.Leitura_dados(caminho, csv=True)
+    g1 = figura.add_subplot(1, 3, 2)
+    g1.plot(dataset)
+    g1.set_title("NASDAQ", fontsize = fonte)
+    plt.tick_params(labelsize= tamanho)
+    
+    caminho = dtst.bases_reais(3)
+    dataset = dtst.Leitura_dados(caminho, csv=True)
+    g1 = figura.add_subplot(1, 3, 3)
+    g1.plot(dataset)
+    g1.set_title("S&P500", fontsize = fonte)
+    plt.tick_params(labelsize= tamanho)
     plt.show()
+       
     '''
     for z in range(30):
         # codigo para printar varias series em uma imagem
@@ -227,7 +247,7 @@ def main():
         
         plt.tick_params(labelsize= tamanho)
         plt.show()
-    
+    '''
     '''
     # codigo para printar varias series em uma imagem
     deteccoes = [2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000]
