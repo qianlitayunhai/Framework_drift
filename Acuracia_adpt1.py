@@ -135,7 +135,7 @@ def main():
                     tabela.Adicionar_Sheet_Linha(0, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
                     
                     #"M-IDPSO-ELM-SV"
-                    print(folhas[0])
+                    print(folhas[1])
                     qtd_memoria = 30
                     alg = M_IDPSO_ELM_SV(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, qtd_memoria, 3, param_ecdd_w[z], param_ecdd_c[z])
                     [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
