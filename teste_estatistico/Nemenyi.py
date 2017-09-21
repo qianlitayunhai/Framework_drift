@@ -382,8 +382,8 @@ class NemenyiTestPostHoc():
 def main():
     
     tbt = Ler_dados()
-    caminho_arquivo = 'E:/Workspace2/Framework_drift/tabelas/Experimentos/Preliminares/tabela_mape.xls'
-    caminho_salvar = 'E:/Workspace2/Framework_drift/tabelas/Experimentos/Preliminares'
+    caminho_arquivo = 'E:/Workspace2/Framework_drift/tabelas/Experimentos/Exp Acur - Param Min/tabela_mape_param_min.xls'
+    caminho_salvar = 'E:/Workspace2/Framework_drift/tabelas/Experimentos/Exp Acur - Param Min'
     
     #lin grad
     labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [1, 31], [1, 8]) 
@@ -415,6 +415,10 @@ def main():
     nemenyi = NemenyiTestPostHoc(labels, acuracias)
     nemenyi.gerar_plot("/friedman_hib", caminho_salvar)
     
+    #geral
+    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [1, 181], [1, 8]) 
+    nemenyi = NemenyiTestPostHoc(labels, acuracias)
+    nemenyi.gerar_plot("/friedman_geral", caminho_salvar)
     
 
 if __name__ == '__main__':

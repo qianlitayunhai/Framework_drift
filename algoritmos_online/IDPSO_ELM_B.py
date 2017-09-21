@@ -175,7 +175,7 @@ class IDPSO_ELM_B():
         
         #computando as metricas de deteccao
         mt = Metricas_deteccao()
-        [falsos_alarmes, atrasos] = mt.resultados(deteccoes, self.n)
+        [falsos_alarmes, atrasos] = mt.resultados(stream, deteccoes, self.n)
         
         #computando a acuracia da previsao ao longo do fluxo de dados
         MAE = erro_stream/len(stream)
@@ -198,7 +198,7 @@ class IDPSO_ELM_B():
         #plotando o grafico de erro
         if(grafico == True):
             g = Grafico()
-            g.Plotar_graficos_cnt(stream, predicoes_vetor, deteccoes, alarmes, erro_stream_vetor, self.n, atrasos, falsos_alarmes, tempo_execucao, MAE, nome=tecnica)
+            g.Plotar_graficos(stream, predicoes_vetor, deteccoes, alarmes, erro_stream_vetor, self.n, atrasos, falsos_alarmes, tempo_execucao, MAE, nome=tecnica)
                            
         #retorno do metodo
         return falsos_alarmes, atrasos, MAE, tempo_execucao

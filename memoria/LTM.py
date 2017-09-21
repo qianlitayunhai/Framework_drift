@@ -128,6 +128,7 @@ class LTM():
                 
                 '''
                 # plotando erro
+                j = j+1
                 acuracias = [erro_atual] + acuracias
                 colors = ['blue'] * len(acuracias)
                 colors[0] = 'green'
@@ -154,7 +155,6 @@ class LTM():
                 plt.legend()
                 plt.show()
                 '''
-                
                 
                 return self.vetor_ambientes[j].gbest
             
@@ -186,7 +186,6 @@ class LTM():
             
         j = np.argmin(acuracias)
         #print("Melhor particula: [",j,"]: ", acuracias[j])
-
         '''
         sequencia = range(0, len(acuracias))
         colors = ['blue'] * len(acuracias)
@@ -198,21 +197,20 @@ class LTM():
         plt.xlabel('Particles')
         plt.title('Swarm')
         plt.xticks(range(len(acuracias)))
-        limiar = min(acuracias) * 0.6
-        plt.axis([-1, len(acuracias), min(acuracias) - limiar, max(acuracias) + (2*limiar)])
+        limiar = min(acuracias) * 0.06
+        plt.axis([-1, len(acuracias), min(acuracias) - limiar, max(acuracias) + limiar])
         rects = barras.patches
 
         # Now make some labels
         height = rects[0].get_height()
-        plt.text(rects[0].get_x() + rects[0].get_width()/2, height+(limiar/2), 'Current', ha='center', va='bottom', rotation='vertical')
+        plt.text(rects[0].get_x() + rects[0].get_width()/2, height + (limiar/5), 'Current Gbest', ha='center', va='bottom', rotation='vertical')
         
         height = rects[j].get_height()
         plt.text(rects[j].get_x() + rects[j].get_width()/2, height+(limiar/2), 'Min error', ha='center', va='bottom', rotation='vertical')
         
         plt.legend()
         plt.show()
-        '''     
-        
+        '''
         return enxame_atual.sensores[j]
             
 def main():

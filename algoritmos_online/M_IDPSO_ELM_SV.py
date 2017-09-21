@@ -249,8 +249,7 @@ class M_IDPSO_ELM_SV():
         
         #computando as metricas de deteccao
         mt = Metricas_deteccao()
-        #[falsos_alarmes, atrasos] = mt.resultados_dow_drift(deteccoes, self.n)
-        [falsos_alarmes, atrasos] = mt.resultados(deteccoes, self.n)
+        [falsos_alarmes, atrasos] = mt.resultados(stream, deteccoes, self.n)
         
         #computando a acuracia da previsao ao longo do fluxo de dados
         MAE = erro_stream/len(stream)
@@ -275,8 +274,7 @@ class M_IDPSO_ELM_SV():
         #plotando o grafico de erro
         if(grafico == True):
             g = Grafico()
-            #g.Plotar_graficos_dow_drift(stream, predicoes_vetor, deteccoes, alarmes, erro_stream_vetor, self.n, atrasos, falsos_alarmes, tempo_execucao, MAE, nome=tecnica)
-            g.Plotar_graficos_cnt(stream, predicoes_vetor, deteccoes, alarmes, erro_stream_vetor, self.n, atrasos, falsos_alarmes, tempo_execucao, MAE, nome=tecnica)
+            g.Plotar_graficos(stream, predicoes_vetor, deteccoes, alarmes, erro_stream_vetor, self.n, atrasos, falsos_alarmes, tempo_execucao, MAE, nome=tecnica)
                            
         #retorno do metodo
         return falsos_alarmes, atrasos, MAE, tempo_execucao
@@ -285,7 +283,7 @@ def main():
     
     #instanciando o dataset
     dtst = Datasets('dentro')
-    dataset = dtst.Leitura_dados(dtst.bases_sazonais(1), csv=True)
+    dataset = dtst.Leitura_dados(dtst.bases_linear_graduais(1), csv=True)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)
         
@@ -298,8 +296,8 @@ def main():
     qtd_sensores = 30
     limiar = 3
     qtd_memoria = 10
-    w = 0.7
-    c = 1
+    w = 0.5
+    c = 0.75
     alg = M_IDPSO_ELM_SV(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, qtd_memoria, limiar, w, c)
     
     #colhendo os resultados

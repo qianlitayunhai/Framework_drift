@@ -113,7 +113,7 @@ class Metricas_deteccao():
         :return: retorna uma lista com os seguintes valores [falsos_alarmes, atrasos, porcentagem_falta_deteccao] 
         '''
         
-        atraso_maximo = 203
+        atrasos_lista = [183, 203, 224]
         deteccoes = [124 - n,
                     307 - n, 
                     510 - n] 
@@ -124,11 +124,11 @@ class Metricas_deteccao():
         auxiliar = [False] * len(deteccoes)
         
         for i in range(len(lista)):
-            # x < 5000
+            # x < 124
             if(lista[i] < deteccoes[0]):
                 falsos_alarmes += increment
 
-            # x >= 5000 e x < 10000     
+            # x >= 124 e x < 307     
             elif(lista[i] >= deteccoes[0] and lista[i] < deteccoes[1]):      
                 
                 if(auxiliar[0] == True):
@@ -139,7 +139,7 @@ class Metricas_deteccao():
                     auxiliar[0] = True
                    
                 
-            # x >= 10000 e x < 15000
+            # x >= 307 e x < 510
             elif(lista[i] >= deteccoes[1] and lista[i] < deteccoes[2]):      
                 
                 if(auxiliar[1] == True):
@@ -149,7 +149,7 @@ class Metricas_deteccao():
                     atrasos = atrasos + lista[i] - deteccoes[1]
                     auxiliar[1] = True
                    
-            # x >= 15000 e x < 20000
+            # x >= 510
             elif(lista[i] >= deteccoes[2]):      
                 
                 if(auxiliar[2] == True):
@@ -162,11 +162,96 @@ class Metricas_deteccao():
             
         for i in range(len(auxiliar)):
             if(auxiliar[i] == False):
-                atrasos += atraso_maximo
+                atrasos += atrasos_lista[i]
                     
         return falsos_alarmes, atrasos
     
-    def resultados(self, lista, n):
+    def resultados_sp_drift(self, lista, n):
+        '''
+        Metodo para computar os falsos_alarmes, atrasos e a porcentagem de falta de deteccao da serie Down Jones Industrial Average
+        :param lista: lista com os indices de todas as deteccoes encontradas
+        :return: retorna uma lista com os seguintes valores [falsos_alarmes, atrasos, porcentagem_falta_deteccao] 
+        '''
+        
+        atrasos_lista = [60, 1207, 1111, 1293, 220]
+        deteccoes = [448 - n,
+                    508 - n, 
+                    1715 - n,
+                    2826 - n,
+                    4119 - n] 
+        
+        falsos_alarmes = 0
+        atrasos = 0
+        increment = 1
+        auxiliar = [False] * len(deteccoes)
+        
+        for i in range(len(lista)):
+            # x < 448
+            if(lista[i] < deteccoes[0]):
+                falsos_alarmes += increment
+
+            # x >= 448 e x < 508     
+            elif(lista[i] >= deteccoes[0] and lista[i] < deteccoes[1]):      
+                
+                if(auxiliar[0] == True):
+                    falsos_alarmes += increment
+                    
+                if(auxiliar[0] == False):
+                    atrasos = atrasos + lista[i] - deteccoes[0]
+                    auxiliar[0] = True
+                   
+                
+            # x >= 508 e x < 1715
+            elif(lista[i] >= deteccoes[1] and lista[i] < deteccoes[2]):      
+                
+                if(auxiliar[1] == True):
+                    falsos_alarmes += increment
+                    
+                if(auxiliar[1] == False):
+                    atrasos = atrasos + lista[i] - deteccoes[1]
+                    auxiliar[1] = True
+                    
+            
+            # x >= 1715 e x < 2826      
+            elif(lista[i] >= deteccoes[2] and lista[i] < deteccoes[3]):      
+                
+                if(auxiliar[2] == True):
+                    falsos_alarmes += increment
+                    
+                if(auxiliar[2] == False):
+                    atrasos = atrasos + lista[i] - deteccoes[2]
+                    auxiliar[2] = True
+            
+            
+            # x >= 2826 e x < 4119
+            elif(lista[i] >= deteccoes[3] and lista[i] < deteccoes[4]):      
+                
+                if(auxiliar[3] == True):
+                    falsos_alarmes += increment
+                    
+                if(auxiliar[3] == False):
+                    atrasos = atrasos + lista[i] - deteccoes[3]
+                    auxiliar[3] = True
+                   
+            # x >= 4119
+            elif(lista[i] >= deteccoes[4]):      
+                
+                if(auxiliar[4] == True):
+                    falsos_alarmes += increment
+                    
+                if(auxiliar[4] == False):
+                    atrasos = atrasos + lista[i] - deteccoes[2]
+                    auxiliar[4] = True
+                    
+            
+        # computando os atrasos
+        for i in range(len(auxiliar)):
+            if(auxiliar[i] == False):
+                atrasos += atrasos_lista[i]
+                    
+        return falsos_alarmes, atrasos
+    
+    def resultados_cnt(self, lista, n):
         '''
         Metodo para computar os falsos_alarmes, atrasos para o artigo ICTAI
         :param lista: lista com os indices de todas as deteccoes encontradas
@@ -292,6 +377,28 @@ class Metricas_deteccao():
                     
         return falsos_alarmes, atrasos
     
+    def resultados(self, stream, lista, n):
+        '''
+        metodo para computar as metricas de deteccao de forma dinamica conforme o dataset passado
+        :param: stream: vetor inteiro, contendo os dados da serie usada
+        :param: lista: vetor inteiro, contendo as deteccoes encontradas
+        :param: n: inteiro, contendo a quantidade de dados usados no treinamento
+        :return: retorna as metricas falsos_alarmes, atrasos 
+        '''
+        
+        if(len(stream)+n == 20000):
+            return self.resultados_cnt(lista, n)
+            
+        elif((len(stream)+n == 734)):
+            return self.resultados_dow_drift(lista, n)
+            
+        elif((len(stream)+n == 4229)):
+            return self.resultados_sp_drift(lista, n)
+        
+        else:
+            return self.resultados_cnt(lista, n)
+        
+        
 def main():
     
     lista9 = [700, 1800, 3800, 5800, 7800, 9800, 11800, 13800, 15800, 17800]

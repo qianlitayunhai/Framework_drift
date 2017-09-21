@@ -194,7 +194,7 @@ class ELM_DDM():
         
         #computando as metricas de deteccao
         mt = Metricas_deteccao()
-        [falsos_alarmes, atrasos] = mt.resultados(deteccoes, self.n)
+        [falsos_alarmes, atrasos] = mt.resultados(stream, deteccoes, self.n)
         
         #computando a acuracia da previsao ao longo do fluxo de dados
         MAE = erro_stream/len(stream)
@@ -217,7 +217,7 @@ class ELM_DDM():
         #plotando o grafico de erro
         if(grafico == True):
             g = Grafico()
-            g.Plotar_graficos_cnt(stream, predicoes_vetor, deteccoes, alarmes, erro_stream_vetor, self.n, atrasos, falsos_alarmes, tempo_execucao, MAE, nome=tecnica)
+            g.Plotar_graficos(stream, predicoes_vetor, deteccoes, alarmes, erro_stream_vetor, self.n, atrasos, falsos_alarmes, tempo_execucao, MAE, nome=tecnica)
                            
         #retorno do metodo
         return falsos_alarmes, atrasos, MAE, tempo_execucao
@@ -225,9 +225,8 @@ class ELM_DDM():
 def main():
     
     #instanciando o dataset
-    dtst = Datasets()
-    #dataset = dtst.Leitura_dados(dtst.bases_lineares(1), csv=True)
-    dataset = dtst.Leitura_dados(dtst.bases_reais(3), csv=True)
+    dtst = Datasets('dentro')
+    dataset = dtst.Leitura_dados(dtst.bases_reais(2), csv=True)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)
                 
@@ -235,7 +234,7 @@ def main():
     n = 300
     lags = 5
     qtd_neuronios = 10 
-    w = 2
+    w = 8
     c = 8
     alg = ELM_DDM(dataset, n, lags, qtd_neuronios, w, c)
     

@@ -11,7 +11,7 @@ from xlutils.copy import copy
 from geradores_tabela.Tabela_excel import Tabela_excel
 import numpy as np
 from experimentos.Constantes import Constantes
-from teste_estatistico.Nemenyi import NemenyiTestPostHoc
+from teste_estatistico.Nemenyi import NemenyiTestPostHoc, Ler_dados
 
 c = Constantes('dentro')
 pasta = c.pasta
@@ -254,6 +254,24 @@ class Tabela_testes():
         
         return te.ler(arq_xls, folha, linha, coluna) 
     
+    def bases_reais(self, numero):
+        '''
+        metodo para abrir um arquivo de resultado para as bases reais
+        :param: numero: numero do arquivo
+        :return: retorna a string do caminho da base
+        '''
+        
+        if(numero == 0):
+            base = (caminho_bases + '/Reais/dow.xls')
+        
+        elif(numero == 1):
+            base = (caminho_bases + '/Reais/nasdaq.xls')
+            
+        elif(numero == 2):
+            base = (caminho_bases + '/Reais/SP500.xls')
+        
+        return base
+    
     def bases_linear_graduais(self, numero):
         '''
         metodo para abrir um arquivo de resultado para as bases lineares
@@ -435,6 +453,95 @@ class Tabela_testes():
         self.Calcular_estatisticas_bases()
         self.Img_teste()
    
+    def Criar_tabelas_reais(self):
+        '''
+        linha 11 - linha das medias
+        coluna 0 - falsos alarmes
+        coluna 1 - atrasos
+        coluna 2 - MAPE
+        coluna 3 - tempo_execucao
+        '''   
+        
+        metricas = [2]
+        
+        for z in metricas:
+            
+            if(z == 0):
+                nome = caminho_bases+ '/tabela_falsos_alarmes'
+            elif(z == 1):
+                nome = caminho_bases+ '/tabela_atrasos'
+            elif(z == 2):
+                nome = caminho_bases+ '/tabela_mape'
+            elif(z == 3):
+                nome = caminho_bases+ '/tabela_tempo'
+            
+            tabela = Tabela_excel()
+            folhas = ["sheet1"]
+            cabecalho = ["Bases"] + c.folhas
+            largura_col = 5000
+            tabela.Criar_tabela(nome, folhas, cabecalho, largura_col)
+            
+            sheet = [10] + list(range(0, len(c.folhas)))
+            vez = [0, 1, 2]
+            
+            col_metrica = z
+            
+            for i in sheet:
+                contador = 0
+                
+                if(i == 10):
+                    for j in vez:
+                        for l in range(c.qtd_execucoes):
+                            contador += 1
+                                    
+                            if(j == 0):
+                                parte2 = "Down- " +str(l)
+                                tabela.Adicionar_dado(0, 0, contador, parte2)
+                                        
+                            elif(j == 1):
+                                parte2 = "Nasdaq- " +str(l)
+                                tabela.Adicionar_dado(0, 0, contador, parte2)
+                                    
+                            elif(j == 2):
+                                parte2 = "S&P500- " +str(l)
+                                tabela.Adicionar_dado(0, 0, contador, parte2)
+                                    
+                else:
+                    
+                    for j in vez:
+                        
+                        for l in range(1, c.qtd_execucoes+1):
+                                
+                            contador += 1
+                                    
+                            parte1 = cabecalho[i+1] + " - "
+                                
+                            if(j == 0):
+                                parte2 = "Down - " +str(l)
+                                valor = self.ler(self.bases_reais(j), i, l, col_metrica)
+                                tabela.Adicionar_dado(0, i+1, contador, valor)
+                                        
+                            elif(j == 1):
+                                parte2 = "Nasdaq - " +str(l)
+                                valor = self.ler(self.bases_reais(j), i, l, col_metrica)
+                                tabela.Adicionar_dado(0, i+1, contador, valor)
+                                    
+                            elif(j == 2):
+                                parte2 = "S&P500 - " +str(l)
+                                valor = self.ler(self.bases_reais(j), i, l, col_metrica)
+                                tabela.Adicionar_dado(0, i+1, contador, valor)
+                                        
+                            print(parte1+parte2)
+            
+            linha_media = c.qtd_execucoes*len(vez)
+            tabela.Calcular_Medias3(linha_media)
+            
+        # computando as estatisticas opor bases
+        tbt = Ler_dados()
+        labels, acuracias = tbt.obter_dados_arquivo(c.caminho_bases + c.pasta + '/tabela_mape.xls', [1, linha_media], [1, len(c.folhas)]) 
+        nemenyi = NemenyiTestPostHoc(labels, acuracias)
+        nemenyi.gerar_plot("/friedman_series_fin", c.caminho_bases + c.pasta)
+   
     def Criar_tabelas_subpastas(self, sub_pastas):
         global caminho_bases
         copia = caminho_bases
@@ -510,11 +617,15 @@ class Tabela_testes():
             nemenyi.gerar_plot(nome, caminho)
     
 def main():
+    gerar_teste_acuracia_reais = True
     gerar_teste_acuracia = False
-    gerar_planilhas_parametros = True
+    gerar_planilhas_parametros = False
     
     tbt = Tabela_testes()
     
+    if(gerar_teste_acuracia_reais):
+        tbt.Criar_tabelas_reais()
+        
     if(gerar_teste_acuracia):
         tbt.Criar_tabelas()
         
@@ -524,4 +635,5 @@ def main():
           
 if __name__ == "__main__":
     main()
+    
     

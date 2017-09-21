@@ -16,6 +16,7 @@ import time
 import numpy as np
 from sklearn.metrics.regression import mean_absolute_error
 
+divisao_dataset = [0.8, 0.2, 0]
 
 class ELM_FEDD():
     def __init__(self, dataset, n, lags, qtd_neuronios, Lambda, w, c):
@@ -60,7 +61,7 @@ class ELM_FEDD():
         
         #criando e treinando um enxame_vigente para realizar as previsoes
         ELM = ELMRegressor(self.qtd_neuronios)
-        ELM.Tratamento_dados(treinamento_inicial, [1, 0, 0], self.lags)
+        ELM.Tratamento_dados(treinamento_inicial, divisao_dataset, self.lags)
         ELM.Treinar(ELM.train_entradas, ELM.train_saidas)
         
         #ajustando com os dados finais do treinamento a janela de predicao
@@ -171,7 +172,7 @@ class ELM_FEDD():
                     
                     #atualizando o enxame_vigente preditivo
                     ELM = ELMRegressor(self.qtd_neuronios)
-                    ELM.Tratamento_dados(janela_caracteristicas.dados[0], [1, 0, 0], self.lags)
+                    ELM.Tratamento_dados(janela_caracteristicas.dados[0], divisao_dataset, self.lags)
                     ELM.Treinar(ELM.train_entradas, ELM.train_saidas)
                     
                     #ajustando a janela de previsao
@@ -201,7 +202,7 @@ class ELM_FEDD():
         
         #computando as metricas de deteccao
         mt = Metricas_deteccao()
-        [falsos_alarmes, atrasos] = mt.resultados(deteccoes, self.n)
+        [falsos_alarmes, atrasos] = mt.resultados(stream, deteccoes, self.n)
         
         #computando a acuracia da previsao ao longo do fluxo de dados
         MAE = erro_stream/len(stream)
@@ -224,7 +225,7 @@ class ELM_FEDD():
         #plotando o grafico de erro
         if(grafico == True):
             g = Grafico()
-            g.Plotar_graficos_cnt(stream, predicoes_vetor, deteccoes, alarmes, erro_stream_vetor, self.n, atrasos, falsos_alarmes, tempo_execucao, MAE, nome=tecnica)
+            g.Plotar_graficos(stream, predicoes_vetor, deteccoes, alarmes, erro_stream_vetor, self.n, atrasos, falsos_alarmes, tempo_execucao, MAE, nome=tecnica)
                            
         #retorno do metodo
         return falsos_alarmes, atrasos, MAE, tempo_execucao
@@ -232,8 +233,8 @@ class ELM_FEDD():
 def main():
     
     #instanciando o dataset
-    dtst = Datasets()
-    dataset = dtst.Leitura_dados(dtst.bases_linear_graduais(10), csv=True)
+    dtst = Datasets('dentro')
+    dataset = dtst.Leitura_dados(dtst.bases_reais(2), csv=True)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)
                 
@@ -242,7 +243,7 @@ def main():
     lags = 5
     qtd_neuronios = 10 
     w = 0
-    c = 0.25
+    c = 0
     alg = ELM_FEDD(dataset, n, lags, qtd_neuronios, 0.2, w, c)
     
     #colhendo os resultados

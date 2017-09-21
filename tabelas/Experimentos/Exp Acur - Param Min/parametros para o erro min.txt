@@ -1,0 +1,8 @@
+ELM_DDM	= 8 - ok
+ELM_ECDD = 0.5	- ok
+ELM-FEDD = 0 - ok 
+IDPSO-ELM-B = 0.25 - ok
+IDPSO-ELM-S = 0.25 - ok
+IDPSO-ELM-SV = 0.25 - ok
+P-IDPSO-ELM-SV	c = 0.5; w = 0.35 - ok
+M-IDPSO-ELM-SV c = 0.25; w = 0.15 - ok
