@@ -105,7 +105,7 @@ def main():
                 dataset = particao.Normalizar(dataset)
                                     
                 tabela = Tabela_excel()
-                nome = e.caminho_bases + e.pasta + subpasta[z] + nome_arquivo
+                nome = e.caminho_bases + "FEDD (0.1)" + subpasta[z] + nome_arquivo
                 folhas = ["ELM-FEDD"]
                 cabecalho = ["falsos alarmes", "atrasos", "MAPE", "tempo execucao"]
                 largura_col = 5000
@@ -121,7 +121,7 @@ def main():
                                 
                 ##############################################definindo quantas vezes cada algoritmo sera executado##############################################
                 # quantidade de execucoes
-                qtd_execucoes = e.qtd_execucoes
+                qtd_execucoes = 5
                             
                 # for de execucoes
                 for execucao in range(qtd_execucoes):
