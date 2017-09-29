@@ -125,7 +125,7 @@ def main():
                             
                 # for de execucoes
                 for execucao in range(qtd_execucoes):
-                    print(e.pasta + subpasta[z] + nome_arquivo + " -  Execucao [%s]"  %(execucao))
+                    print("Reais Drifts" + subpasta[z] + nome_arquivo + " -  Execucao [%s]"  %(execucao))
     
                     ########################################### instanciando os algoritmo e escrevendo as execucoes ####################################################
                     
