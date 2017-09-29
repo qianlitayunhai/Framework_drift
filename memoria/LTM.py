@@ -32,7 +32,7 @@ class LTM():
         Classe para lidar com a Long Term Memory, memória de longo prazo
         :param qtd_memoria: tamanho que a memória vai possuir
         :param limiar_exclusao: limiar_exclusao para excluir um ambiente
-        :param limiar_lembranca: limiar para definir se um modelo vai ser treinado
+        :param limiar_lembranca: limcra definir se um modelo vai ser treinado
         :param tx_espalhar: porcentagem entre 0 e 1 para definir quantos % do enxame será reinicializado 
         '''
         

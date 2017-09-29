@@ -163,8 +163,7 @@ class ELM_FEDD():
             
             else:
                 
-                if(i < deteccoes[len(deteccoes)-1] + self.n):
-                    
+                if(i < deteccoes[len(deteccoes)-1] + self.n):                    
                     #adicionando a nova instancia na janela de caracteristicas
                     janela_caracteristicas.Add_janela(stream[i])
                     
@@ -203,7 +202,7 @@ class ELM_FEDD():
         #computando as metricas de deteccao
         mt = Metricas_deteccao()
         [falsos_alarmes, atrasos] = mt.resultados(stream, deteccoes, self.n)
-        
+       
         #computando a acuracia da previsao ao longo do fluxo de dados
         MAE = erro_stream/len(stream)
         
@@ -234,20 +233,20 @@ def main():
     
     #instanciando o dataset
     dtst = Datasets('dentro')
-    dataset = dtst.Leitura_dados(dtst.bases_reais(2), csv=True)
+    dataset = dtst.Leitura_dados(dtst.bases_reais_drift(1), csv=True)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)
                 
     #instanciando o algoritmo com sensores
-    n = 300
+    n = 50
     lags = 5
     qtd_neuronios = 10 
-    w = 0
-    c = 0
+    w = 0.3
+    c = 0.4
     alg = ELM_FEDD(dataset, n, lags, qtd_neuronios, 0.2, w, c)
     
     #colhendo os resultados
-    alg.Executar(grafico=True)
+    alg.Executar(grafico=False)
     
     
 if __name__ == "__main__":

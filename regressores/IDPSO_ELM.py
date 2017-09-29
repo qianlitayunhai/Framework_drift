@@ -57,10 +57,10 @@ class IDPSO_ELM():
         
         self.iteracoes = 1000
         self.numero_particulas = 30
-        self.inercia_inicial = 0.5
+        self.inercia = 0.5
         self.inercia_final = 0.3
-        self.c1_fixo = 2.4
-        self.c2_fixo = 1.4
+        self.c1 = 2.4
+        self.c2 = 1.4
         self.crit_parada = 50
         self.particulas = []
         self.gbest = []
@@ -75,7 +75,7 @@ class IDPSO_ELM():
         Metodo para alterar os parametros basicos do IDPSO 
         :param iteracoes: quantidade de geracoes para o treinamento 
         :param numero_particulas: quantidade de particulas usadas para treinamento
-        :param inercia_inicial: inercial inicial para treinamento
+        :param inercia: inercial inicial para treinamento
         :param inercia_final: inercia final para variacao
         :param c1: coeficiente cognitivo
         :param c2: coeficiente pessoal
@@ -86,8 +86,8 @@ class IDPSO_ELM():
         self.numero_particulas = numero_particulas
         self.inercia_inicial = inercia_inicial
         self.inercia_final = inercia_final
-        self.c1_fixo = c1
-        self.c2_fixo = c2
+        self.c1 = c1
+        self.c2 = c2
         self.crit_parada = crit_parada
         
         self.particulas_ordenadas = [0] * self.numero_particulas
@@ -139,9 +139,9 @@ class IDPSO_ELM():
             p.velocidade = array([0.0 for i in range(self.numero_dimensoes)])
             p.best = p.posicao
             p.fit_best = p.fitness
-            p.c1 = self.c1_fixo
-            p.c2 = self.c2_fixo
-            p.inercia = self.inercia_inicial
+            p.c1 = self.c1
+            p.c2 = self.c2
+            p.inercia = self.inercia
             p.phi = 0
             self.particulas.append(p)
         
@@ -241,9 +241,9 @@ class IDPSO_ELM():
         for i in self.particulas:
             ln = np.log(i.phi)
             calculo = i.phi * (iteracao - ((1 + ln) * self.iteracoes) / mi)
-            i.inercia = ((self.inercia_inicial - self.inercia_final) / (1 + np.exp(calculo))) + self.inercia_final
-            i.c1 = self.c1_fixo * (i.phi ** (-1))
-            i.c2 = self.c2_fixo * i.phi
+            i.inercia = ((self.inercia - self.inercia_final) / (1 + np.exp(calculo))) + self.inercia_final
+            i.c1 = self.c1 * (i.phi ** (-1))
+            i.c2 = self.c2 * i.phi
        
     def Pbest(self):
         '''
@@ -442,9 +442,9 @@ class IDPSO_ELM():
             self.particulas[j].velocidade = array([0.0 for i in range(self.numero_dimensoes)])
             self.particulas[j].best = self.particulas[j].posicao
             self.particulas[j].fit_best = self.particulas[j].fitness
-            self.particulas[j].c1 = self.c1_fixo
-            self.particulas[j].c2 = self.c2_fixo
-            self.particulas[j].inercia = self.inercia_inicial
+            self.particulas[j].c1 = self.c1
+            self.particulas[j].c2 = self.c2
+            self.particulas[j].inercia = self.inercia
             self.particulas[j].phi = 0
             
         global contador

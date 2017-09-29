@@ -21,7 +21,7 @@ class B():
         
         self.limite = limite
         self.w = w
-        self.c = c
+        self.c = c        
         self.media_zero = 0
         self.desvio_zero = 0
         self.contador = 0

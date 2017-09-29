@@ -85,8 +85,7 @@ class IDPSO_ELM_B():
         janela_caracteristicas.Ajustar(treinamento_inicial)
         
         #ativando o sensor de comportamento de acordo com a primeira janela de caracteristicas para media e desvio padrão
-        b = B(self.limite, self.w, self.c)
-        b.armazenar_conceito(janela_caracteristicas.dados, self.lags, enxame)
+        b = B(self.limite, self.w, self.c)        b.armazenar_conceito(janela_caracteristicas.dados, self.lags, enxame)
 
         ################################################################################################################################################
         ################################# PERIODO DINAMICO #############################################################################################
@@ -147,7 +146,7 @@ class IDPSO_ELM_B():
             else:
                 
                 if(len(janela_caracteristicas.dados) < self.n):
-                    
+                  
                     #adicionando a nova instancia na janela de caracteristicas
                     janela_caracteristicas.Increment_Add(stream[i])
                     
@@ -176,7 +175,7 @@ class IDPSO_ELM_B():
         #computando as metricas de deteccao
         mt = Metricas_deteccao()
         [falsos_alarmes, atrasos] = mt.resultados(stream, deteccoes, self.n)
-        
+      
         #computando a acuracia da previsao ao longo do fluxo de dados
         MAE = erro_stream/len(stream)
         

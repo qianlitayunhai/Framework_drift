@@ -74,8 +74,7 @@ class ELM_DDM():
         ################################################################################################################################################
         
         #dividindo os dados da dataset dinamica para treinamento_inicial inicial e para uso do stream din�mico
-        treinamento_inicial = self.dataset[0:self.n]
-        stream = self.dataset[self.n:]
+        treinamento_inicial = self.dataset[0:self.n]        stream = self.dataset[self.n:]
     
         ################################################################################################################################################
         ################################# PERIODO ESTATICO #############################################################################################
@@ -194,8 +193,7 @@ class ELM_DDM():
         
         #computando as metricas de deteccao
         mt = Metricas_deteccao()
-        [falsos_alarmes, atrasos] = mt.resultados(stream, deteccoes, self.n)
-        
+        [falsos_alarmes, atrasos] = mt.resultados(stream, deteccoes, self.n)   
         #computando a acuracia da previsao ao longo do fluxo de dados
         MAE = erro_stream/len(stream)
         
@@ -203,7 +201,7 @@ class ELM_DDM():
         tempo_execucao = (end_time-start_time)
         
         if(grafico == True):
-            tecnica = "ELM_DDM"
+            tecnica = "ELM-DDM"
             print(tecnica)
             print("Alarmes:")
             print(alarmes)
@@ -226,12 +224,12 @@ def main():
     
     #instanciando o dataset
     dtst = Datasets('dentro')
-    dataset = dtst.Leitura_dados(dtst.bases_reais(2), csv=True)
+    dataset = dtst.Leitura_dados(dtst.bases_reais_drift(1), csv=True)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)
                 
     #instanciando o algoritmo com sensores
-    n = 300
+    n = 100
     lags = 5
     qtd_neuronios = 10 
     w = 8

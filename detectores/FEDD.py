@@ -20,7 +20,7 @@ class FEDD():
         Método para criar um modelo do ECDD
         :param Lambda: float com o valor de lambda
         :param w: float com o nivel de alarme
-        :param c: float com o nivel de deteccao
+        :param c float com o nivel de deteccao
         '''
         self.Lambda = Lambda
         self.w = w

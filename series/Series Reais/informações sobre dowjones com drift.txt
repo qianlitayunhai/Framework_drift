@@ -1,6 +1,0 @@
-Dowjones
-
-Tamanho: 735 pontos
-Primeiro Drift: 124 
-Segundo Drift: 307
-Terceiro Drift: 510

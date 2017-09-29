@@ -165,7 +165,7 @@ class P_IDPSO_ELM_SV():
                     # adicionando os dados a janela
                     janela_alerta.Increment_Add(stream[i])
                     
-                    # se a jenela de alerta tiver n dados, entao ja e possivel retreinar
+                    # se a jenela de alerta tiver n dadms, entao ja e possivel retreinar
                     if(len(janela_alerta.dados) > (self.n/2)):
                 
                         # zerando a janela de alerta
@@ -196,7 +196,7 @@ class P_IDPSO_ELM_SV():
                 
                 # coletando dados ate ter suficiente para retreinar
                 if(len(janela_caracteristicas.dados) < self.n):
-                    
+                  
                     #adicionando a nova instancia na janela de caracteristicas
                     janela_caracteristicas.Increment_Add(stream[i])
                     
@@ -204,9 +204,9 @@ class P_IDPSO_ELM_SV():
                     janela_alerta.Increment_Add(stream[i])
                     
                     
-                    # se a jenela de alerta tiver n dados, entao ja e possivel retreinar
+                    # se a jenela de alerta tiver n dadom, entao ja e possivel retreinar
                     if(len(janela_alerta.dados) >= self.n):
-                
+               
                         # atualizando a janela de caracteristicas
                         janela_caracteristicas.Ajustar(janela_alerta.dados)
                         
@@ -240,7 +240,7 @@ class P_IDPSO_ELM_SV():
         #computando as metricas de deteccao
         mt = Metricas_deteccao()
         [falsos_alarmes, atrasos] = mt.resultados(stream, deteccoes, self.n)
-        
+     
         #computando a acuracia da previsao ao longo do fluxo de dados
         MAE = erro_stream/len(stream)
         

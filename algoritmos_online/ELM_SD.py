@@ -145,7 +145,7 @@ class ELM_SD():
 def main():
     
     #instanciando o dataset
-    dtst = Datasets()
+    dtst = Datasets('dentro')
     dataset = dtst.Leitura_dados(dtst.bases_lineares(1), csv=True)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)

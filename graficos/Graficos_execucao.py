@@ -1222,7 +1222,7 @@ class Grafico():
         erro_eixoy = [0] * 2
         erro_eixoy[0] = 0
         erro_eixoy[1] = 0.2
-        x_intervalos = range(eixox[0], eixox[1]+500, 500)
+        x_intervalos = range(eixox[0], eixox[1], 500)
         
         label_deteccao_encontrada = 'Change Found'
         label_retreinamento = 'Retreining'
@@ -1248,20 +1248,18 @@ class Grafico():
         grafico1.axvspan(-1000, -1000+n, facecolor=cor_retreinamento, alpha=cor_alpha_retreinamento, label = label_retreinamento, zorder=10)
         grafico1.axvspan(-1100, -1000, facecolor=cor_online, alpha=cor_alpha_retreinamento, label = label_online)
         
-        # plotando as deteccoes no grafico de previsoes
-        for i in range(len(deteccoes)-1):
+        # plotando as deteccoes no grafico de erros
+        for i in range(len(deteccoes)):
             contador = deteccoes[i]
             grafico1.axvline(contador, linewidth=largura_deteccoes, linestyle=estilo, color=cor_deteccao_encontrada)
             grafico1.axvspan(contador, contador+n, facecolor=cor_retreinamento, alpha=cor_alpha_retreinamento, zorder=10)
             
-            if(i == 0):
-                grafico1.axvspan(0, deteccoes[i], facecolor=cor_online, alpha=cor_alpha_retreinamento)
-            else:
-                grafico1.axvspan(contador+n, deteccoes[i+1], facecolor=cor_online, alpha=cor_alpha_retreinamento)
+            if(i > 0):
+                grafico1.axvspan(deteccoes[i-1]+n, contador, facecolor=cor_online, alpha=cor_alpha_retreinamento)
         
-        grafico1.axvspan(contador+n, eixox[1], facecolor=cor_online, alpha=cor_alpha_retreinamento)
-            
-            
+        grafico1.axvspan(0, deteccoes[0], facecolor=cor_online, alpha=cor_alpha_retreinamento)
+        grafico1.axvspan(deteccoes[len(deteccoes)-1]+n, eixox[1], facecolor=cor_online, alpha=cor_alpha_retreinamento)
+
         
         #colocando legenda e definindo os eixos do grafico                        
         plt.ylabel('Observations')
@@ -1612,9 +1610,26 @@ class Grafico():
         #mostrando o grafico                                        
         plt.show()
         
-        
 def main():
-    print()
+    from ferramentas.Importar_dataset import Datasets
+    from ferramentas.Particionar_series import Particionar_series
+    
+    dtst = Datasets('dentro')
+    dataset = dtst.Leitura_dados(dtst.bases_reais(1), csv=True)
+    particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
+    dataset = particao.Normalizar(dataset)
+    
+    alarmes = []
+    deteccoes = [50, 1000, 2000, 3000, 4000, 5000, 6000, 7000]
+    n = 300
+    atrasos = 5000
+    falsos_alarmes = 5
+    tempo_execucao = 5
+    MAE = 1
+    nome = 'a'
+    
+    g = Grafico()
+    g.Plotar_graficos_series_fin(dataset, dataset, deteccoes, alarmes, dataset, n, atrasos, falsos_alarmes, tempo_execucao, MAE, nome)
     
 if __name__ == "__main__":
     main() 

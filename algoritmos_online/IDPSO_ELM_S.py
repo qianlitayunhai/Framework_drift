@@ -179,7 +179,7 @@ class IDPSO_ELM_S():
         tempo_execucao = (end_time-start_time)
         
         if(grafico == True):
-            tecnica = "IDPSO_ELM_S"
+            tecnica = "IDPSO-ELM-S"            
             print(tecnica)
             print("Alarmes:")
             print(alarmes)

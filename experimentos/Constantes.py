@@ -17,13 +17,15 @@ class Constantes():
         #self.pasta = "Deteccao (B e BS)"
         #self.pasta = "preliminares"
         #self.pasta = "Acuracia_adpt"
-        self.pasta = "Desempenho Series Financeiras"
+        #self.pasta = "Desempenho Series Financeiras"
+        self.pasta = "Reais Drifts"
         
         if(alocacao == 'dentro'):
             self.caminho_bases = "../tabelas/Experimentos/"
         elif(alocacao == 'fora'):
             self.caminho_bases = "tabelas/Experimentos/"
-        self.folhas = ["ELM", "ELM-DDM", "ELM-ECDD", "ELM-FEDD", "IDPSO-ELM-B", "IDPSO-ELM-S", "IDPSO-ELM-SV", "P-IDPSO-ELM", "M-IDPSO-ELM"]
+        #self.folhas = ["ELM", "ELM-DDM", "ELM-ECDD", "ELM-FEDD", "IDPSO-ELM-B", "IDPSO-ELM-S", "IDPSO-ELM-SV", "P-IDPSO-ELM-SV", "M-IDPSO-ELM-SV"]
+        self.folhas = ["ELM-DDM", "ELM-ECDD", "ELM-FEDD", "IDPSO-ELM-B", "IDPSO-ELM-S", "IDPSO-ELM-SV", "P-IDPSO-ELM-SV", "M-IDPSO-ELM-SV"]
         #self.folhas = ["ELM_DDM", "ELM_ECDD", "ELM-FEDD", "IDPSO-ELM-B", "IDPSO-ELM-S", "IDPSO-ELM-SV", "IDPSO-ELM-BS"]
         #self.folhas = ["P-IDPSO-ELM-SV", "M-IDPSO-ELM-SV"]
         

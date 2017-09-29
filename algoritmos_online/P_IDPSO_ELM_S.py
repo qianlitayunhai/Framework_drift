@@ -176,7 +176,7 @@ class P_IDPSO_ELM_S():
             else:
                 
                 if(len(janela_caracteristicas.dados) < self.n):
-                    
+                  
                     #adicionando a nova instancia na janela de caracteristicas
                     janela_caracteristicas.Increment_Add(stream[i])
                     
@@ -205,7 +205,7 @@ class P_IDPSO_ELM_S():
         #computando as metricas de deteccao
         mt = Metricas_deteccao()
         [falsos_alarmes, atrasos] = mt.resultados(stream, deteccoes, self.n)
-        
+     
         #computando a acuracia da previsao ao longo do fluxo de dados
         MAE = erro_stream/len(stream)
         
@@ -213,7 +213,7 @@ class P_IDPSO_ELM_S():
         tempo_execucao = (end_time-start_time)
         
         if(grafico == True):
-            tecnica = "P_IDPSO_ELM"
+            tecnica = "P_IDPSO_ELM_S"
             print(tecnica)
             print("Alarmes:")
             print(alarmes)

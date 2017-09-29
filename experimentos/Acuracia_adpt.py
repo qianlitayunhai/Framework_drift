@@ -1,7 +1,7 @@
 ﻿#-*- coding: utf-8 -*-
 '''
 Created on 13 de fev de 2017
-
+classe para avaliar os metodos de adaptação M e P nas series artificiais
 @author: gusta
 '''
 

@@ -59,7 +59,7 @@ class DDM():
         '''
         
         #consultando as regras
-        if(erro + desvio >= self.media_min + (self.c*self.desvio_min)):
+        if(erro + desvio >= self.media_min + (self.desvio_min)):
             return self.mudanca
         elif(erro + desvio >= self.media_min + (self.w*self.desvio_min)):
             return self.alerta
