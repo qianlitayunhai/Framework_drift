@@ -87,15 +87,12 @@ def main():
         
     ###########################################definindo os indices das series que serão experimentadas#################################################################################
                 
-    vez = [4, 5]
-    variacao = range(e.variacao_inicio, e.variacao_final)
+    vez = [5]
+    variacao = range(1, 26)
                 
     ####################################################################################################################################################################################
     for z in range(len(subpasta)):           
         for i in vez:
-            
-            if(i == 4):
-                variacao = range(26, 31)
             
             for k in variacao:
                                
