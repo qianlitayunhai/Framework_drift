@@ -14,6 +14,7 @@ from graficos.Graficos_execucao import Grafico
 from sklearn.metrics.regression import mean_absolute_error
 import time
 import numpy as np
+from regressores.PSO_ELM import PSO_ELM
 
 #parametros IDPSO
 it = 100
@@ -23,7 +24,7 @@ c2 = 2
 crit_parada = 25
 divisao_dataset = [0.8, 0.2, 0]
 
-class RPSO():
+class RPSO_ELM():
     def __init__(self, dataset, m, lags, qtd_neuronios, numero_particulas, S, tx):
         '''
         construtor do algoritmo que detecta a mudanca de ambiente por meio de sensores
@@ -131,7 +132,7 @@ class RPSO():
         ################################################################################################################################################
         
         #criando e treinando um modelo_vigente para realizar as previsões
-        enxame = IDPSO_ELM(treinamento_inicial, divisao_dataset, self.lags, self.qtd_neuronios)
+        enxame = PSO_ELM(treinamento_inicial, divisao_dataset, self.lags, self.qtd_neuronios)
         enxame.Parametros_PSO(it, self.numero_particulas, inercia, c1, c2, crit_parada, self.tx)
         enxame.Treinar()  
        
@@ -211,6 +212,8 @@ class RPSO():
             else:
                 
                 #atualizando o modelo_vigente preditivo
+                dataset = enxame.Tratamento_Dados(janela_caracteristicas.dados[0], divisao_dataset, self.lags)
+                enxame.dataset = dataset
                 enxame.Retreinar() 
                     
                 #ajustando com os dados finais do treinamento a janela de predicao
@@ -239,7 +242,7 @@ class RPSO():
         tempo_execucao = (end_time-start_time)
         
         if(grafico == True):
-            tecnica = "RPSO"
+            tecnica = "RPSO-ELM"
             print(tecnica)
             print("Alarmes:")
             print(alarmes)
@@ -272,8 +275,8 @@ def main():
     qtd_neuronios = 5
     numero_particulas = 30
     S = 1
-    tx = 0.5
-    alg = RPSO(dataset, M, lags, qtd_neuronios, numero_particulas, S, tx)
+    tx = 0.25
+    alg = RPSO_ELM(dataset, M, lags, qtd_neuronios, numero_particulas, S, tx)
      
     #colhendo os resultados
     alg.Executar(grafico=True)

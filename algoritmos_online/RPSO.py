@@ -210,6 +210,8 @@ class RPSO():
             else:
                 
                 #atualizando o modelo_vigente preditivo
+                dataset = enxame.Tratamento_Dados(janela_caracteristicas.dados[0], divisao_dataset, self.lags)
+                enxame.dataset = dataset
                 enxame.Retreinar() 
                     
                 #ajustando com os dados finais do treinamento a janela de predicao
@@ -261,7 +263,7 @@ def main():
     
     #instanciando o dataset
     dtst = Datasets('dentro')
-    dataset = dtst.Leitura_dados(dtst.bases_reais(3), csv=True)
+    dataset = dtst.Leitura_dados(dtst.bases_reais(1), csv=True)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)
         

@@ -30,7 +30,7 @@ janela_tempo = 5
 
 # instanciando o método IDPSO-ELM
 idpso_elm = IDPSO_ELM(serie, divisao_dataset, janela_tempo, qtd_neuronis)
-idpso_elm.Parametros_IDPSO(100, 30, 0.8, 0.8, 2, 2, 20)
+idpso_elm.Parametros_IDPSO(100, 30, 1, 0.8, 1.7, 2.3, 20)
 idpso_elm.Treinar()  
 
 # instanciando o método ELM

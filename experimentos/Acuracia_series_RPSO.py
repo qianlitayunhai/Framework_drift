@@ -8,7 +8,7 @@ Created on 13 de fev de 2017
 from geradores_tabela.Tabela_excel import Tabela_excel
 from ferramentas.Importar_dataset import Datasets
 from ferramentas.Particionar_series import Particionar_series
-from algoritmos_online.RPSO import RPSO
+from algoritmos_online.RPSO_ELM import RPSO_ELM
 from experimentos.Constantes import Constantes
 
 def printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao):
@@ -96,8 +96,8 @@ def main():
             dataset = particao.Normalizar(dataset)
                                 
             tabela = Tabela_excel()
-            nome = e.caminho_bases + "RPSO reais" + nome_arquivo
-            folhas = ["RPSO"]
+            nome = e.caminho_bases + "RPSO-ELM reais" + nome_arquivo
+            folhas = ["RPSO-ELM"]
             cabecalho = ["falsos alarmes", "atrasos", "MAPE", "tempo execucao"]
             largura_col = 5000
             tabela.Criar_tabela(nome, folhas, cabecalho, largura_col)
@@ -122,7 +122,7 @@ def main():
                 ########################################### instanciando os algoritmo e escrevendo as execucoes ####################################################
                 #"ELM"
                 print(folhas[0])
-                alg = RPSO(dataset, n, lags, qtd_neuronios, numero_particulas, 1, 0.25)
+                alg = RPSO_ELM(dataset, n, lags, qtd_neuronios, numero_particulas, 1, 0.25)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
                 printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
                 tabela.Adicionar_Sheet_Linha(0, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])

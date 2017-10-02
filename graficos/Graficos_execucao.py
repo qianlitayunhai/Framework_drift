@@ -76,7 +76,7 @@ class Grafico():
         label_deteccao_verdadeira = 'Real Change'
         label_deteccao_encontrada = 'Change Found'
         label_alarme_falso = 'False Alarms'
-        label_retreinamento = 'Retreining'
+        label_retreinamento = 'Retraining'
         label_online = 'Online'
 
         #deteccoes verdadeiras
@@ -377,7 +377,7 @@ class Grafico():
         label_deteccao_verdadeira = 'Real Change'
         label_deteccao_encontrada = 'Change Found'
         label_alarme_falso = 'False Alarms'
-        label_retreinamento = 'Retreining'
+        label_retreinamento = 'Retraining'
         label_online = 'Online'
 
         #deteccoes verdadeiras
@@ -717,7 +717,7 @@ class Grafico():
         label_deteccao_verdadeira = 'Real Change'
         label_deteccao_encontrada = 'Change Found'
         label_alarme_falso = 'False Alarms'
-        label_retreinamento = 'Retreining'
+        label_retreinamento = 'Retraining'
         label_online = 'Online'
 
         #deteccoes verdadeiras
@@ -1225,7 +1225,7 @@ class Grafico():
         x_intervalos = range(eixox[0], eixox[1], 500)
         
         label_deteccao_encontrada = 'Change Found'
-        label_retreinamento = 'Retreining'
+        label_retreinamento = 'Retraining'
         label_online = 'Online'
 
         #criando uma figura

@@ -202,7 +202,7 @@ def main():
     
     #instanciando o dataset
     dtst = Datasets('dentro')
-    dataset = dtst.Leitura_dados(dtst.bases_lineares(10), csv=True)
+    dataset = dtst.Leitura_dados(dtst.bases_reais_drift(2), csv=True, column = 1)
     #dataset = dtst.Leitura_dados(dtst.bases_reais(4), csv=True)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)

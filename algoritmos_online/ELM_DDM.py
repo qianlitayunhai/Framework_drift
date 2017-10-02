@@ -229,7 +229,7 @@ def main():
     dataset = particao.Normalizar(dataset)
                 
     #instanciando o algoritmo com sensores
-    n = 100
+    n = 300
     lags = 5
     qtd_neuronios = 10 
     w = 8

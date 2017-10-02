@@ -87,7 +87,6 @@ class PSO_ELM():
         self.c2 = c2
         self.crit_parada = crit_parada
         self.tx_espalhar = tx
-        
     
     def Tratamento_Dados(self, serie, divisao, janela):
         '''
@@ -236,9 +235,9 @@ class PSO_ELM():
         :return: retorna a indice da ultima geracao para parar o algoritmo  
         '''
         
-        global contador, fitness, lista_MSE
+        global contador, fitness
         
-        if(i == 0):
+        if(i == 1):
             fitness = copy.deepcopy(self.gbest.fitness)
             return i
         
@@ -340,8 +339,7 @@ class PSO_ELM():
             #print("[%d]" % (i) + " : ", self.gbest.fitness)
             #self.Grafico_Convergencia(self.gbest.fitness, i)
         
-            self.Melhor_ELM()
-            
+        self.Melhor_ELM()
             
     def Melhor_ELM(self):
         '''
@@ -359,31 +357,37 @@ class PSO_ELM():
         método para apagar as informações de parte do enxame, essa parte é definida por uma porcentagem: self.tx_espalhar
         '''
         
+        self.best_elm = []
+        
+        # zerando o contador do criterio de parada
+        global contador 
+        contador = 0
+        
+        # definindo a quantidade de particulas a serem apagadas
         qtd = len(self.particulas)
         tx = int(qtd * self.tx_espalhar) 
-        #print("taxa:", tx)
         escolhidos = []
         
         for i in range(tx):
             
+            # gerando um numero aleatorio
             j = self.Gerar_numero(qtd-1, escolhidos)
             escolhidos.append(j)
-            #print("indices gerados: [", j, "]")
+            print("Particulas reinicializadas: [", j, "]")
         
-            self.particulas[j].posicao = np.random.randn(1, self.numero_dimensoes)
-            self.particulas[j].posicao = self.particulas[j].posicao[0]
-            self.particulas[j].fitness = self.Funcao(self.particulas[j].posicao)
-            self.particulas[j].velocidade = array([0.0 for i in range(self.numero_dimensoes)])
-            self.particulas[j].best = self.particulas[j].posicao
-            self.particulas[j].fit_best = self.particulas[j].fitness
-            self.particulas[j].c1 = self.c1
-            self.particulas[j].c2 = self.c2
-            self.particulas[j].inercia = self.inercia
-            self.particulas[j].phi = 0
+            # apagando a antiga particula
+            del self.particulas[j]
             
-        global contador
-        contador = 0
-    
+            # criando uma nova e adicionando ela no enxame
+            p = Particulas()
+            p.posicao = np.random.randn(1, self.numero_dimensoes)
+            p.posicao = p.posicao[0]
+            p.fitness = self.Funcao(p.posicao)
+            p.velocidade = array([0.0 for x in range(self.numero_dimensoes)])
+            p.best = p.posicao
+            p.fit_best = p.fitness
+            self.particulas.append(p)
+            
     def Gerar_numero(self, qtd, escolhidos):
         '''
         Método para gerar um numero aleatorio de forma que os valores não se repitam
@@ -403,6 +407,7 @@ class PSO_ELM():
         Metodo para retreinar um modelo 
         '''
         
+        print("Retreinando...")
         self.Espalhar_particulas()
         
         i = 0
@@ -413,15 +418,14 @@ class PSO_ELM():
             self.Gbest()
             self.Pbest()
             self.Velocidade()
-            self.Atualizar_parametros(i)
             self.Atualizar_particulas()
-            i = self.Criterio_parada(i)
             
+            i = self.Criterio_parada(i)
             #print("[%d]" % (i) + " : ", self.gbest.fitness)
             #self.Grafico_Convergencia(self.gbest.fitness, i)
-        
-        self.Obter_sensores()
-    
+            
+        self.Melhor_ELM()
+       
 def main():
     print()
     
