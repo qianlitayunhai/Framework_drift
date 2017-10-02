@@ -456,18 +456,27 @@ class Tabela_testes():
         
         return base
 
-    def bases_reais_drift(self, numero):
+    def bases_reais_drift(self, numero, retorno = None):
         '''
         metodo para abrir um arquivo de resultado para as bases reais com drift
         :param: numero: numero do arquivo
         :return: retorna a string do caminho da base
         '''
         
-        if(numero == 0):
-            base = (caminho_bases + '/Reais/Dow-drift.xls')
+        if(retorno == None):
+            if(numero == 0):
+                base = (caminho_bases + '/Reais/Down-1972to1975.xls')
+            
+            elif(numero == 1):
+                base = (caminho_bases + '/Reais/S&P500-1986to2002.xls')
         
-        elif(numero == 1):
-            base = (caminho_bases + '/Reais/S&P500-drift.xls')
+        else:
+        
+            if(numero == 0):
+                base = (caminho_bases + '/Reais/Dow-drift.xls')
+            
+            elif(numero == 1):
+                base = (caminho_bases + '/Reais/S&P500-drift.xls')
         
         return base
     
@@ -969,10 +978,10 @@ class Tabela_testes():
             nemenyi.gerar_plot(nome, caminho)
     
 def main():
-    gerar_teste_acuracia_reais = True
+    gerar_teste_acuracia_reais = False
     gerar_teste_acuracia = False
     gerar_planilhas_parametros_artificiais = False
-    gerar_planilhas_parametros_reais = False
+    gerar_planilhas_parametros_reais = True
     
     tbt = Tabela_testes()
     

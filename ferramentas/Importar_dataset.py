@@ -173,15 +173,16 @@ class Datasets():
         
         if(retorno == None):
             if(tipo == 1):
-                base = (self.caminho_bases + '/Series Reais/Dow-drift.csv')
-            if(tipo == 2):
-                base = (self.caminho_bases + '/Series Reais/S&P500-drift.csv')
-        
-        else:
-            if(tipo == 1):
                 base = (self.caminho_bases + '/Series Reais/Down-1972to1975.csv')
             if(tipo == 2):
                 base = (self.caminho_bases + '/Series Reais/S&P500-1986to2002.csv')
+                
+        else:
+            if(tipo == 1):
+                base = (self.caminho_bases + '/Series Reais/Dow-drift.csv')
+            if(tipo == 2):
+                base = (self.caminho_bases + '/Series Reais/S&P500-drift.csv')
+            
                 
         return base
     
@@ -227,7 +228,7 @@ class Datasets():
         
         ####################################################### series reais com drift #########################################
         deteccoes = [124, 307, 510]
-        caminho = dtst.bases_reais_drift(1)
+        caminho = dtst.bases_reais_drift(1, retorno = True)
         dataset = dtst.Leitura_dados(caminho, csv=True)
         g1 = figura.add_subplot(2, 2, 1)
         g1.plot(dataset)
@@ -237,7 +238,7 @@ class Datasets():
         plt.tick_params(labelsize= tamanho)
         
         deteccoes = [448, 508, 1715, 2826, 4119]
-        caminho = dtst.bases_reais_drift(2)
+        caminho = dtst.bases_reais_drift(2, retorno = True)
         dataset = dtst.Leitura_dados(caminho, csv=True)
         g1 = figura.add_subplot(2, 2, 2)
         g1.plot(dataset)
@@ -248,7 +249,7 @@ class Datasets():
         
         
         deteccoes = [124, 307, 510]
-        caminho = dtst.bases_reais_drift(1, retorno = True)
+        caminho = dtst.bases_reais_drift(1)
         dataset = dtst.Leitura_dados(caminho, csv=True, column = 1)
         g1 = figura.add_subplot(2, 2, 3)
         g1.plot(dataset)
@@ -259,7 +260,7 @@ class Datasets():
         
         
         deteccoes = [448, 508, 1715, 2826, 4119]
-        caminho = dtst.bases_reais_drift(2, retorno = True)
+        caminho = dtst.bases_reais_drift(2)
         dataset = dtst.Leitura_dados(caminho, csv=True, column = 1)
         g1 = figura.add_subplot(2, 2, 4)
         g1.plot(dataset)

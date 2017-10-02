@@ -389,7 +389,7 @@ class Metricas_deteccao():
         if(len(stream)+n == 20000):
             return self.resultados_cnt(lista, n)
             
-        elif((len(stream)+n == 734)):
+        elif((len(stream)+n == 753)):
             return self.resultados_dow_drift(lista, n)
             
         elif((len(stream)+n == 4229)):

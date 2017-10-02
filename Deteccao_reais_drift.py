@@ -77,18 +77,20 @@ def caminho_datasets(alocacao, i, k, retorno = None, coluna = None):
         
         if(retorno == None):
             if(k == 1):
-                nome_arquivo = '/Reais/Dow-drift'
-                return dataset, nome_arquivo
-            elif(k == 2):
-                nome_arquivo = '/Reais/S&P500-drift'
-                return dataset, nome_arquivo
-        else:
-            if(k == 1):
                 nome_arquivo = '/Reais/Down-1972to1975'
                 return dataset, nome_arquivo
             elif(k == 2):
                 nome_arquivo = '/Reais/S&P500-1986to2002'
                 return dataset, nome_arquivo
+        
+        else:
+            if(k == 1):
+                nome_arquivo = '/Reais/Dow-drift'
+                return dataset, nome_arquivo
+            elif(k == 2):
+                nome_arquivo = '/Reais/S&P500-drift'
+                return dataset, nome_arquivo
+            
     ##################################################################################################################################################
     
 def main():
@@ -111,7 +113,6 @@ def main():
                 
     vez = [7]
     variacao = range(e.variacao_inicio, e.variacao_final)
-    retorno = True
     coluna = 1
                 
     ####################################################################################################################################################################################
@@ -120,7 +121,7 @@ def main():
             for k in variacao:
                                
                 ###########################################instanciando o dataset#################################################################################
-                dataset, nome_arquivo = caminho_datasets(alocacao, i, k, retorno, coluna)
+                dataset, nome_arquivo = caminho_datasets(alocacao, i, k, coluna)
                 ##################################################################################################################################################
                                 
                 ######################################## criando a tabela onde as informacoes serao armazenadas ##################################################

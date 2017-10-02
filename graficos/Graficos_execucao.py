@@ -26,7 +26,7 @@ class Grafico():
         elif((len(stream)+n >= 8000) and (len(stream)+n < 17500)):
             return self.Plotar_graficos_series_fin(stream, predicoes_vetor, deteccoes, alarmes, erro_stream_vetor, n, atrasos, falsos_alarmes, tempo_execucao, MAE, nome)
             
-        elif((len(stream)+n == 734)):
+        elif((len(stream)+n == 753)):
             return self.Plotar_graficos_dow_drift(stream, predicoes_vetor, deteccoes, alarmes, erro_stream_vetor, n, atrasos, falsos_alarmes, tempo_execucao, MAE, nome)
             
         elif((len(stream)+n == 4229)):
