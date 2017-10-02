@@ -25,7 +25,7 @@ def printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao):
     print("Tempo:", tempo_execucao)
     print()
     
-def caminho_datasets(alocacao, i, k):
+def caminho_datasets(alocacao, i, k, retorno = None, coluna = None):
     
     ###########################################instanciando o dataset#################################################################################
     dtst = Datasets(alocacao)
@@ -73,13 +73,22 @@ def caminho_datasets(alocacao, i, k):
             return dataset, nome_arquivo
         
     elif(i == 7):
-        dataset = dtst.Leitura_dados(dtst.bases_reais_drift(k), csv=True)
-        if(k == 1):
-            nome_arquivo = '/Reais/Dow-drift'
-            return dataset, nome_arquivo
-        elif(k == 2):
-            nome_arquivo = '/Reais/S&P500-drift'
-            return dataset, nome_arquivo           
+        dataset = dtst.Leitura_dados(dtst.bases_reais_drift(k, retorno=retorno), csv=True, column=coluna)
+        
+        if(retorno == None):
+            if(k == 1):
+                nome_arquivo = '/Reais/Dow-drift'
+                return dataset, nome_arquivo
+            elif(k == 2):
+                nome_arquivo = '/Reais/S&P500-drift'
+                return dataset, nome_arquivo
+        else:
+            if(k == 1):
+                nome_arquivo = '/Reais/Down-1972to1975'
+                return dataset, nome_arquivo
+            elif(k == 2):
+                nome_arquivo = '/Reais/S&P500-1986to2002'
+                return dataset, nome_arquivo
     ##################################################################################################################################################
     
 def main():

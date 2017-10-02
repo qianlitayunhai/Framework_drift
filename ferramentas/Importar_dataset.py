@@ -22,7 +22,7 @@ class Datasets():
     classe que armazena as series com drifts
     '''
 
-    def Leitura_dados(self, caminho, excel = None, csv = None):
+    def Leitura_dados(self, caminho, excel = None, csv = None, column = None):
         '''
         Metodo para fazer a leitura dos dados
         :param caminho: caminho da base que sera importada
@@ -38,11 +38,20 @@ class Datasets():
             return stream
         
         elif(csv == True):
-            print(caminho)
-            stream = pd.read_csv(caminho, header = None)
-            stream = stream[0]
-            stream = stream.as_matrix()
-            return stream
+            
+            if(column == 1):
+                print(caminho)
+                stream = pd.read_csv(caminho, header = None)
+                stream = stream[1]
+                stream = stream.as_matrix()
+                return stream
+            
+            else:
+                print(caminho)
+                stream = pd.read_csv(caminho, header = None)
+                stream = stream[0]
+                stream = stream.as_matrix()
+                return stream
     
     def bases_linear_graduais(self, numero):
         '''
@@ -142,15 +151,18 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
+        base = 0
+        
         if(tipo == 1):
             base = (self.caminho_bases + '/Series Reais/Dow.csv')
         if(tipo == 2):
             base = (self.caminho_bases + '/Series Reais/Nasdaq.csv')
         if(tipo == 3):
             base = (self.caminho_bases + '/Series Reais/S&P500.csv')
+        
         return base
     
-    def bases_reais_drift(self, tipo):
+    def bases_reais_drift(self, tipo, retorno = None):
         '''
         Metodo para mostrar o caminho das bases reais
         :param tipo: tipo de séris utilizada
@@ -159,10 +171,17 @@ class Datasets():
         :return: retorna o caminho da base
         '''
         
-        if(tipo == 1):
-            base = (self.caminho_bases + '/Series Reais/Dow-drift.csv')
-        if(tipo == 2):
-            base = (self.caminho_bases + '/Series Reais/S&P500-drift.csv')
+        if(retorno == None):
+            if(tipo == 1):
+                base = (self.caminho_bases + '/Series Reais/Dow-drift.csv')
+            if(tipo == 2):
+                base = (self.caminho_bases + '/Series Reais/S&P500-drift.csv')
+        
+        else:
+            if(tipo == 1):
+                base = (self.caminho_bases + '/Series Reais/Down-1972to1975.csv')
+            if(tipo == 2):
+                base = (self.caminho_bases + '/Series Reais/S&P500-1986to2002.csv')
                 
         return base
     
@@ -208,19 +227,41 @@ class Datasets():
         
         ####################################################### series reais com drift #########################################
         deteccoes = [124, 307, 510]
-        caminho = dtst.bases_reais(4)
+        caminho = dtst.bases_reais_drift(1)
         dataset = dtst.Leitura_dados(caminho, csv=True)
-        g1 = figura.add_subplot(2, 1, 1)
+        g1 = figura.add_subplot(2, 2, 1)
+        g1.plot(dataset)
+        for i in range(len(deteccoes)):
+                plt.axvline(deteccoes[i], linewidth=linha, color='r', alpha = alfa)
+        g1.set_title("Dow Jones Industrial Average - Daily Return", fontsize = fonte)
+        plt.tick_params(labelsize= tamanho)
+        
+        deteccoes = [448, 508, 1715, 2826, 4119]
+        caminho = dtst.bases_reais_drift(2)
+        dataset = dtst.Leitura_dados(caminho, csv=True)
+        g1 = figura.add_subplot(2, 2, 2)
+        g1.plot(dataset)
+        for i in range(len(deteccoes)):
+                plt.axvline(deteccoes[i], linewidth=linha, color='r', alpha = alfa)
+        g1.set_title("S&P500 - Daily Return", fontsize = fonte)
+        plt.tick_params(labelsize= tamanho)
+        
+        
+        deteccoes = [124, 307, 510]
+        caminho = dtst.bases_reais_drift(1, retorno = True)
+        dataset = dtst.Leitura_dados(caminho, csv=True, column = 1)
+        g1 = figura.add_subplot(2, 2, 3)
         g1.plot(dataset)
         for i in range(len(deteccoes)):
                 plt.axvline(deteccoes[i], linewidth=linha, color='r', alpha = alfa)
         g1.set_title("Dow Jones Industrial Average", fontsize = fonte)
         plt.tick_params(labelsize= tamanho)
         
+        
         deteccoes = [448, 508, 1715, 2826, 4119]
-        caminho = dtst.bases_reais(5)
-        dataset = dtst.Leitura_dados(caminho, csv=True)
-        g1 = figura.add_subplot(2, 1, 2)
+        caminho = dtst.bases_reais_drift(2, retorno = True)
+        dataset = dtst.Leitura_dados(caminho, csv=True, column = 1)
+        g1 = figura.add_subplot(2, 2, 4)
         g1.plot(dataset)
         for i in range(len(deteccoes)):
                 plt.axvline(deteccoes[i], linewidth=linha, color='r', alpha = alfa)
@@ -407,7 +448,6 @@ def main():
     dtst.Plotar_series_financeiras(dtst, tamanho_ticks, fonte, linha)
     dtst.Plotar_series_artificiais(dtst, tamanho_ticks, fonte, linha, alfa)
        
-    
 if __name__ == "__main__":
     main()
     
