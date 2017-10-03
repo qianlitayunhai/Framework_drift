@@ -311,37 +311,31 @@ class PSO_SLFN():
             return i 
         
         # verificando a cada iteracao o erro do conjunto de validacao
-        elif(i > self.crit_parada):
-            
+        if(i > self.crit_parada):
             # computando o gl5
             gl5 = 100 * ((erro/self.erro_val_min) - 1)
-            
             # conferinfo o erro em relacao ao gl5
             if(gl5 > 5):
                 print("[%d] GL5" % (i) + ": ", erro)
                 return self.iteracoes
             
-            else:
-                return i
-            
-        # verificando se o fitness da melhor particula nao esta estacionario
-        elif(contador == self.crit_parada):
-            return self.iteracoes
-        
-        # retornando a iteracao atual enquanto o erro nao e monitorado
         else:
-            
             # atualizando o erro de validacao caso ele seja menor 
             if(erro < self.erro_val_min):
                 self.erro_val_min = copy.deepcopy(erro)
-            
+                
+        # verificando se o fitness da melhor particula nao esta estacionario
+        if(contador == self.crit_parada):
+            return self.iteracoes
+        else:
             if(fitness == self.gbest.fitness):
                 contador+=1
+                print(contador)
             else:
                 fitness = copy.deepcopy(self.gbest.fitness)
                 contador = 0
-            
-            return i
+                
+        return i
         
     def Grafico_Convergencia(self, fitness, i):
         '''
@@ -433,7 +427,6 @@ class PSO_SLFN():
         escolhidos = []
         
         for i in range(tx):
-            
             # gerando um numero aleatorio
             j = self.Gerar_numero(qtd-1, escolhidos)
             escolhidos.append(j)
@@ -451,7 +444,14 @@ class PSO_SLFN():
             p.best = p.posicao
             p.fit_best = p.fitness
             self.particulas.append(p)
-    
+            
+        # atualizando os pbests das particulas
+        for i in self.particulas:
+            i.fitness = self.Funcao(i.posicao)
+            
+        # atualizando o gbest
+        self.gbest = self.particulas[0]
+        
     def Gerar_numero(self, qtd, escolhidos):
         '''
         Método para gerar um numero aleatorio de forma que os valores não se repitam

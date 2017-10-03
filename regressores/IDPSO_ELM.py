@@ -419,6 +419,18 @@ class IDPSO_ELM():
             #self.Grafico_Convergencia(self.gbest.fitness, i)
         
         self.Obter_sensores()
+        self.Melhor_ELM()
+        
+    def Melhor_ELM(self):
+        '''
+        método para retornar o melhor ELM
+        '''
+        
+        ELM = ELMRegressor(self.qtd_neuronios)
+        posicao = self.gbest.posicao.reshape(self.linhas, self.qtd_neuronios)
+        ELM.Treinar(self.dataset[0], self.dataset[1], posicao)
+            
+        self.best_elm = ELM
         
     def Espalhar_particulas(self):
         '''

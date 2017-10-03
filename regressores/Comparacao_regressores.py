@@ -30,7 +30,7 @@ janela_tempo = 5
 
 # instanciando o método IDPSO-ELM
 idpso_elm = IDPSO_ELM(serie, divisao_dataset, janela_tempo, qtd_neuronis)
-idpso_elm.Parametros_IDPSO(100, 30, 1, 0.8, 1.7, 2.3, 20)
+idpso_elm.Parametros_IDPSO(100, 30, 0.8, 0.4, 2, 2, 20)
 idpso_elm.Treinar()  
 
 # instanciando o método ELM
@@ -45,14 +45,13 @@ pso_slfn.Treinar()
 
 # instanciando o método PSO_ELM
 pso_elm = PSO_ELM(serie, divisao_dataset, janela_tempo, qtd_neuronis)
-pso_elm.Parametros_PSO(100, 30, 0.8, 2, 2, 20, 0.25)
+pso_elm.Parametros_PSO(100, 30, 0.4, 0.4, 2, 2, 20, 0.25)
 pso_elm.Treinar()
 
 # organizando os dados para comparacao #
 train_x, train_y = idpso_elm.dataset[0], idpso_elm.dataset[1] 
 val_x, val_y = idpso_elm.dataset[2], idpso_elm.dataset[3]
 test_x, test_y = idpso_elm.dataset[4], idpso_elm.dataset[5]
-
 
 
 ################################## computando a previsao para o conjunto de treinamento ################################

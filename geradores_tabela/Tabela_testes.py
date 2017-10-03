@@ -773,7 +773,7 @@ class Tabela_testes():
             largura_col = 5000
             tabela.Criar_tabela(nome, folhas, cabecalho, largura_col)
             
-            sheet = [10] + list(range(0, len(c.folhas)))
+            sheet = [100] + list(range(0, len(c.folhas)))
             vez = [0, 1, 2]
             
             col_metrica = z
@@ -781,7 +781,7 @@ class Tabela_testes():
             for i in sheet:
                 contador = 0
                 
-                if(i == 10):
+                if(i == 100):
                     for j in vez:
                         for l in range(c.qtd_execucoes):
                             contador += 1
@@ -978,10 +978,10 @@ class Tabela_testes():
             nemenyi.gerar_plot(nome, caminho)
     
 def main():
-    gerar_teste_acuracia_reais = False
+    gerar_teste_acuracia_reais = True
     gerar_teste_acuracia = False
     gerar_planilhas_parametros_artificiais = False
-    gerar_planilhas_parametros_reais = True
+    gerar_planilhas_parametros_reais = False
     
     tbt = Tabela_testes()
     

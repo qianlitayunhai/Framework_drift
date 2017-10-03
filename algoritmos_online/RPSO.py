@@ -15,11 +15,11 @@ import time
 import numpy as np
 
 #parametros IDPSO
-it = 100
-inercia = 0.8
+it = 50
+inercia = 0.4
 c1 = 2
 c2 = 2
-crit_parada = 25
+crit_parada = 2
 divisao_dataset = [0.8, 0.2, 0]
 
 class RPSO():
@@ -273,7 +273,7 @@ def main():
     qtd_neuronios = 5
     numero_particulas = 30
     S = 1
-    tx = 0.5
+    tx = 0.25
     alg = RPSO(dataset, M, lags, qtd_neuronios, numero_particulas, S, tx)
      
     #colhendo os resultados

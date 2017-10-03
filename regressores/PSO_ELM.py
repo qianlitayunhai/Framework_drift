@@ -14,6 +14,7 @@ Xmax = 0.3
 Xmin = -Xmax
 posMax = Xmax
 posMin = -posMax
+mi = 100
 
 #variaveis auxiliares
 contador = 0
@@ -64,12 +65,9 @@ class PSO_ELM():
         self.particulas = []
         self.gbest = []
         
-        self.particulas_ordenadas = [0] * self.numero_particulas
-        self.sensores = [0] * self.numero_particulas
-        
         self.tx_espalhar = 0
         
-    def Parametros_PSO(self, iteracoes, numero_particulas, inercia, c1, c2, crit_parada, tx):
+    def Parametros_PSO(self, iteracoes, numero_particulas, inercia_inicial, inercia_final, c1, c2, crit_parada, tx):
         '''
         Metodo para alterar os parametros basicos do IDPSO 
         :param iteracoes: quantidade de geracoes para o treinamento 
@@ -82,7 +80,8 @@ class PSO_ELM():
         
         self.iteracoes = iteracoes
         self.numero_particulas = numero_particulas
-        self.inercia = inercia
+        self.inercia_inicial = inercia_inicial
+        self.inercia_final = inercia_final
         self.c1 = c1
         self.c2 = c2
         self.crit_parada = crit_parada
@@ -134,6 +133,10 @@ class PSO_ELM():
             p.velocidade = array([0.0 for i in range(self.numero_dimensoes)])
             p.best = p.posicao
             p.fit_best = p.fitness
+            p.c1 = self.c1
+            p.c2 = self.c2
+            p.inercia = self.inercia
+            p.phi = 0
             self.particulas.append(p)
         
         self.gbest = self.particulas[0]
@@ -184,9 +187,9 @@ class PSO_ELM():
                 calculo_c1 = (i.best[j] - i.posicao[j])
                 calculo_c2 = (self.gbest.posicao[j] - i.posicao[j])
                 
-                influecia_inercia = (self.inercia * i.velocidade[j])
-                influencia_cognitiva = ((self.c1 * random.random()) * calculo_c1)
-                influecia_social = ((self.c2 * random.random()) * calculo_c2)
+                influecia_inercia = (i.inercia * i.velocidade[j])
+                influencia_cognitiva = ((i.c1 * random.random()) * calculo_c1)
+                influecia_social = ((i.c2 * random.random()) * calculo_c2)
               
                 i.velocidade[j] = influecia_inercia + influencia_cognitiva + influecia_social
                 
@@ -209,6 +212,33 @@ class PSO_ELM():
                 elif(i.posicao[j] <= posMin):
                     i.posicao[j] = posMin
 
+    def Atualizar_parametros(self, iteracao):
+        '''
+        Metodo para atualizar os parametros: inercia, c1 e c2 
+        '''
+        
+        for i in self.particulas:
+            parte1 = 0
+            parte2 = 0
+            
+            for j in range(len(i.posicao)):
+                parte1 = parte1 + self.gbest.posicao[j] - i.posicao[j]
+                parte2 = parte2 + i.best[j] - i.posicao[j]
+                
+                if(parte1 == 0):
+                    parte1 = 1
+                if(parte2 == 0):
+                    parte2 = 1
+                    
+            i.phi = abs(parte1/parte2)
+            
+        for i in self.particulas:
+            ln = np.log(i.phi)
+            calculo = i.phi * (iteracao - ((1 + ln) * self.iteracoes) / mi)
+            i.inercia = ((self.inercia - self.inercia_final) / (1 + np.exp(calculo))) + self.inercia_final
+            i.c1 = self.c1 * (i.phi ** (-1))
+            i.c2 = self.c2 * i.phi
+            
     def Pbest(self):
         '''
         Metodo para computar os pbests das particulas  
@@ -235,9 +265,9 @@ class PSO_ELM():
         :return: retorna a indice da ultima geracao para parar o algoritmo  
         '''
         
-        global contador, fitness
+        global contador, fitness, lista_MSE
         
-        if(i == 1):
+        if(i == 0):
             fitness = copy.deepcopy(self.gbest.fitness)
             return i
         
@@ -333,6 +363,7 @@ class PSO_ELM():
             self.Gbest()
             self.Pbest()
             self.Velocidade()
+            self.Atualizar_parametros(i)
             self.Atualizar_particulas()
             i = self.Criterio_parada(i)
             
@@ -383,9 +414,13 @@ class PSO_ELM():
             p.posicao = np.random.randn(1, self.numero_dimensoes)
             p.posicao = p.posicao[0]
             p.fitness = self.Funcao(p.posicao)
-            p.velocidade = array([0.0 for x in range(self.numero_dimensoes)])
+            p.velocidade = array([0.0 for i in range(self.numero_dimensoes)])
             p.best = p.posicao
             p.fit_best = p.fitness
+            p.c1 = self.c1
+            p.c2 = self.c2
+            p.inercia = self.inercia
+            p.phi = 0
             self.particulas.append(p)
             
     def Gerar_numero(self, qtd, escolhidos):
@@ -418,6 +453,7 @@ class PSO_ELM():
             self.Gbest()
             self.Pbest()
             self.Velocidade()
+            self.Atualizar_parametros(i)
             self.Atualizar_particulas()
             
             i = self.Criterio_parada(i)
