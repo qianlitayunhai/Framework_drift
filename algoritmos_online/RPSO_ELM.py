@@ -192,7 +192,7 @@ class RPSO_ELM():
                 #salvando a predicao
                 predicoes_vetor[i] = predicao[0]
                 
-            print("[", i, "]")
+            #print("[", i, "]")
             
             if(mudanca_ocorreu == False):
                 

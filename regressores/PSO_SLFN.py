@@ -391,7 +391,7 @@ class PSO_SLFN():
         Metodo para treinar a rede ELM com o IDPSO 
         '''
         
-        print("Treinando...")
+        #print("Treinando...")
         self.Criar_Particula()       
         
         i = 0
@@ -471,7 +471,7 @@ class PSO_SLFN():
         Metodo para retreinar um modelo 
         '''
         
-        print("Retreinando...")
+        #print("Retreinando...")
         self.Espalhar_particulas()
         
         i = 0

@@ -442,7 +442,7 @@ class PSO_ELM():
         Metodo para retreinar um modelo 
         '''
         
-        print("Retreinando...")
+        #print("Retreinando...")
         self.Espalhar_particulas()
         
         i = 0
