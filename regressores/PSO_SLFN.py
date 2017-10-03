@@ -316,7 +316,7 @@ class PSO_SLFN():
             gl5 = 100 * ((erro/self.erro_val_min) - 1)
             # conferinfo o erro em relacao ao gl5
             if(gl5 > 5):
-                print("[%d] GL5" % (i) + ": ", erro)
+                #print("[%d] GL5" % (i) + ": ", erro)
                 return self.iteracoes
             
         else:
