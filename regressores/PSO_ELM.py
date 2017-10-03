@@ -10,7 +10,7 @@ from sklearn.metrics.regression import mean_absolute_error
 from ferramentas.Importar_dataset import Datasets
 
 #limites
-Xmax = 0.3
+Xmax = 1
 Xmin = -Xmax
 posMax = Xmax
 posMin = -posMax
