@@ -404,7 +404,7 @@ class PSO_ELM():
             # gerando um numero aleatorio
             j = self.Gerar_numero(qtd-1, escolhidos)
             escolhidos.append(j)
-            print("Particulas reinicializadas: [", j, "]")
+            #print("Particulas reinicializadas: [", j, "]")
         
             # apagando a antiga particula
             del self.particulas[j]
