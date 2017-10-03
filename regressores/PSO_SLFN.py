@@ -330,7 +330,7 @@ class PSO_SLFN():
         else:
             if(fitness == self.gbest.fitness):
                 contador+=1
-                print(contador)
+                #print(contador)
             else:
                 fitness = copy.deepcopy(self.gbest.fitness)
                 contador = 0
