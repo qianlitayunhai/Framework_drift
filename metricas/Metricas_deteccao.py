@@ -187,7 +187,7 @@ class Metricas_deteccao():
         
         for i in range(len(lista)):
             
-            print("Detecção: ", lista[i])
+            #print("Detecção: ", lista[i])
             
             # x < 448
             if(lista[i] < deteccoes[0]):
@@ -201,9 +201,9 @@ class Metricas_deteccao():
                     
                 if(auxiliar[0] == False):
                     atrasos = atrasos + lista[i] - deteccoes[0]
-                    print(lista[i], " - ", deteccoes[0], ": ")
-                    print("Atraso: ", lista[i] - deteccoes[0])
-                    print("Total: ", atrasos)
+                    #print(lista[i], " - ", deteccoes[0], ": ")
+                    #print("Atraso: ", lista[i] - deteccoes[0])
+                    #print("Total: ", atrasos)
                     auxiliar[0] = True
                    
                 
@@ -215,9 +215,9 @@ class Metricas_deteccao():
                     
                 if(auxiliar[1] == False):
                     atrasos = atrasos + lista[i] - deteccoes[1]
-                    print(lista[i], " - ", deteccoes[0], ": ")
-                    print("Atraso: ", lista[i] - deteccoes[0])
-                    print("Total: ", atrasos)
+                    #print(lista[i], " - ", deteccoes[0], ": ")
+                    #print("Atraso: ", lista[i] - deteccoes[0])
+                    #print("Total: ", atrasos)
                     auxiliar[1] = True
                     
             
@@ -229,9 +229,9 @@ class Metricas_deteccao():
                     
                 if(auxiliar[2] == False):
                     atrasos = atrasos + lista[i] - deteccoes[2]
-                    print(lista[i], " - ", deteccoes[0], ": ")
-                    print("Atraso: ", lista[i] - deteccoes[0])
-                    print("Total: ", atrasos)
+                    #print(lista[i], " - ", deteccoes[0], ": ")
+                    #print("Atraso: ", lista[i] - deteccoes[0])
+                    #print("Total: ", atrasos)
                     auxiliar[2] = True
             
             
@@ -243,9 +243,9 @@ class Metricas_deteccao():
                     
                 if(auxiliar[3] == False):
                     atrasos = atrasos + lista[i] - deteccoes[3]
-                    print(lista[i], " - ", deteccoes[0], ": ")
-                    print("Atraso: ", lista[i] - deteccoes[0])
-                    print("Total: ", atrasos)
+                    #print(lista[i], " - ", deteccoes[0], ": ")
+                    #print("Atraso: ", lista[i] - deteccoes[0])
+                    #print("Total: ", atrasos)
                     auxiliar[3] = True
                    
             # x >= 4119
@@ -256,9 +256,9 @@ class Metricas_deteccao():
                     
                 if(auxiliar[4] == False):
                     atrasos = atrasos + lista[i] - deteccoes[4]
-                    print(lista[i], " - ", deteccoes[0], ": ")
-                    print("Atraso: ", lista[i] - deteccoes[0])
-                    print("Total: ", atrasos)
+                    #print(lista[i], " - ", deteccoes[0], ": ")
+                    #print("Atraso: ", lista[i] - deteccoes[0])
+                    #print("Total: ", atrasos)
                     auxiliar[4] = True
             
             
