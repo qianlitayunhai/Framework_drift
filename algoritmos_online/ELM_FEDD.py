@@ -233,20 +233,20 @@ def main():
     
     #instanciando o dataset
     dtst = Datasets('dentro')
-    dataset = dtst.Leitura_dados(dtst.bases_reais_drift(1), csv=True)
+    dataset = dtst.Leitura_dados(dtst.bases_reais_drift(2), csv=True, column = 1)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)
                 
     #instanciando o algoritmo com sensores
-    n = 50
+    n = 100
     lags = 5
     qtd_neuronios = 10 
-    w = 0.3
-    c = 0.4
+    w = 0.75
+    c = 0.75
     alg = ELM_FEDD(dataset, n, lags, qtd_neuronios, 0.2, w, c)
     
     #colhendo os resultados
-    alg.Executar(grafico=False)
+    alg.Executar(grafico=True)
     
     
 if __name__ == "__main__":

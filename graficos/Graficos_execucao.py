@@ -644,9 +644,10 @@ class Grafico():
                         grafico2.axvline(contador, linewidth=largura_deteccoes, linestyle=estilo, color=cor_deteccao_encontrada)
                         grafico2.axvspan(contador, contador+n, facecolor=cor_retreinamento, alpha=cor_alpha_retreinamento)
                         auxiliar[1] = True
-                       
-                #x >= 45000
-                if(deteccoes[i] >= deteccoes_reais[2]):      
+                        
+                        
+                # x >= 10000 e x < 15000
+                if(deteccoes[i] >= deteccoes_reais[2] and deteccoes[i] < deteccoes_reais[3]):      
                     
                     if(auxiliar[2] == True):
                         
@@ -662,6 +663,45 @@ class Grafico():
                         grafico2.axvline(contador, linewidth=largura_deteccoes, linestyle=estilo, color=cor_deteccao_encontrada)
                         grafico2.axvspan(contador, contador+n, facecolor=cor_retreinamento, alpha=cor_alpha_retreinamento)
                         auxiliar[2] = True
+                        
+                        
+                
+                # x >= 10000 e x < 15000
+                if(deteccoes[i] >= deteccoes_reais[3] and deteccoes[i] < deteccoes_reais[4]):      
+                    
+                    if(auxiliar[3] == True):
+                        
+                        if(primeiro_false == False):
+                            primeiro_false = True
+                            grafico2.axvline(contador, linewidth=largura_deteccoes, linestyle=estilo, color=cor_falsos_alarmes)
+                            grafico2.axvspan(contador, contador+n, facecolor=cor_retreinamento, alpha=cor_alpha_retreinamento)
+                        else:
+                            grafico2.axvline(contador, linewidth=largura_deteccoes, linestyle=estilo, color=cor_falsos_alarmes)
+                            grafico2.axvspan(contador, contador+n, facecolor=cor_retreinamento, alpha=cor_alpha_retreinamento)
+                        
+                    if(auxiliar[3] == False):
+                        grafico2.axvline(contador, linewidth=largura_deteccoes, linestyle=estilo, color=cor_deteccao_encontrada)
+                        grafico2.axvspan(contador, contador+n, facecolor=cor_retreinamento, alpha=cor_alpha_retreinamento)
+                        auxiliar[3] = True
+                        
+                       
+                #x >= 45000
+                if(deteccoes[i] >= deteccoes_reais[4]):      
+                    
+                    if(auxiliar[4] == True):
+                        
+                        if(primeiro_false == False):
+                            primeiro_false = True
+                            grafico2.axvline(contador, linewidth=largura_deteccoes, linestyle=estilo, color=cor_falsos_alarmes)
+                            grafico2.axvspan(contador, contador+n, facecolor=cor_retreinamento, alpha=cor_alpha_retreinamento)
+                        else:
+                            grafico2.axvline(contador, linewidth=largura_deteccoes, linestyle=estilo, color=cor_falsos_alarmes)
+                            grafico2.axvspan(contador, contador+n, facecolor=cor_retreinamento, alpha=cor_alpha_retreinamento)
+                        
+                    if(auxiliar[4] == False):
+                        grafico2.axvline(contador, linewidth=largura_deteccoes, linestyle=estilo, color=cor_deteccao_encontrada)
+                        grafico2.axvspan(contador, contador+n, facecolor=cor_retreinamento, alpha=cor_alpha_retreinamento)
+                        auxiliar[4] = True
 
         #colocando legenda e definindo os eixos do grafico
         plt.ylabel('MAE')

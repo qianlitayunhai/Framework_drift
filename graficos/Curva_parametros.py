@@ -710,6 +710,38 @@ class Curva():
         plt.show()
         ########################################################################################################################
      
+    def Tempo_execucao(self):
+        '''
+        método para plotar o tempo de execução dos algoritmos para as series reais financeiras
+        '''
+        
+        plt.style.use('seaborn-darkgrid')
+        
+        algoritmos = ["ELM",  "ELM-DDM",  "ELM-ECDD",  "ELM-FEDD",  "IDPSO-ELM-B",  "IDPSO-ELM-S",  "IDPSO-ELM-SV",  "P-IDPSO-ELM-SV",  "M-IDPSO-ELM-SV", "RPSO-ELM", "RPSO"]
+        tempo = [1.258838492,  3.344348126,  1.670341359,  17.08783947,  12.66821589,  13.56126097,  13.76836696,  20.26134007,  23.8165871, 17.42857175,  167.1866382]
+        
+        colors = ['blue'] * len(tempo)
+        
+        sequencia = range(0, len(tempo))
+        barras = plt.bar(sequencia, tempo, 0.6, align='center', color = colors)
+        plt.title('Time of run')
+        plt.ylabel('Seconds')
+        plt.xlabel('Algorithms')
+        plt.xticks(range(len(tempo)))
+
+        limiar = min(tempo) * 15
+        plt.axis([-1, len(tempo), min(tempo) - (limiar/20), max(tempo) + (2*limiar)])
+        
+        rects = barras.patches
+        
+        # Now make some labels
+        for i in range(len(algoritmos)):
+            height = rects[i].get_height()
+            plt.text(rects[i].get_x() + rects[i].get_width()/2, height+(limiar/2), algoritmos[i], ha='center', va='bottom', rotation='vertical')
+                  
+        plt.legend()
+        plt.show()
+        
 def main():
     
     c = Curva()
@@ -717,8 +749,10 @@ def main():
     #c.Curvas_reais_retorno()
     #c.Curvas_reais_retorno()
     #c.Curvas_reais_sem_retorno()
-    c.Curvas_down()
-    c.Curvas_sp()
+    #c.Curvas_down()
+    #c.Curvas_sp()
+    
+    c.Tempo_execucao()
     
 if __name__ == "__main__":
     main()

@@ -754,7 +754,7 @@ class Tabela_testes():
         coluna 3 - tempo_execucao
         '''   
         
-        metricas = [2]
+        metricas = [3]
         
         for z in metricas:
             

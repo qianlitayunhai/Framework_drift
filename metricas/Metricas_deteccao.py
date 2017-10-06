@@ -186,6 +186,9 @@ class Metricas_deteccao():
         auxiliar = [False] * len(deteccoes)
         
         for i in range(len(lista)):
+            
+            print("Detecção: ", lista[i])
+            
             # x < 448
             if(lista[i] < deteccoes[0]):
                 falsos_alarmes += increment
@@ -198,6 +201,9 @@ class Metricas_deteccao():
                     
                 if(auxiliar[0] == False):
                     atrasos = atrasos + lista[i] - deteccoes[0]
+                    print(lista[i], " - ", deteccoes[0], ": ")
+                    print("Atraso: ", lista[i] - deteccoes[0])
+                    print("Total: ", atrasos)
                     auxiliar[0] = True
                    
                 
@@ -209,6 +215,9 @@ class Metricas_deteccao():
                     
                 if(auxiliar[1] == False):
                     atrasos = atrasos + lista[i] - deteccoes[1]
+                    print(lista[i], " - ", deteccoes[0], ": ")
+                    print("Atraso: ", lista[i] - deteccoes[0])
+                    print("Total: ", atrasos)
                     auxiliar[1] = True
                     
             
@@ -220,6 +229,9 @@ class Metricas_deteccao():
                     
                 if(auxiliar[2] == False):
                     atrasos = atrasos + lista[i] - deteccoes[2]
+                    print(lista[i], " - ", deteccoes[0], ": ")
+                    print("Atraso: ", lista[i] - deteccoes[0])
+                    print("Total: ", atrasos)
                     auxiliar[2] = True
             
             
@@ -231,6 +243,9 @@ class Metricas_deteccao():
                     
                 if(auxiliar[3] == False):
                     atrasos = atrasos + lista[i] - deteccoes[3]
+                    print(lista[i], " - ", deteccoes[0], ": ")
+                    print("Atraso: ", lista[i] - deteccoes[0])
+                    print("Total: ", atrasos)
                     auxiliar[3] = True
                    
             # x >= 4119
@@ -240,9 +255,12 @@ class Metricas_deteccao():
                     falsos_alarmes += increment
                     
                 if(auxiliar[4] == False):
-                    atrasos = atrasos + lista[i] - deteccoes[2]
+                    atrasos = atrasos + lista[i] - deteccoes[4]
+                    print(lista[i], " - ", deteccoes[0], ": ")
+                    print("Atraso: ", lista[i] - deteccoes[0])
+                    print("Total: ", atrasos)
                     auxiliar[4] = True
-                    
+            
             
         # computando os atrasos
         for i in range(len(auxiliar)):

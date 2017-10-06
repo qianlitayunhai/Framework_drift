@@ -177,7 +177,7 @@ class Datasets():
             if(tipo == 2):
                 base = (self.caminho_bases + '/Series Reais/S&P500-1986to2002.csv')
                 
-        else:
+        elif(retorno == True):
             if(tipo == 1):
                 base = (self.caminho_bases + '/Series Reais/Dow-drift.csv')
             if(tipo == 2):
@@ -224,49 +224,54 @@ class Datasets():
         :param: linha: inteiro, tamanho da linha que mostra o drift
         '''
         
-        figura = plt.figure()
         
         ####################################################### series reais com drift #########################################
+        figura = plt.figure()
+        
         deteccoes = [124, 307, 510]
         caminho = dtst.bases_reais_drift(1, retorno = True)
         dataset = dtst.Leitura_dados(caminho, csv=True)
-        g1 = figura.add_subplot(2, 2, 1)
+        g1 = figura.add_subplot(2, 1, 1)
         g1.plot(dataset)
         for i in range(len(deteccoes)):
                 plt.axvline(deteccoes[i], linewidth=linha, color='r', alpha = alfa)
         g1.set_title("Dow Jones Industrial Average - Daily Return", fontsize = fonte)
         plt.tick_params(labelsize= tamanho)
         
-        deteccoes = [448, 508, 1715, 2826, 4119]
-        caminho = dtst.bases_reais_drift(2, retorno = True)
-        dataset = dtst.Leitura_dados(caminho, csv=True)
-        g1 = figura.add_subplot(2, 2, 2)
-        g1.plot(dataset)
-        for i in range(len(deteccoes)):
-                plt.axvline(deteccoes[i], linewidth=linha, color='r', alpha = alfa)
-        g1.set_title("S&P500 - Daily Return", fontsize = fonte)
-        plt.tick_params(labelsize= tamanho)
-        
-        
         deteccoes = [124, 307, 510]
         caminho = dtst.bases_reais_drift(1)
         dataset = dtst.Leitura_dados(caminho, csv=True, column = 1)
-        g1 = figura.add_subplot(2, 2, 3)
+        g1 = figura.add_subplot(2, 1, 2)
         g1.plot(dataset)
         for i in range(len(deteccoes)):
                 plt.axvline(deteccoes[i], linewidth=linha, color='r', alpha = alfa)
         g1.set_title("Dow Jones Industrial Average", fontsize = fonte)
+        plt.tick_params(labelsize= tamanho)
+        plt.show()
+
+        ######################################################################################################
+                
+        figura = plt.figure()
+        
+        deteccoes = [448, 508, 1715, 2826, 4119]
+        caminho = dtst.bases_reais_drift(2, retorno = True)
+        dataset = dtst.Leitura_dados(caminho, csv=True)
+        g2 = figura.add_subplot(2, 1, 1)
+        g2.plot(dataset)
+        for i in range(len(deteccoes)):
+                plt.axvline(deteccoes[i], linewidth=linha, color='r', alpha = alfa)
+        g2.set_title("S&P500 - Daily Return", fontsize = fonte)
         plt.tick_params(labelsize= tamanho)
         
         
         deteccoes = [448, 508, 1715, 2826, 4119]
         caminho = dtst.bases_reais_drift(2)
         dataset = dtst.Leitura_dados(caminho, csv=True, column = 1)
-        g1 = figura.add_subplot(2, 2, 4)
-        g1.plot(dataset)
+        g2 = figura.add_subplot(2, 1, 2)
+        g2.plot(dataset)
         for i in range(len(deteccoes)):
                 plt.axvline(deteccoes[i], linewidth=linha, color='r', alpha = alfa)
-        g1.set_title("S&P500", fontsize = fonte)
+        g2.set_title("S&P500", fontsize = fonte)
         plt.tick_params(labelsize= tamanho)
         plt.show()
         #############################################################################################################################
@@ -446,8 +451,8 @@ def main():
     alfa = 0.5
     
     dtst.Plotar_series_reais_drift(dtst, tamanho_ticks, fonte, linha, alfa)
-    dtst.Plotar_series_financeiras(dtst, tamanho_ticks, fonte, linha)
-    dtst.Plotar_series_artificiais(dtst, tamanho_ticks, fonte, linha, alfa)
+    #dtst.Plotar_series_financeiras(dtst, tamanho_ticks, fonte, linha)
+    #dtst.Plotar_series_artificiais(dtst, tamanho_ticks, fonte, linha, alfa)
        
 if __name__ == "__main__":
     main()

@@ -277,7 +277,7 @@ def main():
         
     #instanciando o algoritmo com sensores
     #dataset, qtd_train_inicial, tamanho_janela, passo, lagnd_neuronios, qtd_sensores
-    n = 50
+    n = 300
     lags = 5
     qtd_neuronios = 10
     numero_particulas = 30
