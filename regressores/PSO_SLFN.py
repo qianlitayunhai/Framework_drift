@@ -17,9 +17,9 @@ from sklearn.metrics.regression import mean_squared_error
 from ferramentas.Importar_dataset import Datasets
 
 #limites
-Xmax = 1
+Xmax = 5
 Xmin = -Xmax
-posMax = Xmax
+posMax = 1
 posMin = -posMax
 
 #variaveis auxiliares

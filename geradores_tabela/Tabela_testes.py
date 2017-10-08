@@ -978,10 +978,10 @@ class Tabela_testes():
             nemenyi.gerar_plot(nome, caminho)
     
 def main():
-    gerar_teste_acuracia_reais = True
+    gerar_teste_acuracia_reais = False
     gerar_teste_acuracia = False
     gerar_planilhas_parametros_artificiais = False
-    gerar_planilhas_parametros_reais = False
+    gerar_planilhas_parametros_reais = True
     
     tbt = Tabela_testes()
     

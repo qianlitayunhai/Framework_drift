@@ -17,6 +17,8 @@ from algoritmos_online.IDPSO_ELM_SV import IDPSO_ELM_SV
 from algoritmos_online.IDPSO_ELM_B import IDPSO_ELM_B
 from algoritmos_online.P_IDPSO_ELM_SV import P_IDPSO_ELM_SV
 from algoritmos_online.M_IDPSO_ELM_SV import M_IDPSO_ELM_SV
+from algoritmos_online.RPSO import RPSO
+from algoritmos_online.RPSO_ELM import RPSO_ELM
 from experimentos.Constantes import Constantes
 
 def printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao):
@@ -88,7 +90,7 @@ def main():
                 
     vez = [6]
     #variacao = range(e.variacao_inicio, e.variacao_final)
-    variacao = [1]
+    variacao = [1, 2, 3]
                 
     ####################################################################################################################################################################################
                 
@@ -211,6 +213,22 @@ def main():
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
                 printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
                 tabela.Adicionar_Sheet_Linha(8, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
+                
+                #"RPSO"
+                print(folhas[9])
+                tx = 0.25
+                alg = RPSO(dataset, n, lags, qtd_neuronios, numero_particulas, 1, tx)
+                [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
+                printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
+                tabela.Adicionar_Sheet_Linha(9, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
+                
+                #"RPSO-ELM"
+                print(folhas[10])
+                tx = 0.25
+                alg = RPSO_ELM(dataset, n, lags, qtd_neuronios, numero_particulas, 1, tx)
+                [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
+                printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
+                tabela.Adicionar_Sheet_Linha(10, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
                 
                 ##################################################################################################################################################
                                     

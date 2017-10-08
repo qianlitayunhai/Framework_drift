@@ -453,6 +453,24 @@ class Curva():
         sob_triang = 2
         ########################################################################################################################
         
+        
+        ###############################################-ELM-DDM-######################################################
+        tecnica = 'RPSO-ELM'  
+        param_rpso = ['RPSO-ELM']
+        atrasos_rpso = [295.8]
+        fa_rpso = [1.8]
+        mae_rpso = [0.031920632]
+        val_min = min(mae_rpso)
+        i = mae_rpso.index(val_min)
+        
+        plt.plot(fa_rpso, atrasos_rpso, pontos[0], color = tradeoff, markersize=tamanho_pontos)
+        plt.plot(fa_rpso, atrasos_rpso, line[0], color = tradeoff, label = tecnica, linewidth=tamanho_linha)
+        plt.plot(fa_rpso[0], atrasos_rpso[0]+sob_triang, pontos[2], color = tradeoff, markersize=tamanho_pontos+tamanho_tradeoff)
+        for i in range(len(param_rpso)):
+            plt.text(fa_rpso[i], atrasos_rpso[i]+sob_ponto, param_rpso[i], fontsize=tamanho_fonte)
+        ############################################################################################################
+        
+        
         ###############################################-ELM-DDM-######################################################
         tecnica = 'ELM-DDM'  
         param_ddm = ['2', '4', '6', '8']
@@ -587,15 +605,31 @@ class Curva():
         tamanho_tradeoff = 6
         tamanho_fonte = 11
         sob_ponto = 50
-        sob_triang = 25
+        sob_triang = 10
         ########################################################################################################################
+        
+        ###############################################-ELM-DDM-######################################################
+        tecnica = 'RPSO-ELM'  
+        param_rpso = ['RPSO-ELM']
+        atrasos_rpso = [1527.6]
+        fa_rpso = [15.4]
+        mae_rpso = [0.007537392]
+        val_min = min(mae_rpso)
+        i = mae_rpso.index(val_min)
+        
+        plt.plot(fa_rpso, atrasos_rpso, pontos[0], color = tradeoff, markersize=tamanho_pontos)
+        plt.plot(fa_rpso, atrasos_rpso, line[0], color = tradeoff, label = tecnica, linewidth=tamanho_linha)
+        plt.plot(fa_rpso[0], atrasos_rpso[0]+sob_triang, pontos[2], color = tradeoff, markersize=tamanho_pontos+tamanho_tradeoff)
+        for i in range(len(param_rpso)):
+            plt.text(fa_rpso[i], atrasos_rpso[i]+sob_ponto, param_rpso[i], fontsize=tamanho_fonte)
+        ############################################################################################################
         
         ###############################################-ELM-DDM-######################################################
         tecnica = 'ELM-DDM'  
         param_ddm = ['2', '4', '6', '8']
-        atrasos_ddm = [2574, 2574.8, 2574.6, 2574.6]
-        fa_ddm = [37, 37, 37, 37]
-        mae_ddm = [0.027655478, 0.028106978, 0.029147668, 0.028174681]
+        atrasos_ddm = [170,  170,  170,  170]
+        fa_ddm = [37,  37,  37,  37]
+        mae_ddm = [0.013666161,  0.011529026,  0.012130961,  0.010924068]
         val_min = min(mae_ddm)
         i = mae_ddm.index(val_min)
         
@@ -611,9 +645,9 @@ class Curva():
         ###############################################-ELM-ECDD-#############################################################
         tecnica = 'ELM-ECDD'
         param_ecdd = ['0.25', '0.5', '0.75', '1']
-        atrasos_ecdd = [5003.6, 4632.4, 5696.8, 4995.2]
-        fa_ecdd = [9.2, 5.8, 3.2, 1.8]
-        mae_ecdd = [0.029221395, 0.029569791, 0.027290432, 0.027261696]
+        atrasos_ecdd = [767.6,  1102.2,  882.6,  1245]
+        fa_ecdd = [20.2,  12.8,  11,  10]
+        mae_ecdd = [0.013154498,  0.013962691,  0.015089595,  0.018075655]
         val_min = min(mae_ecdd)
         i = mae_ecdd.index(val_min)
         
@@ -629,16 +663,16 @@ class Curva():
         ###############################################-ELM-FEDD-#############################################################
         tecnica = 'ELM-FEDD'
         param_fedd = ['0', '0.25', '0.5', '0.75']
-        atrasos_fedd = [2535, 2778, 2814, 2652]
-        fa_fedd = [37, 23, 19, 20]
-        mae_fedd = [0.028940876, 0.027176342, 0.029749807, 0.026882308]
+        atrasos_fedd = [305,  484,  350,  609]
+        fa_fedd = [27,  27,  17,  14]
+        mae_fedd = [0.052969354,  0.018260641,  0.788872002,  0.033532531]
         val_min = min(mae_fedd)
         i = mae_fedd.index(val_min)
         
         plt.plot(fa_fedd, atrasos_fedd, pontos[0], color = cores[4], markersize=tamanho_pontos)
         plt.plot(fa_fedd, atrasos_fedd, line[0], color = cores[4],label = tecnica, linewidth=tamanho_linha)
         plt.plot(fa_fedd[i], atrasos_fedd[i], pontos[1], color = best, markersize=tamanho_pontos)
-        plt.plot(fa_fedd[2], atrasos_fedd[2]+sob_triang, pontos[2], color = tradeoff, markersize=tamanho_pontos+tamanho_tradeoff)
+        plt.plot(fa_fedd[3], atrasos_fedd[3]+sob_triang, pontos[2], color = tradeoff, markersize=tamanho_pontos+tamanho_tradeoff)
         for i in range(len(param_fedd)):
             #plt.text(fa_fedd[i] + af_fa, atrasos_fedd[i] + af_dd, param_fedd[i], fontsize=tamanho_fonte)
             plt.text(fa_fedd[i], atrasos_fedd[i]+sob_ponto, param_fedd[i], fontsize=tamanho_fonte)
@@ -648,9 +682,9 @@ class Curva():
         ###########################################-IDPSO-ELM-B ################################################################
         tecnica = 'IDPSO-ELM-B'
         param_c = ['0.25', '0.5', '0.75', '1']
-        atrasos_c = [2641.2, 3081.4, 3098.2, 3661.4]
-        fa_c = [34.4, 28.6, 27.6, 21.8]
-        mae_c = [0.027164746, 0.026471992, 0.026535736, 0.026389236]
+        atrasos_c = [406,  364.8,  402.4,  663.2]
+        fa_c = [24.6,  20.8,  20,  17.2]
+        mae_c = [0.009832959,  0.010959407,  0.010231704,  0.010409677]
         val_min = min(mae_c)
         i = mae_c.index(val_min)
         
@@ -667,9 +701,9 @@ class Curva():
         ########################################IDPSO-ELM-S################################################################################
         tecnica = 'IDPSO-ELM-S'
         param_s = ['0.25', '0.5', '0.75', '1']
-        atrasos_s = [4961, 5050.2, 4346, 4593.6]
-        fa_s = [8.8, 7, 4.8, 2]
-        mae_s = [0.027187065, 0.027633713, 0.026869441, 0.026309967]
+        atrasos_s = [1310.8,  1274,  1247.6,  2027.4]
+        fa_s = [15.2,  9.4,  7.6,  5.4]
+        mae_s = [0.015142231,  0.020741042,  0.019845362,  0.025659656]
         val_min = min(mae_s)
         i = mae_s.index(val_min)
         
@@ -685,9 +719,9 @@ class Curva():
         ########################################IDPSO-ELM-SV################################################################################
         tecnica = 'IDPSO-ELM-SV'
         param_s = ['0.25', '0.5', '0.75', '1']
-        atrasos_s = [4961.8, 4895.4, 5004.8, 4592.6]
-        fa_s = [10.2, 6.4, 4.6, 1.6]
-        mae_s = [0.027470683, 0.02833171, 0.026787249, 0.025801338]
+        atrasos_s = [779,  1143,  1032,  1368.6]
+        fa_s = [17.4,  10.4,  8.8,  7.4]
+        mae_s = [0.011260627,  0.010893518,  0.015625199,  0.014549436]
         val_min = min(mae_s)
         i = mae_s.index(val_min)
         
@@ -749,10 +783,10 @@ def main():
     #c.Curvas_reais_retorno()
     #c.Curvas_reais_retorno()
     #c.Curvas_reais_sem_retorno()
-    #c.Curvas_down()
-    #c.Curvas_sp()
+    c.Curvas_down()
+    c.Curvas_sp()
     
-    c.Tempo_execucao()
+    #c.Tempo_execucao()
     
 if __name__ == "__main__":
     main()

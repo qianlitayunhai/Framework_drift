@@ -18,7 +18,7 @@ import numpy as np
 
 #parametros IDPSO
 it = 50
-inercia = 0.4
+inercia = 0.8
 c1 = 2
 c2 = 2
 crit_parada = 2
@@ -265,7 +265,8 @@ def main():
     
     #instanciando o dataset
     dtst = Datasets('dentro')
-    dataset = dtst.Leitura_dados(dtst.bases_reais(1), csv=True)
+    #dataset = dtst.Leitura_dados(dtst.bases_reais_drift(2, retorno=None), csv=True, column = 1)
+    dataset = dtst.Leitura_dados(dtst.bases_reais(3), csv=True)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)
         
@@ -277,10 +278,24 @@ def main():
     S = 1
     tx = 0.25
     alg = RPSO_ELM(dataset, M, lags, qtd_neuronios, numero_particulas, S, tx)
-     
-    #colhendo os resultados
     alg.Executar(grafico=True)
     
+    
+    '''
+    # salvar as execucoes
+    from geradores_tabela.Tabela_excel import Tabela_excel
+    tabela = Tabela_excel()
+    nome = "../tabelas/Experimentos/SP"
+    folhas = ["RPSO-ELM"]
+    cabecalho = ["falsos alarmes", "atrasos", "MAPE", "tempo execucao"]
+    largura_col = 5000
+    tabela.Criar_tabela(nome, folhas, cabecalho, largura_col)
+                
+    for i in range(5):
+        #colhendo os resultados
+        [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=True)
+        tabela.Adicionar_Sheet_Linha(0, i, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
+    '''    
     
 if __name__ == "__main__":
     main()      

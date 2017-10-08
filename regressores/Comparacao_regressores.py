@@ -18,19 +18,21 @@ from ferramentas.Importar_dataset import Datasets
 
 #load da serie
 dtst = Datasets('dentro')
-serie = dtst.Leitura_dados(dtst.bases_reais(1), csv=True)
+serie = dtst.Leitura_dados(dtst.bases_nlinear_abruptas(2), csv=True)
 particao = Particionar_series(serie, [0.0, 0.0, 0.0], 0)
 serie = particao.Normalizar(serie)
-serie = serie[0:300]
+serie = serie[0:1000]
 
 # configuracoes basicas para treinamento
 divisao_dataset = [0.6, 0.2, 0.2]
 qtd_neuronis = 5
 janela_tempo = 5
+inercia_inicial = 0.8
+inercia_final = 0.4
 
 # instanciando o método IDPSO-ELM
 idpso_elm = IDPSO_ELM(serie, divisao_dataset, janela_tempo, qtd_neuronis)
-idpso_elm.Parametros_IDPSO(100, 30, 0.8, 0.4, 2, 2, 20)
+idpso_elm.Parametros_IDPSO(100, 30, inercia_inicial, inercia_final, 2, 2, 20)
 idpso_elm.Treinar()  
 
 # instanciando o método ELM
@@ -40,12 +42,12 @@ elm.Treinar(elm.train_entradas, elm.train_saidas)
 
 # instanciando o método PSO_SLFN
 pso_slfn = PSO_SLFN(serie, divisao_dataset, janela_tempo, 3)
-pso_slfn.Parametros_PSO(100, 30, 0.8, 2, 2, 20, 0.25)
+pso_slfn.Parametros_PSO(100, 30, inercia_inicial, 2, 2, 20, 0.25)
 pso_slfn.Treinar()
 
 # instanciando o método PSO_ELM
 pso_elm = PSO_ELM(serie, divisao_dataset, janela_tempo, qtd_neuronis)
-pso_elm.Parametros_PSO(100, 30, 0.4, 0.4, 2, 2, 20, 0.25)
+pso_elm.Parametros_PSO(100, 30, inercia_inicial, inercia_inicial, 2, 2, 20, 0.25)
 pso_elm.Treinar()
 
 # organizando os dados para comparacao #

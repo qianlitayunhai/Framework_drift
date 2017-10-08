@@ -10,9 +10,9 @@ from sklearn.metrics.regression import mean_absolute_error
 from ferramentas.Importar_dataset import Datasets
 
 #limites
-Xmax = 1
+Xmax = 5
 Xmin = -Xmax
-posMax = Xmax
+posMax = 1
 posMin = -posMax
 mi = 100
 
@@ -363,7 +363,7 @@ class PSO_ELM():
             self.Gbest()
             self.Pbest()
             self.Velocidade()
-            self.Atualizar_parametros(i)
+            #self.Atualizar_parametros(i)
             self.Atualizar_particulas()
             i = self.Criterio_parada(i)
             
@@ -453,7 +453,7 @@ class PSO_ELM():
             self.Gbest()
             self.Pbest()
             self.Velocidade()
-            self.Atualizar_parametros(i)
+            #self.Atualizar_parametros(i)
             self.Atualizar_particulas()
             
             i = self.Criterio_parada(i)

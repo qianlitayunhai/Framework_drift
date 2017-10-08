@@ -241,8 +241,8 @@ def main():
     n = 100
     lags = 5
     qtd_neuronios = 10 
-    w = 0.75
-    c = 0.75
+    w = 0.25
+    c = 0.25
     alg = ELM_FEDD(dataset, n, lags, qtd_neuronios, 0.2, w, c)
     
     #colhendo os resultados
