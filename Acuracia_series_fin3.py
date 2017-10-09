@@ -217,8 +217,12 @@ def main():
                 #"RPSO"
                 print(folhas[9])
                 tx = 0.25
-                alg = RPSO(dataset, n, lags, qtd_neuronios, numero_particulas, 1, tx)
-                [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
+                #alg = RPSO(dataset, n, lags, qtd_neuronios, numero_particulas, 1, tx)
+                #[falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
+                falsos_alarmes = 9999
+                atrasos = 9999
+                MAPE = 9999
+                tempo_execucao = 9999
                 printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)
                 tabela.Adicionar_Sheet_Linha(9, execucao, [falsos_alarmes, atrasos, MAPE, tempo_execucao])
                 
