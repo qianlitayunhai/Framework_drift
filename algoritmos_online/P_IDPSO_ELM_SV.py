@@ -17,8 +17,9 @@ import time
 
 #parametros IDPSO
 it = 50
-inercia_inicial = 0.8
-inercia_final = 0.4
+inercia_inicial = 0.6
+inercia_final = 0.2
+xmax = 0.3
 c1 = 2
 c2 = 2
 crit_parada = 2
@@ -69,7 +70,7 @@ class P_IDPSO_ELM_SV():
         
         #criando e treinando um modelo_vigente para realizar as previsões
         enxame = IDPSO_ELM(treinamento_inicial, divisao_dataset, self.lags, self.qtd_neuronios)
-        enxame.Parametros_IDPSO(it, self.numero_particulas, inercia_inicial, inercia_final, c1, c2, crit_parada)
+        enxame.Parametros_IDPSO(it, self.numero_particulas, inercia_inicial, inercia_final, c1, c2, xmax, crit_parada)
         enxame.Treinar()  
        
         #ajustando com os dados finais do treinamento a janela de predicao
@@ -219,7 +220,7 @@ class P_IDPSO_ELM_SV():
                 
                     #atualizando o modelo_vigente preditivo
                     enxame = IDPSO_ELM(janela_caracteristicas.dados, divisao_dataset, self.lags, self.qtd_neuronios)
-                    enxame.Parametros_IDPSO(it, self.numero_particulas, inercia_inicial, inercia_final, c1, c2, crit_parada)
+                    enxame.Parametros_IDPSO(it, self.numero_particulas, inercia_inicial, inercia_final, c1, c2, xmax, crit_parada)
                     enxame.Treinar() 
                     
                     #ajustando com os dados finais do treinamento a janela de predicao
@@ -248,7 +249,7 @@ class P_IDPSO_ELM_SV():
         tempo_execucao = (end_time-start_time)
         
         if(grafico == True):
-            tecnica = "P_IDPSO_ELM_SV"
+            tecnica = "P-IDPSO-ELM-SV"
             print(tecnica)
             print("Alarmes:")
             print(alarmes)
@@ -271,7 +272,8 @@ def main():
     
     #instanciando o dataset
     dtst = Datasets("dentro")
-    dataset = dtst.Leitura_dados(dtst.bases_reais(3), csv=True)
+    #dataset = dtst.Leitura_dados(dtst.bases_reais_drift(2, None), csv=True, column = 1)
+    dataset = dtst.Leitura_dados(dtst.bases_reais(1), csv=True)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)
         
@@ -281,9 +283,9 @@ def main():
     lags = 5
     qtd_neuronios = 10
     numero_particulas = 30
-    qtd_sensores = 30
-    w = 0.15
-    c = 0.25
+    qtd_sensores = numero_particulas
+    w = 0.35
+    c = 0.55
     alg = P_IDPSO_ELM_SV(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, w, c)
     
     #colhendo os resultados

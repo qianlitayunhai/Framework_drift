@@ -16,7 +16,7 @@ import numpy as np
 
 #parametros IDPSO
 it = 50
-inercia = 0.4
+inercia = 0.8
 c1 = 2
 c2 = 2
 crit_parada = 2
@@ -263,7 +263,7 @@ def main():
     
     #instanciando o dataset
     dtst = Datasets('dentro')
-    dataset = dtst.Leitura_dados(dtst.bases_reais(3), csv=True)
+    dataset = dtst.Leitura_dados(dtst.bases_reais(1), csv=True)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)
         

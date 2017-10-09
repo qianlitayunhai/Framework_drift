@@ -754,7 +754,7 @@ class Tabela_testes():
         coluna 3 - tempo_execucao
         '''   
         
-        metricas = [3]
+        metricas = [2]
         
         for z in metricas:
             
@@ -978,10 +978,10 @@ class Tabela_testes():
             nemenyi.gerar_plot(nome, caminho)
     
 def main():
-    gerar_teste_acuracia_reais = False
+    gerar_teste_acuracia_reais = True
     gerar_teste_acuracia = False
     gerar_planilhas_parametros_artificiais = False
-    gerar_planilhas_parametros_reais = True
+    gerar_planilhas_parametros_reais = False
     
     tbt = Tabela_testes()
     

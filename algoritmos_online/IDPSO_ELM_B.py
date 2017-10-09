@@ -17,8 +17,9 @@ import time
 
 #parametros IDPSO
 it = 50
-inercia_inicial = 0.8
-inercia_final = 0.4
+inercia_inicial = 0.6
+inercia_final = 0.2
+xmax = 0.3
 c1 = 2
 c2 = 2
 crit_parada = 2
@@ -72,7 +73,7 @@ class IDPSO_ELM_B():
         
         #criando e treinando um enxame_vigente para realizar as previsões
         enxame = IDPSO_ELM(treinamento_inicial, divisao_dataset, self.lags, self.qtd_neuronios)
-        enxame.Parametros_IDPSO(it, self.numero_particulas, inercia_inicial, inercia_final, c1, c2, crit_parada)
+        enxame.Parametros_IDPSO(it, self.numero_particulas, inercia_inicial, inercia_final, c1, c2, xmax, crit_parada)
         enxame.Treinar()  
        
         #ajustando com os dados finais do treinamento a janela de predicao
@@ -85,8 +86,7 @@ class IDPSO_ELM_B():
         janela_caracteristicas.Ajustar(treinamento_inicial)
         
         #ativando o sensor de comportamento de acordo com a primeira janela de caracteristicas para media e desvio padrão
-        b = B(self.limite, self.w, self.c)
-        b.armazenar_conceito(janela_caracteristicas.dados, self.lags, enxame)
+        b = B(self.limite, self.w, self.c)        b.armazenar_conceito(janela_caracteristicas.dados, self.lags, enxame)
 
         ################################################################################################################################################
         ################################# PERIODO DINAMICO #############################################################################################
@@ -155,7 +155,7 @@ class IDPSO_ELM_B():
                     
                     #atualizando o enxame_vigente preditivo
                     enxame = IDPSO_ELM(janela_caracteristicas.dados, divisao_dataset, self.lags, self.qtd_neuronios)
-                    enxame.Parametros_IDPSO(it, self.numero_particulas, inercia_inicial, inercia_final, c1, c2, crit_parada)
+                    enxame.Parametros_IDPSO(it, self.numero_particulas, inercia_inicial, inercia_final, c1, c2, xmax, crit_parada)
                     enxame.Treinar() 
                     
                     #ajustando com os dados finais do treinamento a janela de predicao

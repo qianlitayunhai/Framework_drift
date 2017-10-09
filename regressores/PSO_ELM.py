@@ -10,10 +10,6 @@ from sklearn.metrics.regression import mean_absolute_error
 from ferramentas.Importar_dataset import Datasets
 
 #limites
-Xmax = 5
-Xmin = -Xmax
-posMax = 1
-posMin = -posMax
 mi = 100
 
 #variaveis auxiliares
@@ -67,7 +63,7 @@ class PSO_ELM():
         
         self.tx_espalhar = 0
         
-    def Parametros_PSO(self, iteracoes, numero_particulas, inercia_inicial, inercia_final, c1, c2, crit_parada, tx):
+    def Parametros_PSO(self, iteracoes, numero_particulas, inercia_inicial, inercia_final, c1, c2, Xmax, crit_parada, tx):
         '''
         Metodo para alterar os parametros basicos do IDPSO 
         :param iteracoes: quantidade de geracoes para o treinamento 
@@ -86,6 +82,11 @@ class PSO_ELM():
         self.c2 = c2
         self.crit_parada = crit_parada
         self.tx_espalhar = tx
+        
+        self.xmax = Xmax
+        self.xmin = -Xmax
+        self.posMax = Xmax
+        self.posMin = self.xmin
     
     def Tratamento_Dados(self, serie, divisao, janela):
         '''
@@ -193,10 +194,10 @@ class PSO_ELM():
               
                 i.velocidade[j] = influecia_inercia + influencia_cognitiva + influecia_social
                 
-                if (i.velocidade[j] >= Xmax):
-                    i.velocidade[j] = Xmax
-                elif(i.velocidade[j] <= Xmin):
-                    i.velocidade[j] = Xmin
+                if (i.velocidade[j] >= self.xmax):
+                    i.velocidade[j] = self.xmax
+                elif(i.velocidade[j] <= self.xmin):
+                    i.velocidade[j] = self.xmin
               
     def Atualizar_particulas(self):
         '''
@@ -207,10 +208,10 @@ class PSO_ELM():
             for j in range(len(i.posicao)):
                 i.posicao[j] = i.posicao[j] + i.velocidade[j]
                 
-                if (i.posicao[j] >= posMax):
-                    i.posicao[j] = posMax
-                elif(i.posicao[j] <= posMin):
-                    i.posicao[j] = posMin
+                if (i.posicao[j] >= self.posMax):
+                    i.posicao[j] = self.posMax
+                elif(i.posicao[j] <= self.posMin):
+                    i.posicao[j] = self.posMin
 
     def Atualizar_parametros(self, iteracao):
         '''

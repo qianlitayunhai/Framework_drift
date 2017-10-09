@@ -18,7 +18,8 @@ import numpy as np
 
 #parametros IDPSO
 it = 50
-inercia = 0.8
+inercia = 0.2
+xmax = 0.3
 c1 = 2
 c2 = 2
 crit_parada = 2
@@ -133,7 +134,7 @@ class RPSO_ELM():
         
         #criando e treinando um modelo_vigente para realizar as previsões
         enxame = PSO_ELM(treinamento_inicial, divisao_dataset, self.lags, self.qtd_neuronios)
-        enxame.Parametros_PSO(it, self.numero_particulas, inercia, inercia, c1, c2, crit_parada, self.tx)
+        enxame.Parametros_PSO(it, self.numero_particulas, inercia, inercia, c1, c2, xmax, crit_parada, self.tx)
         enxame.Treinar()  
        
         #ajustando com os dados finais do treinamento a janela de predicao
@@ -266,7 +267,7 @@ def main():
     #instanciando o dataset
     dtst = Datasets('dentro')
     #dataset = dtst.Leitura_dados(dtst.bases_reais_drift(2, retorno=None), csv=True, column = 1)
-    dataset = dtst.Leitura_dados(dtst.bases_reais(3), csv=True)
+    dataset = dtst.Leitura_dados(dtst.bases_reais(1), csv=True)
     particao = Particionar_series(dataset, [0.0, 0.0, 0.0], 0)
     dataset = particao.Normalizar(dataset)
         

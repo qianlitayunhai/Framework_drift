@@ -158,8 +158,8 @@ def main():
                 
                 #"ELM-FEDD"
                 print(folhas[3])
-                w = 0
-                c = 0
+                w = 0.25
+                c = 0.25
                 alg = ELM_FEDD(dataset, n, lags, qtd_neuronios, 0.2, w, c)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
                 printar_metricas(falsos_alarmes, atrasos, MAPE, tempo_execucao)

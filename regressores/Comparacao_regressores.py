@@ -28,7 +28,7 @@ divisao_dataset = [0.6, 0.2, 0.2]
 qtd_neuronis = 5
 janela_tempo = 5
 inercia_inicial = 0.8
-inercia_final = 0.4
+inercia_final = 0.2
 
 # instanciando o método IDPSO-ELM
 idpso_elm = IDPSO_ELM(serie, divisao_dataset, janela_tempo, qtd_neuronis)
