@@ -16,8 +16,8 @@ import time
 
 #parametros IDPSO
 it = 50
-inercia_inicial = 0.4
-inercia_final = 0.2
+inercia_inicial = 0.8
+inercia_final = 0.4
 c1 = 2
 c2 = 2
 crit_parada = 2
@@ -171,7 +171,8 @@ class IDPSO_ELM_SV():
         
         #computando as metricas de deteccao
         mt = Metricas_deteccao()
-        [falsos_alarmes, atrasos] = mt.resultados(stream, deteccoes, self.n)        
+        [falsos_alarmes, atrasos] = mt.resultados(stream, deteccoes, self.n)
+        
         #computando a acuracia da previsao ao longo do fluxo de dados
         MAE = erro_stream/len(stream)
         

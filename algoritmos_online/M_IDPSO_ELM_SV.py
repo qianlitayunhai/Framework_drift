@@ -18,8 +18,8 @@ import time
 
 #parametros IDPSO
 it = 50
-inercia_inicial = 0.4
-inercia_final = 0.2
+inercia_inicial = 0.8
+inercia_final = 0.4
 c1 = 2
 c2 = 2
 crit_parada = 2
