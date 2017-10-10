@@ -11,7 +11,7 @@ class Constantes():
     def __init__(self, alocacao):
         self.qtd_execucoes = 5
         self.variacao_inicio = 1
-        self.variacao_final = 31
+        self.variacao_final = 3
         #self.pasta = "Teste"
         #self.pasta = "Deteccao"
         #self.pasta = "Deteccao (B e BS)"
@@ -20,8 +20,8 @@ class Constantes():
         #self.pasta = "Desempenho Series Financeiras"
         #self.pasta = "Reais Drifts"
         #self.pasta = "FEDD (0.1)"
-        #self.pasta = "Reais Drifts- sem retorno"
-        self.pasta = "Deteccao art RPSO"
+        self.pasta = "Reais Drifts- sem retorno"
+        #self.pasta = "Deteccao art RPSO"
         
         if(alocacao == 'dentro'):
             self.caminho_bases = "../tabelas/Experimentos/"

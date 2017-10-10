@@ -23,8 +23,8 @@ class Curva():
         tamanho_linha = 3
         tamanho_pontos = 9
         tamanho_fonte = 14
-        af_dd = 100
-        af_fa = 0
+        sob_ponto = 300
+        sob_triang = 120
         ########################################################################################################################
         
         ###############################################-ELM-ECDD-#############################################################
@@ -39,10 +39,10 @@ class Curva():
         plt.plot(fa_ecdd, atrasos_ecdd, pontos[0], color = cores[0], markersize=tamanho_pontos)
         plt.plot(fa_ecdd, atrasos_ecdd, line[0], color = cores[0],label = tecnica, linewidth=tamanho_linha)
         plt.plot(fa_ecdd[i], atrasos_ecdd[i], pontos[1], color = best, markersize=tamanho_pontos)
-        plt.plot(fa_ecdd[2], atrasos_ecdd[2]+50, pontos[2], color = tradeoff, markersize=tamanho_pontos+5)
+        plt.plot(fa_ecdd[2], atrasos_ecdd[2]+sob_triang, pontos[2], color = tradeoff, markersize=tamanho_pontos+5)
         for i in range(len(param_ecdd)):
             #plt.text(fa_ecdd[i] + af_fa, atrasos_ecdd[i] + af_dd, param_ecdd[i], fontsize=tamanho_fonte)
-            plt.text(fa_ecdd[i], atrasos_ecdd[i], param_ecdd[i], fontsize=tamanho_fonte)
+            plt.text(fa_ecdd[i], atrasos_ecdd[i]+sob_ponto, param_ecdd[i], fontsize=tamanho_fonte)
         ############################################################################################################
         
         
@@ -58,10 +58,10 @@ class Curva():
         plt.plot(fa_ddm, atrasos_ddm, pontos[0], color = cores[1], markersize=tamanho_pontos)
         plt.plot(fa_ddm, atrasos_ddm, line[0], color = cores[1], label = tecnica, linewidth=tamanho_linha)
         #plt.plot(fa_ddm[i], atrasos_ddm[i], pontos[1], color = best, markersize=tamanho_pontos)
-        plt.plot(fa_ddm[3], atrasos_ddm[3]+50, pontos[2], color = tradeoff, markersize=tamanho_pontos+5)
+        plt.plot(fa_ddm[3], atrasos_ddm[3]+sob_triang, pontos[2], color = tradeoff, markersize=tamanho_pontos+5)
         for i in range(len(param_ddm)):
             #plt.text(fa_ddm[i] + af_fa, atrasos_ddm[i] + af_dd, param_ddm[i], fontsize=tamanho_fonte)
-            plt.text(fa_ddm[i], atrasos_ddm[i], param_ddm[i], fontsize=tamanho_fonte)
+            plt.text(fa_ddm[i], atrasos_ddm[i]+sob_ponto, param_ddm[i], fontsize=tamanho_fonte)
         ############################################################################################################
         
         
@@ -77,10 +77,10 @@ class Curva():
         plt.plot(fa_fedd, atrasos_fedd, pontos[0], color = cores[4], markersize=tamanho_pontos)
         plt.plot(fa_fedd, atrasos_fedd, line[0], color = cores[4],label = tecnica, linewidth=tamanho_linha)
         plt.plot(fa_fedd[i], atrasos_fedd[i], pontos[1], color = best, markersize=tamanho_pontos)
-        plt.plot(fa_fedd[1], atrasos_fedd[1]+50, pontos[2], color = tradeoff, markersize=tamanho_pontos+5)
+        plt.plot(fa_fedd[1], atrasos_fedd[1]+sob_triang, pontos[2], color = tradeoff, markersize=tamanho_pontos+5)
         for i in range(len(param_fedd)):
             #plt.text(fa_fedd[i] + af_fa, atrasos_fedd[i] + af_dd, param_fedd[i], fontsize=tamanho_fonte)
-            plt.text(fa_fedd[i], atrasos_fedd[i], param_fedd[i], fontsize=tamanho_fonte)
+            plt.text(fa_fedd[i], atrasos_fedd[i]+sob_ponto, param_fedd[i], fontsize=tamanho_fonte)
         ########################################################################################################################
         
         
@@ -96,10 +96,10 @@ class Curva():
         plt.plot(fa_c,  atrasos_c, pontos[0], color = cores[6], markersize=tamanho_pontos)
         plt.plot(fa_c, atrasos_c, line[3], color = cores[6], label = tecnica, linewidth=tamanho_linha)
         plt.plot(fa_c[i], atrasos_c[i], pontos[1], color = best, markersize=tamanho_pontos)
-        plt.plot(fa_c[3], atrasos_c[3]+50, pontos[2], color = tradeoff, markersize=tamanho_pontos+5)
+        plt.plot(fa_c[3], atrasos_c[3]+sob_triang, pontos[2], color = tradeoff, markersize=tamanho_pontos+5)
         for i in range(len(param_c)):
             #plt.text(fa_c[i] + af_fa, atrasos_c[i] + af_dd, param_c[i], fontsize=tamanho_fonte)
-            plt.text(fa_c[i], atrasos_c[i], param_c[i], fontsize=tamanho_fonte)
+            plt.text(fa_c[i], atrasos_c[i]+sob_ponto, param_c[i], fontsize=tamanho_fonte)
         ###########################################################################################################################
     
     
@@ -115,10 +115,10 @@ class Curva():
         plt.plot(fa_s, atrasos_s, pontos[0], color = cores[3], markersize=tamanho_pontos)
         plt.plot(fa_s, atrasos_s, line[1], color = cores[3], label = tecnica + " (30)", linewidth=tamanho_linha)
         plt.plot(fa_s[i], atrasos_s[i], pontos[1], color = best, markersize=tamanho_pontos)
-        plt.plot(fa_s[2], atrasos_s[2]+50, pontos[2], color = tradeoff, markersize=tamanho_pontos+5)
+        plt.plot(fa_s[2], atrasos_s[2]+sob_triang, pontos[2], color = tradeoff, markersize=tamanho_pontos+5)
         for i in range(len(param_s)):
             #plt.text(fa_s[i] - 1.5, atrasos_s[i] - 5*af_dd, param_s[i], fontsize=tamanho_fonte)
-            plt.text(fa_s[i], atrasos_s[i], param_s[i], fontsize=tamanho_fonte)
+            plt.text(fa_s[i], atrasos_s[i]+sob_ponto, param_s[i], fontsize=tamanho_fonte)
         ###########################################################################################################################
         
         ########################################IDPSO-ELM-SV################################################################################
@@ -133,12 +133,13 @@ class Curva():
         plt.plot(fa_s, atrasos_s, pontos[0], color = cores[6], markersize=tamanho_pontos)
         plt.plot(fa_s, atrasos_s, line[1], color = cores[6], label = tecnica + " (30)", linewidth=tamanho_linha)
         plt.plot(fa_s[i], atrasos_s[i], pontos[1], color = best, markersize=tamanho_pontos)
-        plt.plot(fa_s[2], atrasos_s[2]+50, pontos[2], color = tradeoff, markersize=tamanho_pontos+5)
+        plt.plot(fa_s[2], atrasos_s[2]+sob_triang, pontos[2], color = tradeoff, markersize=tamanho_pontos+5)
         for i in range(len(param_s)):
             #plt.text(fa_s[i] - 1.5, atrasos_s[i] - 5*af_dd, param_s[i], fontsize=tamanho_fonte)
-            plt.text(fa_s[i], atrasos_s[i], param_s[i], fontsize=tamanho_fonte)
+            plt.text(fa_s[i], atrasos_s[i]+sob_ponto, param_s[i], fontsize=tamanho_fonte)
         ########################################################################################################################
         
+        '''
         ########################################IDPSO-ELM-BS################################################################################
         tecnica = 'IDPSO-ELM-BS'
         param_s = ['0.25', '0.5', '0.75', '1']
@@ -151,10 +152,29 @@ class Curva():
         plt.plot(fa_s, atrasos_s, pontos[0], color = cores[1], markersize=tamanho_pontos)
         plt.plot(fa_s, atrasos_s, line[1], color = cores[1], label = tecnica + " (30)", linewidth=tamanho_linha)
         plt.plot(fa_s[i], atrasos_s[i], pontos[1], color = best, markersize=tamanho_pontos)
-        plt.plot(fa_s[1], atrasos_s[1]+50, pontos[2], color = tradeoff, markersize=tamanho_pontos+5)
+        plt.plot(fa_s[1], atrasos_s[1]+sob_triang, pontos[2], color = tradeoff, markersize=tamanho_pontos+5)
         for i in range(len(param_s)):
             #plt.text(fa_s[i] - 1.5, atrasos_s[i] - 5*af_dd, param_s[i], fontsize=tamanho_fonte)
-            plt.text(fa_s[i], atrasos_s[i], param_s[i], fontsize=tamanho_fonte)
+            plt.text(fa_s[i], atrasos_s[i]+sob_ponto, param_s[i], fontsize=tamanho_fonte)
+        ########################################################################################################################
+        '''
+        
+        ########################################IDPSO-ELM-BS################################################################################
+        tecnica = 'RPSO-ELM'
+        param_s = ['1', '2', '3', '4']
+        atrasos_s = [8534.788889,  11521.98333,  13010.01111,  13944.02778]
+        fa_s = [7.5,  3.211111111,  1.777777778,  1.305555556]
+        mae_s = [0.031876795,  0.042164524,  0.05769702,  0.056671508]
+        val_min = min(mae_s)
+        i = mae_s.index(val_min)
+        
+        plt.plot(fa_s, atrasos_s, pontos[0], color = cores[1], markersize=tamanho_pontos)
+        plt.plot(fa_s, atrasos_s, line[1], color = cores[1], label = tecnica, linewidth=tamanho_linha)
+        #plt.plot(fa_s[i], atrasos_s[i], pontos[1], color = best, markersize=tamanho_pontos)
+        plt.plot(fa_s[0], atrasos_s[0]+sob_triang, pontos[2], color = tradeoff, markersize=tamanho_pontos+5)
+        for i in range(len(param_s)):
+            #plt.text(fa_s[i] - 1.5, atrasos_s[i] - 5*af_dd, param_s[i], fontsize=tamanho_fonte)
+            plt.text(fa_s[i], atrasos_s[i]+sob_ponto, param_s[i], fontsize=tamanho_fonte)
         ########################################################################################################################
         
         ###########################################PLOTANDO E ADICIONANDO LEGENDAS############################################
@@ -779,12 +799,12 @@ class Curva():
 def main():
     
     c = Curva()
-    #c.Curvas_artificiais()
+    c.Curvas_artificiais()
     #c.Curvas_reais_retorno()
     #c.Curvas_reais_retorno()
     #c.Curvas_reais_sem_retorno()
-    c.Curvas_down()
-    c.Curvas_sp()
+    #c.Curvas_down()
+    #c.Curvas_sp()
     
     #c.Tempo_execucao()
     

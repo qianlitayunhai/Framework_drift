@@ -659,7 +659,7 @@ class Tabela_testes():
             
         # computando as estatisticas opor bases
         self.Calcular_estatisticas_bases_artificiais()
-        self.Img_teste_artificial()
+        #self.Img_teste_artificial()
         
     def Criar_tabelas_reais_drift(self):
         '''
@@ -978,9 +978,9 @@ class Tabela_testes():
             nemenyi.gerar_plot(nome, caminho)
     
 def main():
-    gerar_teste_acuracia_reais = True
+    gerar_teste_acuracia_reais = False
     gerar_teste_acuracia = False
-    gerar_planilhas_parametros_artificiais = False
+    gerar_planilhas_parametros_artificiais = True
     gerar_planilhas_parametros_reais = False
     
     tbt = Tabela_testes()
