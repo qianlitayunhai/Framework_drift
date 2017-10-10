@@ -18,15 +18,15 @@ import numpy as np
 
 #parametros IDPSO
 it = 50
-inercia = 0.2
-xmax = 0.3
+inercia = 0.8
+xmax = 1
 c1 = 2
 c2 = 2
 crit_parada = 2
 divisao_dataset = [0.8, 0.2, 0]
 
 class RPSO_ELM():
-    def __init__(self, dataset, m, lags, qtd_neuronios, numero_particulas, S, tx):
+    def __init__(self, dataset, m, lags, qtd_neuronios, numero_particulas, S, tx, w):
         '''
         construtor do algoritmo que detecta a mudanca de ambiente por meio de sensores
         :param dataset: serie temporal que o algoritmo vai executar
@@ -50,6 +50,7 @@ class RPSO_ELM():
         
         self.S = S
         self.tx = tx
+        self.w = w
        
     def Sentry(self, solucao):
         '''
@@ -66,7 +67,7 @@ class RPSO_ELM():
         :return: retorna verdadeiro caso uma mudança de conceito tenha ocorrido
         '''
        
-        if(nova_solucao > (self.solucao[0] + self.solucao[1])):
+        if(nova_solucao > (self.solucao[0] + (self.solucao[1]*self.w))):
             return True
         else:
             return False
@@ -278,7 +279,8 @@ def main():
     numero_particulas = 30
     S = 1
     tx = 0.25
-    alg = RPSO_ELM(dataset, M, lags, qtd_neuronios, numero_particulas, S, tx)
+    w = 3
+    alg = RPSO_ELM(dataset, M, lags, qtd_neuronios, numero_particulas, S, tx, w)
     alg.Executar(grafico=True)
     
     
