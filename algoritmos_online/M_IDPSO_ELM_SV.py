@@ -297,7 +297,7 @@ def main():
     qtd_sensores = 30
     limiar = 3
     qtd_memoria = 10
-    w = 0.15
+    w = 0.1
     c = 0.25
     alg = M_IDPSO_ELM_SV(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, qtd_memoria, limiar, w, c)
     

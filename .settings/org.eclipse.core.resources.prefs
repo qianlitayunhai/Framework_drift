@@ -44,4 +44,4 @@ encoding//regressores/IDPSO_ELM.py=utf-8
 encoding//regressores/PSO_ELM.py=utf-8
 encoding//regressores/PSO_SLFN.py=utf-8
 encoding//teste_estatistico/Nemenyi.py=utf-8
-encoding/Deteccao_reais_drift_rpso.py=utf-8
+encoding/Acuracia_series_fin_adpt.py=utf-8

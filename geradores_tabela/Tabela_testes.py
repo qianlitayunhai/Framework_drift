@@ -743,7 +743,7 @@ class Tabela_testes():
             
         # computando as estatisticas opor bases
         self.Calcular_estatisticas_bases_reais()
-        self.Img_teste_reais()
+        #self.Img_teste_reais()
    
     def Criar_tabelas_reais(self):
         '''
@@ -980,8 +980,8 @@ class Tabela_testes():
 def main():
     gerar_teste_acuracia_reais = False
     gerar_teste_acuracia = False
-    gerar_planilhas_parametros_artificiais = True
-    gerar_planilhas_parametros_reais = False
+    gerar_planilhas_parametros_artificiais = False
+    gerar_planilhas_parametros_reais = True
     
     tbt = Tabela_testes()
     

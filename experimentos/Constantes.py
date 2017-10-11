@@ -9,7 +9,7 @@ Created on 23 de ago de 2017
 
 class Constantes():
     def __init__(self, alocacao):
-        self.qtd_execucoes = 5
+        self.qtd_execucoes = 30
         self.variacao_inicio = 1
         self.variacao_final = 3
         #self.pasta = "Teste"
@@ -17,10 +17,10 @@ class Constantes():
         #self.pasta = "Deteccao (B e BS)"
         #self.pasta = "preliminares"
         #self.pasta = "Acuracia_adpt"
-        #self.pasta = "Desempenho Series Financeiras"
+        self.pasta = "Desempenho Series Financeiras (adpt)"
         #self.pasta = "Reais Drifts"
         #self.pasta = "FEDD (0.1)"
-        self.pasta = "Reais Drifts- sem retorno"
+        #self.pasta = "Reais Drifts- sem retorno "
         #self.pasta = "Deteccao art RPSO"
         
         if(alocacao == 'dentro'):
@@ -34,6 +34,6 @@ class Constantes():
         #self.folhas = ["P-IDPSO-ELM-SV", "M-IDPSO-ELM-SV"]
         #self.folhas = ["ELM-FEDD"]
         #self.folhas = ["ELM_DDM", "ELM_ECDD", "ELM-FEDD", "IDPSO-ELM-B", "IDPSO-ELM-S", "IDPSO-ELM-SV", "P-IDPSO-ELM-SV", "M-IDPSO-ELM-SV" ]
-        self.folhas = ["RPSO-ELM"]
+        self.folhas = ["P-IDPSO-ELM-SV", "M-IDPSO-ELM-SV"]
         
         

@@ -284,8 +284,8 @@ def main():
     qtd_neuronios = 10
     numero_particulas = 30
     qtd_sensores = numero_particulas
-    w = 0.35
-    c = 0.55
+    w = 0.1
+    c = 0.5
     alg = P_IDPSO_ELM_SV(dataset, n, lags, qtd_neuronios, numero_particulas, qtd_sensores, w, c)
     
     #colhendo os resultados

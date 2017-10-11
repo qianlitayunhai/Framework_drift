@@ -386,37 +386,37 @@ def main():
     caminho_salvar = 'E:/Workspace2/Framework_drift/tabelas/Experimentos/Exp Acur - Param Min'
     
     #lin grad
-    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [1, 31], [1, 8]) 
+    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [1, 31], [1, 9]) 
     nemenyi = NemenyiTestPostHoc(labels, acuracias)
     nemenyi.gerar_plot("/friedman_lin_grad", caminho_salvar)
     
     #lin abt
-    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [32, 61], [1, 8]) 
+    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [32, 61], [1, 9]) 
     nemenyi = NemenyiTestPostHoc(labels, acuracias)
     nemenyi.gerar_plot("/friedman_lin_abt", caminho_salvar)
     
     #nlin grad
-    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [62, 91], [1, 8]) 
+    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [62, 91], [1, 9]) 
     nemenyi = NemenyiTestPostHoc(labels, acuracias)
     nemenyi.gerar_plot("/friedman_nlin_grad", caminho_salvar)
     
     #nlin abt
-    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [92, 121], [1, 8]) 
+    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [92, 121], [1, 9]) 
     nemenyi = NemenyiTestPostHoc(labels, acuracias)
     nemenyi.gerar_plot("/friedman_nlin_abt", caminho_salvar)
     
     #saz
-    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [122, 151], [1, 8]) 
+    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [122, 151], [1, 9]) 
     nemenyi = NemenyiTestPostHoc(labels, acuracias)
     nemenyi.gerar_plot("/friedman_saz", caminho_salvar)
     
     #hib
-    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [152, 181], [1, 8]) 
+    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [152, 181], [1, 9]) 
     nemenyi = NemenyiTestPostHoc(labels, acuracias)
     nemenyi.gerar_plot("/friedman_hib", caminho_salvar)
     
     #geral
-    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [1, 181], [1, 8]) 
+    labels, acuracias = tbt.obter_dados_arquivo(caminho_arquivo, [1, 181], [1, 9]) 
     nemenyi = NemenyiTestPostHoc(labels, acuracias)
     nemenyi.gerar_plot("/friedman_geral", caminho_salvar)
     
