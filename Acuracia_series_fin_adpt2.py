@@ -125,7 +125,7 @@ def main():
                 
                 #"P-IDPSO-ELM"
                 print(folhas[0])
-                w = 0.1
+                w = 0.25
                 c = 0.5
                 alg = P_IDPSO_ELM_SV(dataset, n, lags, qtd_neuronios, numero_particulas, numero_particulas, w, c)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
@@ -135,7 +135,7 @@ def main():
                 #"M-IDPSO-ELM"
                 print(folhas[1])
                 qtd_memoria = 30
-                w = 0.05
+                w = 0.1
                 c = 0.25
                 alg = M_IDPSO_ELM_SV(dataset, n, lags, qtd_neuronios, numero_particulas, numero_particulas, qtd_memoria, 3, w, c)
                 [falsos_alarmes, atrasos, MAPE, tempo_execucao] = alg.Executar(grafico=grafico)
